@@ -78,8 +78,8 @@
         </copy>
     </target>
 
-    <target name="build" depends="compile" description="Build the jar">
-        <jar destfile="${target.dir}/webpipes_${webpipes.version.full}.jar" basedir="${target.dir}/classes" />
+    <target name="jar" depends="compile" description="Build the jar">
+        <jar destfile="${target.dir}/webpipes-${webpipes.version.full}.jar" basedir="${target.dir}/classes" />
     </target>
 
     <target name="compile-tests" depends="compile">
@@ -117,5 +117,25 @@
             </batchtest>
         </junit>    
     </target>
+
+    <target name="jar-sources">
+        <jar destfile="${target.dir}/webpipes-${webpipes.version.full}-sources.jar" basedir="${basedir}/src" />
+    </target>
+
+	<target name="javadocs" depends="ivy:resolve">
+	    <javadoc use="true" private="true" destdir="${target.dir}/javadocs" 
+	             author="false" version="true"
+	             sourcepath="${basedir}/src"
+	             classpathref="compile.classpath"
+	             windowtitle="Webpipes ${webpipes.version.full}">
+	        <doctitle>Webpipes ${webpipes.version.full}</doctitle>
+	    </javadoc>
+    </target>
+
+	<target name="jar-javadocs" depends="javadocs">
+        <jar destfile="${target.dir}/webpipes-${webpipes.version.full}-javadocs.jar" basedir="${target.dir}/javadocs" />
+    </target>
+
+    <target name="build" depends="jar,jar-sources,jar-javadocs" />
 
 </project>

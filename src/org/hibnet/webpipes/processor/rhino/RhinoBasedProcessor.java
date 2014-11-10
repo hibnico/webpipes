@@ -18,6 +18,12 @@ package org.hibnet.webpipes.processor.rhino;
 import java.io.IOException;
 import java.net.URI;
 
+import org.hibnet.webpipes.processor.ResourceProcessor;
+import org.hibnet.webpipes.resource.ClasspathResource;
+import org.hibnet.webpipes.resource.ClasspathResourceFactory;
+import org.hibnet.webpipes.resource.Resource;
+import org.hibnet.webpipes.resource.ResourceFactory;
+import org.hibnet.webpipes.resource.WebJarResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeObject;
@@ -31,13 +37,6 @@ import org.mozilla.javascript.commonjs.module.RequireBuilder;
 import org.mozilla.javascript.tools.ToolErrorReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.hibnet.webpipes.processor.ResourceProcessor;
-import org.hibnet.webpipes.resource.ClasspathResource;
-import org.hibnet.webpipes.resource.ClasspathResourceFactory;
-import org.hibnet.webpipes.resource.Resource;
-import org.hibnet.webpipes.resource.ResourceFactory;
-import org.hibnet.webpipes.resource.WebJarResourceFactory;
 
 public abstract class RhinoBasedProcessor extends ResourceProcessor {
 
@@ -82,12 +81,6 @@ public abstract class RhinoBasedProcessor extends ResourceProcessor {
         evaluate(context, scope, commonsScript);
     }
 
-    /**
-     * Add a client side environment to the script context (client-side aware).
-     *
-     * @return {@link RhinoHelper} used to chain evaluation of the scripts.
-     * @throws IOException
-     */
     protected void addClientSideEnvironment(Context context, Scriptable scope) throws IOException {
         evaluate(context, scope, envScript);
     }
@@ -113,14 +106,6 @@ public abstract class RhinoBasedProcessor extends ResourceProcessor {
 
     abstract protected String process(Context context, Scriptable scope, Resource resource, String content) throws Exception;
 
-    /**
-     * Evaluates a script and return {@link RhinoHelper} for a chained script evaluation.
-     *
-     * @param script the string representation of the script to evaluate.
-     * @param sourceName the name of the evaluated script.
-     * @return evaluated object.
-     * @throws IOException if the script couldn't be retrieved.
-     */
     protected <T> T evaluate(Context context, Scriptable scope, String script, String sourceName) {
         @SuppressWarnings("unchecked")
         T result = (T) context.evaluateString(scope, script, sourceName, 1, null);
@@ -177,13 +162,14 @@ public abstract class RhinoBasedProcessor extends ResourceProcessor {
     }
 
     /**
-     * Transforms a java multi-line string into javascript multi-line string. This technique was found at {@link http
-     * ://stackoverflow.com/questions/805107/multiline-strings-in-javascript/}
+     * Transforms a java multi-line string into javascript multi-line string. This technique was found at
+     * {@link http://stackoverflow.com/questions/805107/multiline-strings-in-javascript/}
      *
-     * @param data a string containing new lines.
+     * @param data
+     *            a string containing new lines.
      * @return a string which being evaluated on the client-side will be treated as a correct multi-line string.
      */
-    protected String toJSMultiLineString(final String data) {
+    protected String toJSMultiLineString(String data) {
         StringBuffer result = new StringBuffer("[");
         if (data != null) {
             String[] lines = data.split("\n");

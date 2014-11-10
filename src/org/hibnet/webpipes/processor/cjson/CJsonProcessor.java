@@ -26,7 +26,8 @@ import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.ResourceFactory;
 
 /**
- * A processor using cjson compression algorithm: {@link http://stevehanov.ca/blog/index.php?id=104}.
+ * A processor using cjson compression algorithm
+ * {@link http://stevehanov.ca/blog/index.php?id=104}.
  */
 public class CJsonProcessor extends RhinoBasedProcessor {
 
