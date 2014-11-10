@@ -1,0 +1,1 @@
+(function(){return new function(){}(1,2,3,4)})();

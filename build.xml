@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2014 WebPipes contributors
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<project name="webpipes" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:ac="antlib:net.sf.antcontrib">
+
+    <property name="target.dir" location="${basedir}/target" />
+    <property name="build-deps.dir" location="${basedir}/build-deps" />
+    <property name="ivy.version" value="2.4.0-rc1" />
+    <property name="ant-contrib.version" value="20020829" />
+
+    <property file="${basedir}/build.properties" />
+
+    <tstamp />
+    <property name="webpipes.version.qualifier" value="dev" />
+    <property name="webpipes.version.full" value="${webpipes.version}.${DSTAMP}${TSTAMP}-${webpipes.version.qualifier}" />
+	
+    <target name="clean" description="Clean build artifacts">
+        <delete dir="${target.dir}" />
+    </target>
+
+    <target name="-check-build-deps">
+        <condition property="build-deps.exist">
+            <and>
+                <available file="${build-deps.dir}/ivy-${ivy.version}.jar" />
+                <available file="${build-deps.dir}/ant-contrib-${ant-contrib.version}.jar" />
+            </and>
+        </condition>
+        <mkdir dir="${user.home}/.ivy2/lib/" />
+    </target>
+
+    <target name="-download-build-deps" depends="-check-build-deps" unless="build-deps.exist">
+        <mkdir dir="${build-deps.dir}" />
+        <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${build-deps.dir}/ivy-${ivy.version}.jar" usetimestamp="true" />
+        <get src="http://repo1.maven.org/maven2/ant-contrib/ant-contrib/${ant-contrib.version}/ant-contrib-${ant-contrib.version}.jar" dest="${build-deps.dir}/ant-contrib-${ant-contrib.version}.jar" usetimestamp="true" />
+    </target>
+
+    <target name="init" depends="-download-build-deps">
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${build-deps.dir}/ivy-${ivy.version}.jar" />
+        <taskdef resource="net/sf/antcontrib/antcontrib.properties" uri="antlib:net.sf.antcontrib" classpath="${build-deps.dir}/ant-contrib-${ant-contrib.version}.jar" />
+    </target>
+
+    <target name="ivy:configure" depends="init">
+        <ivy:configure />
+    </target>
+
+    <target name="ivy:resolve" depends="init,ivy:configure">
+        <ivy:resolve file="${basedir}/ivy-fixed.xml" conf="compile,runtime,test" type="jar,bundle" />
+        <ivy:cachepath pathid="compile.classpath" conf="compile" type="jar,bundle" />
+        <ivy:cachepath pathid="runtime.classpath" conf="runtime" type="jar,bundle" />
+        <ivy:cachepath pathid="test.classpath" conf="test" type="jar,bundle" />
+    </target>
+
+    <target name="update-deps" depends="init,ivy:configure" description="Update dependencies (to be called on ivy-manifest.xml or MANIFEST.MF change)">
+        <ivy:resolve file="${basedir}/ivy.xml" conf="*" type="jar" resolveId="update-deps" />
+        <ivy:fixdeps tofile="${basedir}/ivy-fixed.xml" resolveId="update-deps" />
+    </target>
+
+    <target name="compile" depends="ivy:resolve" description="Compile the sources">
+        <mkdir dir="${target.dir}/classes/" />
+        <javac srcdir="${basedir}/src/" destdir="${target.dir}/classes" debug="on" includeantruntime="false" source="1.7" target="1.7" classpathref="compile.classpath" />
+        <copy todir="${target.dir}/classes">
+            <fileset dir="${basedir}/src">
+                <exclude name="**/*.java" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="build" depends="compile" description="Build the jar">
+        <jar destfile="${target.dir}/webpipes_${webpipes.version.full}.jar" basedir="${target.dir}/classes" />
+    </target>
+
+    <target name="compile-tests" depends="compile">
+        <mkdir dir="${target.dir}/test-classes/" />
+        <javac srcdir="${basedir}/test/src/" destdir="${target.dir}/test-classes" debug="on" includeantruntime="false" source="1.7" target="1.7">
+        	<classpath>
+                <path location="${target.dir}/classes/" />
+                <path refid="test.classpath" />
+        	</classpath>
+        </javac>
+        <copy todir="${target.dir}/test-classes">
+            <fileset dir="${basedir}/test/src">
+                <exclude name="**/*.java" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="test" depends="compile-tests" description="Run the unit tests">
+    	<mkdir dir="${target.dir}/test-reports" />
+        <junit fork="true" haltonerror="true" haltonfailure="true" failureproperty="junit.failed">
+            <jvmarg value="-XX:-UseSplitVerifier"/>
+            <classpath>
+                <pathelement location="${target.dir}/test-classes"/>
+                <pathelement location="${target.dir}/classes"/>
+                <path refid="test.classpath"/> 
+            </classpath>
+            <formatter type="plain" usefile="no" />
+            <formatter type="xml"/>
+            <batchtest todir="${target.dir}/test-reports">
+                <fileset dir="${basedir}/test/src">
+                    <include name="**/*Test.java"/>
+                    <exclude name="**/Abstract*Test.java"/>
+                    <exclude name="**/*$*"/>
+                </fileset>
+            </batchtest>
+        </junit>    
+    </target>
+
+</project>
