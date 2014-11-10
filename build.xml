@@ -52,8 +52,9 @@
         <taskdef resource="net/sf/antcontrib/antcontrib.properties" uri="antlib:net.sf.antcontrib" classpath="${build-deps.dir}/ant-contrib-${ant-contrib.version}.jar" />
     </target>
 
-    <target name="ivy:configure" depends="init">
+    <target name="ivy:configure" depends="init" unless="ivy.configured">
         <ivy:configure />
+    	<property name="ivy.configured" value="true" />
     </target>
 
     <target name="ivy:resolve" depends="init,ivy:configure">
