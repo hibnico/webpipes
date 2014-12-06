@@ -74,9 +74,9 @@
 
     <target name="compile" depends="ivy:resolve" description="Compile the sources">
         <mkdir dir="${target.dir}/classes/" />
-        <javac srcdir="${basedir}/src/" destdir="${target.dir}/classes" debug="on" includeantruntime="false" source="1.7" target="1.7" classpathref="compile.classpath" />
+        <javac srcdir="${basedir}/src/main/java" destdir="${target.dir}/classes" debug="on" includeantruntime="false" source="1.7" target="1.7" classpathref="compile.classpath" />
         <copy todir="${target.dir}/classes">
-            <fileset dir="${basedir}/src">
+            <fileset dir="${basedir}/src/main/java">
                 <exclude name="**/*.java" />
             </fileset>
         </copy>
@@ -88,14 +88,14 @@
 
     <target name="compile-tests" depends="compile">
         <mkdir dir="${target.dir}/test-classes/" />
-        <javac srcdir="${basedir}/test/src/" destdir="${target.dir}/test-classes" debug="on" includeantruntime="false" source="1.7" target="1.7">
+        <javac srcdir="${basedir}/src/test/java/" destdir="${target.dir}/test-classes" debug="on" includeantruntime="false" source="1.7" target="1.7">
             <classpath>
                 <path location="${target.dir}/classes/" />
                 <path refid="test.classpath" />
             </classpath>
         </javac>
         <copy todir="${target.dir}/test-classes">
-            <fileset dir="${basedir}/test/src">
+            <fileset dir="${basedir}/srv/test/java">
                 <exclude name="**/*.java" />
             </fileset>
         </copy>
@@ -113,7 +113,7 @@
             <formatter type="plain" usefile="no" />
             <formatter type="xml"/>
             <batchtest todir="${target.dir}/test-reports">
-                <fileset dir="${basedir}/test/src">
+                <fileset dir="${basedir}/src/test/java">
                     <include name="**/*Test.java"/>
                     <exclude name="**/Abstract*Test.java"/>
                     <exclude name="**/*$*"/>
@@ -123,13 +123,13 @@
     </target>
 
     <target name="jar-sources">
-        <jar destfile="${target.dir}/webpipes-${webpipes.version.full}-sources.jar" basedir="${basedir}/src" />
+        <jar destfile="${target.dir}/webpipes-${webpipes.version.full}-sources.jar" basedir="${basedir}/src/main/java" />
     </target>
 
     <target name="javadocs" depends="ivy:resolve">
         <javadoc use="true" private="true" destdir="${target.dir}/javadocs" 
                  author="false" version="true"
-                 sourcepath="${basedir}/src"
+                 sourcepath="${basedir}/src/main/java"
                  classpathref="compile.classpath"
                  windowtitle="Webpipes ${webpipes.version.full}">
             <doctitle>Webpipes ${webpipes.version.full}</doctitle>
@@ -163,4 +163,8 @@
         </openpgp:signer>
     </target>
 
+	<target name="pom" depends="init">
+		<property name="ivy.pom.version" value="${webpipes.version.full}" />
+        <ivy:makepom ivyfile="${basedir}/ivy-fixed.xml" pomfile="${target.dir}/webpipes-${webpipes.version.full}.pom" templatefile="${basedir}/src/pom.template" />
+	</target>
 </project>
