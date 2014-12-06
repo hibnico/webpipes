@@ -4,7 +4,7 @@
 		module="webpipes"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20141110151146"
+		publication="20141207001642"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>
@@ -16,126 +16,127 @@
 	</publications>
 	<dependencies>
 		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="handlebars" rev="1.3.0" force="true" transitive="false" conf="default->default,master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.webjars" name="handlebars" rev="1.3.0" force="true" transitive="false" conf="compile->default,master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.webjars" name="handlebars" rev="1.3.0" force="true" transitive="false" conf="test->default,master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.webjars" name="handlebars" rev="1.3.0" force="true" transitive="false" conf="runtime->default,master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="org.webjars" name="handlebars" rev="1.3.0" force="true" transitive="false" conf="default->default,compile,master(*),compile(*),runtime,runtime(*),master"/>
+		<dependency org="org.webjars" name="handlebars" rev="1.3.0" force="true" transitive="false" conf="test->default,compile,master(*),compile(*),runtime,runtime(*),master"/>
+		<dependency org="org.webjars" name="handlebars" rev="1.3.0" force="true" transitive="false" conf="compile->default,compile,master(*),compile(*),runtime,runtime(*),master"/>
+		<dependency org="org.webjars" name="handlebars" rev="1.3.0" force="true" transitive="false" conf="runtime->default,compile,master(*),compile(*),runtime,runtime(*),master"/>
 		<dependency org="org.webjars" name="coffee-script" rev="1.8.0" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="coffee-script" rev="1.8.0" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="coffee-script" rev="1.8.0" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="coffee-script" rev="1.8.0" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="coffee-script" rev="1.8.0" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="emberjs" rev="1.7.0" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="emberjs" rev="1.7.0" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="emberjs" rev="1.7.0" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="emberjs" rev="1.7.0" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="emberjs" rev="1.7.0" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="com.google.javascript" name="closure-compiler" rev="v20140730" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="com.google.javascript" name="closure-compiler" rev="v20140730" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="com.google.javascript" name="closure-compiler" rev="v20140730" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="com.google.javascript" name="closure-compiler" rev="v20140730" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="com.google.javascript" name="closure-compiler" rev="v20140730" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="org.apache.commons" name="commons-lang3" rev="3.3.2" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.apache.commons" name="commons-lang3" rev="3.3.2" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.apache.commons" name="commons-lang3" rev="3.3.2" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="org.apache.commons" name="commons-lang3" rev="3.3.2" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.apache.commons" name="commons-lang3" rev="3.3.2" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
-		<dependency org="com.google.guava" name="guava" rev="18.0" force="true" transitive="false" conf="default->default,compile,runtime,master,master(*),runtime(*),compile(*)"/>
-		<dependency org="com.google.guava" name="guava" rev="18.0" force="true" transitive="false" conf="compile->default,compile,runtime,master,master(*),runtime(*),compile(*)"/>
-		<dependency org="com.google.guava" name="guava" rev="18.0" force="true" transitive="false" conf="test->default,compile,runtime,master,master(*),runtime(*),compile(*)"/>
-		<dependency org="com.google.guava" name="guava" rev="18.0" force="true" transitive="false" conf="runtime->default,compile,runtime,master,master(*),runtime(*),compile(*)"/>
+		<dependency org="com.google.guava" name="guava" rev="18.0" force="true" transitive="false" conf="default->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
+		<dependency org="com.google.guava" name="guava" rev="18.0" force="true" transitive="false" conf="test->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
+		<dependency org="com.google.guava" name="guava" rev="18.0" force="true" transitive="false" conf="compile->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
+		<dependency org="com.google.guava" name="guava" rev="18.0" force="true" transitive="false" conf="runtime->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
 		<dependency org="org.webjars" name="less" rev="1.7.3" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="less" rev="1.7.3" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="less" rev="1.7.3" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="less" rev="1.7.3" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="less" rev="1.7.3" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="com.github.sommeri" name="less4j" rev="1.8.0" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="com.github.sommeri" name="less4j" rev="1.8.0" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="com.github.sommeri" name="less4j" rev="1.8.0" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="com.github.sommeri" name="less4j" rev="1.8.0" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="com.github.sommeri" name="less4j" rev="1.8.0" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="requirejs" rev="2.1.14-1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="requirejs" rev="2.1.14-1" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="requirejs" rev="2.1.14-1" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="requirejs" rev="2.1.14-1" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="requirejs" rev="2.1.14-1" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="react" rev="0.11.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="react" rev="0.11.1" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="react" rev="0.11.1" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="react" rev="0.11.1" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="react" rev="0.11.1" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.webjars" name="jquery" rev="1.10.2-1" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.webjars" name="jquery" rev="1.10.2-1" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.webjars" name="jquery" rev="1.10.2-1" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.webjars" name="jquery" rev="1.10.2-1" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.javascript" name="closure-compiler-externs" rev="v20140730" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.javascript" name="closure-compiler-externs" rev="v20140730" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.javascript" name="closure-compiler-externs" rev="v20140730" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.javascript" name="closure-compiler-externs" rev="v20140730" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="args4j" name="args4j" rev="2.0.26" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="args4j" name="args4j" rev="2.0.26" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="args4j" name="args4j" rev="2.0.26" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="args4j" name="args4j" rev="2.0.26" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.code.findbugs" name="jsr305" rev="1.3.9" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.code.findbugs" name="jsr305" rev="1.3.9" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.code.findbugs" name="jsr305" rev="1.3.9" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="com.google.code.findbugs" name="jsr305" rev="1.3.9" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.antlr" name="antlr-runtime" rev="3.4" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.antlr" name="antlr-runtime" rev="3.4" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.antlr" name="antlr-runtime" rev="3.4" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.antlr" name="antlr-runtime" rev="3.4" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-io" name="commons-io" rev="2.3" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-io" name="commons-io" rev="2.3" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-io" name="commons-io" rev="2.3" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-io" name="commons-io" rev="2.3" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="antlr" name="antlr" rev="2.7.7" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="antlr" name="antlr" rev="2.7.7" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="antlr" name="antlr" rev="2.7.7" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="antlr" name="antlr" rev="2.7.7" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" transitive="false" conf="runtime->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.apache.ant" name="ant" rev="1.8.4" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.webjars" name="jquery" rev="1.10.2-1" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.webjars" name="jquery" rev="1.10.2-1" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.webjars" name="jquery" rev="1.10.2-1" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.webjars" name="jquery" rev="1.10.2-1" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.javascript" name="closure-compiler-externs" rev="v20140730" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.javascript" name="closure-compiler-externs" rev="v20140730" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.javascript" name="closure-compiler-externs" rev="v20140730" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.javascript" name="closure-compiler-externs" rev="v20140730" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="args4j" name="args4j" rev="2.0.26" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="args4j" name="args4j" rev="2.0.26" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="args4j" name="args4j" rev="2.0.26" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="args4j" name="args4j" rev="2.0.26" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.code.findbugs" name="jsr305" rev="1.3.9" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.code.findbugs" name="jsr305" rev="1.3.9" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.code.findbugs" name="jsr305" rev="1.3.9" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.code.findbugs" name="jsr305" rev="1.3.9" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.antlr" name="antlr-runtime" rev="3.4" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.antlr" name="antlr-runtime" rev="3.4" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.antlr" name="antlr-runtime" rev="3.4" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.antlr" name="antlr-runtime" rev="3.4" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-io" name="commons-io" rev="2.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-io" name="commons-io" rev="2.3" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-io" name="commons-io" rev="2.3" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-io" name="commons-io" rev="2.3" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="antlr" name="antlr" rev="2.7.7" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="antlr" name="antlr" rev="2.7.7" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="antlr" name="antlr" rev="2.7.7" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="antlr" name="antlr" rev="2.7.7" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.apache.ant" name="ant" rev="1.8.4" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
-		<dependency org="org.apache.ant" name="ant-launcher" rev="1.8.4" force="true" transitive="false" conf="compile->master(*),compile,runtime(*),runtime,compile(*),master"/>
-		<dependency org="org.apache.ant" name="ant-launcher" rev="1.8.4" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="org.apache.ant" name="ant" rev="1.8.4" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
+		<dependency org="org.apache.ant" name="ant-launcher" rev="1.8.4" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.apache.ant" name="ant-launcher" rev="1.8.4" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="junit" name="junit" rev="4.10" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
-		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.1" force="true" transitive="false" conf="test->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.7" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.1" force="true" transitive="false" conf="test->compile,master(*),runtime,compile(*),runtime(*),master"/>
 	</dependencies>
 </ivy-module>

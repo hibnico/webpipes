@@ -83,7 +83,7 @@
     </target>
 
     <target name="jar" depends="compile" description="Build the jar">
-        <jar destfile="${target.dir}/webpipes-${webpipes.version.full}.jar" basedir="${target.dir}/classes" />
+        <jar destfile="${target.dir}/dist/webpipes.jar" basedir="${target.dir}/classes" />
     </target>
 
     <target name="compile-tests" depends="compile">
@@ -95,7 +95,7 @@
             </classpath>
         </javac>
         <copy todir="${target.dir}/test-classes">
-            <fileset dir="${basedir}/srv/test/java">
+            <fileset dir="${basedir}/src/test/java">
                 <exclude name="**/*.java" />
             </fileset>
         </copy>
@@ -123,11 +123,11 @@
     </target>
 
     <target name="jar-sources">
-        <jar destfile="${target.dir}/webpipes-${webpipes.version.full}-sources.jar" basedir="${basedir}/src/main/java" />
+        <jar destfile="${target.dir}/dist/webpipes-sources.jar" basedir="${basedir}/src/main/java" />
     </target>
 
-    <target name="javadocs" depends="ivy:resolve">
-        <javadoc use="true" private="true" destdir="${target.dir}/javadocs" 
+    <target name="javadoc" depends="ivy:resolve">
+        <javadoc use="true" private="true" destdir="${target.dir}/javadoc" 
                  author="false" version="true"
                  sourcepath="${basedir}/src/main/java"
                  classpathref="compile.classpath"
@@ -136,14 +136,19 @@
         </javadoc>
     </target>
 
-    <target name="jar-javadocs" depends="javadocs">
-        <jar destfile="${target.dir}/webpipes-${webpipes.version.full}-javadocs.jar" basedir="${target.dir}/javadocs" />
+    <target name="jar-javadoc" depends="javadoc">
+        <jar destfile="${target.dir}/dist/webpipes-javadoc.jar" basedir="${target.dir}/javadoc" />
     </target>
 
-    <target name="build" depends="jar,jar-sources,jar-javadocs" />
+    <target name="build" depends="jar,jar-sources,jar-javadoc" />
+
+    <target name="pom" depends="init">
+        <property name="ivy.pom.version" value="${webpipes.version.full}" />
+        <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/webpipes.pom" templatefile="${basedir}/src/pom.template" />
+    </target>
 
     <target name="sign" depends="ivy:configure">
-        <input addproperty="pgp.password" message="pass">
+        <input addproperty="pgp.password" message="PGP password:">
         	<handler classname="org.apache.tools.ant.input.SecureInputHandler" />
         </input>
         <ivy:resolve keep="true" resolveId="sign.resolve">
@@ -157,14 +162,27 @@
                         pubring="${user.home}/.gnupg/pubring.gpg"
                         password="${pgp.password}" 
                         asciiarmor="true">
-            <fileset dir="${target.dir}">
+            <fileset dir="${target.dir}/dist">
                 <include name="*.jar" />
+                <include name="*.pom" />
             </fileset>
         </openpgp:signer>
     </target>
 
-	<target name="pom" depends="init">
-		<property name="ivy.pom.version" value="${webpipes.version.full}" />
-        <ivy:makepom ivyfile="${basedir}/ivy-fixed.xml" pomfile="${target.dir}/webpipes-${webpipes.version.full}.pom" templatefile="${basedir}/src/pom.template" />
+    <target name="publish" depends="build,pom,sign">
+        <ivy:publish organisation="org.hibnet"
+                     module="webpipes"
+                     revision="${webpipes.version.full}"
+                     srcivypattern="${basedir}/ivy.xml"
+                     artifactspattern="${basedir}/target/dist/[artifact](-[classifier]).[ext]"
+                     publishivy="false"
+                     conf="default"
+                     resolver="ossrh-snapshots">
+            <!-- The standard maven2 artifacts -->
+            <artifact name="webpipes" ext="pom" type="ivy" />
+            <artifact name="webpipes" ext="jar" type="sources" classifier="sources" />
+            <artifact name="webpipes" ext="jar" type="javadoc" classifier="javadoc" />
+        </ivy:publish>
 	</target>
+
 </project>
