@@ -16,59 +16,49 @@
 -->
 <project name="webpipes"
 	xmlns:ivy="antlib:org.apache.ivy.ant"
-	xmlns:ac="antlib:net.sf.antcontrib"
 	xmlns:openpgp="antlib:org.apache.commons.openpgp.ant">
 
     <property name="target.dir" location="${basedir}/target" />
-    <property name="build-deps.dir" location="${basedir}/build-deps" />
+
     <property name="ivy.version" value="2.4.0-rc1" />
     <property name="bouncycastle.version" value="1.50" />
     <property name="commons-openpgp.version" value="1.0-20080726.092946-4" />
-    <property name="ant-contrib.version" value="20020829" />
 
     <property file="${basedir}/build.properties" />
 
-    <tstamp />
-    <property name="webpipes.version.qualifier" value="dev" />
-    <property name="webpipes.version.full" value="${webpipes.version}.${DSTAMP}${TSTAMP}-${webpipes.version.qualifier}" />
-    <property name="webpipes.version.maven" value="${webpipes.version}-SNAPSHOT" />
-    
     <target name="clean" description="Clean build artifacts">
         <delete dir="${target.dir}" />
     </target>
 
-    <target name="-check-build-deps" unless="build-deps.exist">
-        <condition property="build-deps.exist">
+    <target name="-check-ivy-jars" unless="ivy-jars.exist">
+        <condition property="ivy-jars.exist">
             <and>
-                <available file="${build-deps.dir}/ivy-${ivy.version}.jar" />
-                <available file="${build-deps.dir}/bcprov-jdk15on-${bouncycastle.version}.jar" />
-                <available file="${build-deps.dir}/bcpg-jdk15on-${bouncycastle.version}.jar" />
-                <available file="${build-deps.dir}/commons-openpgp-${commons-openpgp.version}.jar" />
-                <available file="${build-deps.dir}/ant-contrib-${ant-contrib.version}.jar" />
+                <available file="${user.home}/.ivy2/jars/ivy-${ivy.version}.jar" />
+                <available file="${user.home}/.ivy2/jars/bcprov-jdk15on-${bouncycastle.version}.jar" />
+                <available file="${user.home}/.ivy2/jars/bcpg-jdk15on-${bouncycastle.version}.jar" />
+                <available file="${user.home}/.ivy2/jars/commons-openpgp-${commons-openpgp.version}.jar" />
             </and>
         </condition>
-        <mkdir dir="${user.home}/.ivy2/lib/" />
     </target>
 
-    <target name="-download-build-deps" depends="-check-build-deps" unless="build-deps.exist">
-        <mkdir dir="${build-deps.dir}" />
-        <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${build-deps.dir}/ivy-${ivy.version}.jar" usetimestamp="true" />
-        <get src="http://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk15on/${bouncycastle.version}/bcprov-jdk15on-${bouncycastle.version}.jar" dest="${build-deps.dir}/bcprov-jdk15on-${bouncycastle.version}.jar" usetimestamp="true" />
-        <get src="http://repo1.maven.org/maven2/org/bouncycastle/bcpg-jdk15on/${bouncycastle.version}/bcpg-jdk15on-${bouncycastle.version}.jar" dest="${build-deps.dir}/bcpg-jdk15on-${bouncycastle.version}.jar" usetimestamp="true" />
-        <get src="http://people.apache.org/repo/m2-snapshot-repository/org/apache/commons/commons-openpgp/1.0-SNAPSHOT/commons-openpgp-${commons-openpgp.version}.jar" dest="${build-deps.dir}/commons-openpgp-${commons-openpgp.version}.jar" usetimestamp="true" />
-        <get src="http://repo1.maven.org/maven2/ant-contrib/ant-contrib/${ant-contrib.version}/ant-contrib-${ant-contrib.version}.jar" dest="${build-deps.dir}/ant-contrib-${ant-contrib.version}.jar" usetimestamp="true" />
+    <target name="-download-ivy-jars" depends="-check-ivy-jars" unless="ivy-jars.exist">
+        <mkdir dir="${user.home}/.ivy2/jars" />
+        <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${user.home}/.ivy2/jars/ivy-${ivy.version}.jar" usetimestamp="true" />
+        <get src="http://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk15on/${bouncycastle.version}/bcprov-jdk15on-${bouncycastle.version}.jar" dest="${user.home}/.ivy2/jars/bcprov-jdk15on-${bouncycastle.version}.jar" usetimestamp="true" />
+        <get src="http://repo1.maven.org/maven2/org/bouncycastle/bcpg-jdk15on/${bouncycastle.version}/bcpg-jdk15on-${bouncycastle.version}.jar" dest="${user.home}/.ivy2/jars/bcpg-jdk15on-${bouncycastle.version}.jar" usetimestamp="true" />
+        <get src="http://people.apache.org/repo/m2-snapshot-repository/org/apache/commons/commons-openpgp/1.0-SNAPSHOT/commons-openpgp-${commons-openpgp.version}.jar" dest="${user.home}/.ivy2/jars/commons-openpgp-${commons-openpgp.version}.jar" usetimestamp="true" />
     </target>
 
-    <target name="init" depends="-download-build-deps" unless="build.initiated">
+    <target name="init" depends="-download-ivy-jars" unless="build.initiated">
+        <property name="webpipes.version" value="${webpipes.version.base}-SNAPSHOT" />
         <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
             <classpath>
-                <pathelement location="${build-deps.dir}/ivy-${ivy.version}.jar" />
-                <pathelement location="${build-deps.dir}/bcprov-jdk15on-${bouncycastle.version}.jar" />
-                <pathelement location="${build-deps.dir}/bcpg-jdk15on-${bouncycastle.version}.jar" />
-                <pathelement location="${build-deps.dir}/commons-openpgp-${commons-openpgp.version}.jar" />
+                <pathelement location="${user.home}/.ivy2/jars/ivy-${ivy.version}.jar" />
+                <pathelement location="${user.home}/.ivy2/jars/bcprov-jdk15on-${bouncycastle.version}.jar" />
+                <pathelement location="${user.home}/.ivy2/jars/bcpg-jdk15on-${bouncycastle.version}.jar" />
+                <pathelement location="${user.home}/.ivy2/jars/commons-openpgp-${commons-openpgp.version}.jar" />
             </classpath>
         </taskdef>
-        <taskdef resource="net/sf/antcontrib/antcontrib.properties" uri="antlib:net.sf.antcontrib" classpath="${build-deps.dir}/ant-contrib-${ant-contrib.version}.jar" />
         <property name="build.initiated" value="true" />
     </target>
 
@@ -156,8 +146,8 @@
                  author="false" version="true"
                  sourcepath="${basedir}/src/main/java"
                  classpathref="compile.classpath"
-                 windowtitle="Webpipes ${webpipes.version.full}">
-            <doctitle>Webpipes ${webpipes.version.full}</doctitle>
+                 windowtitle="Webpipes ${webpipes.version}">
+            <doctitle>Webpipes ${webpipes.version}</doctitle>
         </javadoc>
     </target>
 
@@ -168,7 +158,7 @@
     <target name="build" depends="jar,jar-sources,jar-javadoc" />
 
     <target name="create-pom" depends="init">
-        <property name="ivy.pom.version" value="${webpipes.version.full}" />
+        <property name="ivy.pom.version" value="${webpipes.version}" />
         <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/webpipes.pom" templatefile="${basedir}/src/pom.template" />
     </target>
 
@@ -183,7 +173,7 @@
         <ivy:settings id="ivy.instance" file="ivysettings.xml" />
         <ivy:publish organisation="org.hibnet"
                      module="webpipes"
-                     revision="${webpipes.version.maven}"
+                     revision="${webpipes.version}"
                      srcivypattern="${basedir}/ivy.xml"
                      artifactspattern="${basedir}/target/dist/[artifact](-[classifier]).[ext]"
                      publishivy="false"
