@@ -21,7 +21,7 @@ import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.ResourceFactory;
 import org.hibnet.webpipes.resource.ResourceRefresher;
 
-public abstract class WebPipesBuilder {
+public abstract class WebpipesBuilder {
 
     protected ResourceFactory resourceFactory = buildResourceFactory();
 
