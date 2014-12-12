@@ -219,9 +219,7 @@
 
     <target name="-pre-release" depends="-init-props-release">
         <!-- tag first, so this will ensure that the version is unique -->
-        <exec executable="git" failonerror="true">
-            <arg line="tag ${webpipes.version}" />
-        </exec>
+        <git command="tag ${webpipes.version}" />
     </target>
 
     <target name="bump-version" depends="-init,-init-ant-tasks">
@@ -242,15 +240,20 @@
         </loadresource>
         <echo message="${build.properties.content.new}" file="${basedir}/build.properties" />
         <!-- commit -->
-        <exec executable="git" failonerror="true">
-            <arg line="add build.properties" />
-        </exec>
-        <exec executable="git" failonerror="true">
-            <arg line="commit -m 'v++'" />
-        </exec>
+        <git command="add build.properties" />
+        <git command="commit -m 'v++'" />
     </target>
 
     <target name="release" depends="-pre-release,-publish,bump-version">
     </target>
 
+    <macrodef name="git">
+        <attribute name="command" />
+        <sequential>
+            <echo message="git @{command}" />
+            <exec executable="git" failonerror="true">
+                <arg line="@{command}" />
+            </exec>
+        </sequential>
+    </macrodef>
 </project>
