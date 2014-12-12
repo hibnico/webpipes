@@ -22,6 +22,8 @@
     <property name="target.dir" location="${basedir}/target" />
     <property name="build-deps.dir" location="${basedir}/build-deps" />
     <property name="ivy.version" value="2.4.0-rc1" />
+    <property name="bouncycastle.version" value="1.50" />
+    <property name="commons-openpgp.version" value="1.0-20080726.092946-4" />
     <property name="ant-contrib.version" value="20020829" />
 
     <property file="${basedir}/build.properties" />
@@ -29,6 +31,7 @@
     <tstamp />
     <property name="webpipes.version.qualifier" value="dev" />
     <property name="webpipes.version.full" value="${webpipes.version}.${DSTAMP}${TSTAMP}-${webpipes.version.qualifier}" />
+    <property name="webpipes.version.maven" value="${webpipes.version}-SNAPSHOT" />
     
     <target name="clean" description="Clean build artifacts">
         <delete dir="${target.dir}" />
@@ -38,6 +41,9 @@
         <condition property="build-deps.exist">
             <and>
                 <available file="${build-deps.dir}/ivy-${ivy.version}.jar" />
+                <available file="${build-deps.dir}/bcprov-jdk15on-${bouncycastle.version}.jar" />
+                <available file="${build-deps.dir}/bcpg-jdk15on-${bouncycastle.version}.jar" />
+                <available file="${build-deps.dir}/commons-openpgp-${commons-openpgp.version}.jar" />
                 <available file="${build-deps.dir}/ant-contrib-${ant-contrib.version}.jar" />
             </and>
         </condition>
@@ -47,11 +53,21 @@
     <target name="-download-build-deps" depends="-check-build-deps" unless="build-deps.exist">
         <mkdir dir="${build-deps.dir}" />
         <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${build-deps.dir}/ivy-${ivy.version}.jar" usetimestamp="true" />
+        <get src="http://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk15on/${bouncycastle.version}/bcprov-jdk15on-${bouncycastle.version}.jar" dest="${build-deps.dir}/bcprov-jdk15on-${bouncycastle.version}.jar" usetimestamp="true" />
+        <get src="http://repo1.maven.org/maven2/org/bouncycastle/bcpg-jdk15on/${bouncycastle.version}/bcpg-jdk15on-${bouncycastle.version}.jar" dest="${build-deps.dir}/bcpg-jdk15on-${bouncycastle.version}.jar" usetimestamp="true" />
+        <get src="http://people.apache.org/repo/m2-snapshot-repository/org/apache/commons/commons-openpgp/1.0-SNAPSHOT/commons-openpgp-${commons-openpgp.version}.jar" dest="${build-deps.dir}/commons-openpgp-${commons-openpgp.version}.jar" usetimestamp="true" />
         <get src="http://repo1.maven.org/maven2/ant-contrib/ant-contrib/${ant-contrib.version}/ant-contrib-${ant-contrib.version}.jar" dest="${build-deps.dir}/ant-contrib-${ant-contrib.version}.jar" usetimestamp="true" />
     </target>
 
     <target name="init" depends="-download-build-deps" unless="build.initiated">
-        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${build-deps.dir}/ivy-${ivy.version}.jar" />
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
+            <classpath>
+                <pathelement location="${build-deps.dir}/ivy-${ivy.version}.jar" />
+                <pathelement location="${build-deps.dir}/bcprov-jdk15on-${bouncycastle.version}.jar" />
+                <pathelement location="${build-deps.dir}/bcpg-jdk15on-${bouncycastle.version}.jar" />
+                <pathelement location="${build-deps.dir}/commons-openpgp-${commons-openpgp.version}.jar" />
+            </classpath>
+        </taskdef>
         <taskdef resource="net/sf/antcontrib/antcontrib.properties" uri="antlib:net.sf.antcontrib" classpath="${build-deps.dir}/ant-contrib-${ant-contrib.version}.jar" />
         <property name="build.initiated" value="true" />
     </target>
@@ -65,7 +81,7 @@
         <ivy:resolve file="${basedir}/ivy-fixed.xml" conf="compile,runtime,test" type="jar,bundle" />
 
         <!-- to have the proper version in the ivy, and a cached resolve so the publish can work -->
-        <ivy:deliver deliverpattern="${basedir}/target/ivy.xml" pubrevision="${webpipes.version.full}" />
+        <ivy:deliver deliverpattern="${basedir}/target/ivy.xml" pubrevision="${webpipes.version.maven}" />
         <ivy:resolve file="${basedir}/target/ivy.xml" conf="compile,runtime,test" type="jar,bundle" log="quiet" />
 
         <ivy:cachepath pathid="compile.classpath" conf="compile" type="jar,bundle" />
@@ -151,49 +167,34 @@
 
     <target name="build" depends="jar,jar-sources,jar-javadoc" />
 
-    <target name="pom" depends="init">
+    <target name="create-pom" depends="init">
         <property name="ivy.pom.version" value="${webpipes.version.full}" />
         <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/webpipes.pom" templatefile="${basedir}/src/pom.template" />
     </target>
 
-    <target name="sign" depends="ivy:configure">
-        <ivy:resolve keep="true" resolveId="sign.resolve" log="download-only">
-            <dependency org="org.apache.commons" name="commons-openpgp" rev="1.0-SNAPSHOT" transitive="false" />
-            <dependency org="org.bouncycastle" name="bcprov-jdk15on" rev="1.51" transitive="false" />
-            <dependency org="org.bouncycastle" name="bcpg-jdk15on" rev="1.51" transitive="false" />
-        </ivy:resolve>
-        <ivy:cachepath resolveId="sign.resolve" pathid="sign.classpath" type="jar,bundle" />
-        <taskdef resource="org/apache/commons/openpgp/ant/antlib.xml" uri="antlib:org.apache.commons.openpgp.ant" classpathref="sign.classpath" />
+    <target name="publish-snapshot" depends="build,create-pom">
+        <input addproperty="ossrh.passwd" message="OSSRH password:">
+        	<handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+        </input>
         <input addproperty="pgp.password" message="PGP password:">
         	<handler classname="org.apache.tools.ant.input.SecureInputHandler" />
         </input>
-        <openpgp:signer secring="${user.home}/.gnupg/secring.gpg"
-                        pubring="${user.home}/.gnupg/pubring.gpg"
-                        password="${pgp.password}" 
-                        asciiarmor="true">
-            <fileset dir="${target.dir}/dist">
-                <include name="*.jar" />
-                <include name="*.pom" />
-            </fileset>
-        </openpgp:signer>
-    </target>
-
-    <target name="publish" depends="build,pom,sign">
+        <!-- reload the settings with the proper passwords -->
+        <ivy:settings id="ivy.instance" file="ivysettings.xml" />
         <ivy:publish organisation="org.hibnet"
                      module="webpipes"
-                     revision="${webpipes.version.full}"
+                     revision="${webpipes.version.maven}"
                      srcivypattern="${basedir}/ivy.xml"
                      artifactspattern="${basedir}/target/dist/[artifact](-[classifier]).[ext]"
                      publishivy="false"
                      conf="default"
-                     resolver="ossrh-snapshots">
+                     resolver="ossrh-snapshots"
+                     overwrite="true">
             <!-- The standard maven2 artifacts -->
             <artifact name="webpipes" ext="pom" type="ivy" />
             <artifact name="webpipes" ext="jar" type="sources" classifier="sources" />
             <artifact name="webpipes" ext="jar" type="javadoc" classifier="javadoc" />
         </ivy:publish>
 	</target>
-
-    <target name="release" depends="clean,build,pom,sign,publish" />
 
 </project>

@@ -17,11 +17,17 @@
 <ivysettings>
 
     <property name="m2-pattern" value="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[module]-[revision](-[classifier]).[ext]" override="false" />
-    <property name="ossrh-snapshots-repository-url" value="https://oss.sonatype.org/content/repositories/snapshots/" />
-    <property name="ossrh-staging-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2/" />
+    <property name="ossrh-snapshots-repository-url" value="https://oss.sonatype.org/content/repositories/snapshots" />
+    <property name="ossrh-staging-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2" />
 
     <settings defaultResolver="default" />
     <caches useOrigin="true" />
+
+    <credentials host="oss.sonatype.org" realm="Sonatype Nexus Repository Manager" username="${ossrh.username}" passwd="${ossrh.passwd}" />
+
+    <signers>
+        <pgp name="pgpsigner" password="${pgp.password}" />
+	</signers>
 
     <resolvers>
         <chain name="default" returnFirst="true">
@@ -32,10 +38,10 @@
             </filesystem>
             <ibiblio name="snapshot" m2compatible="true" root="http://people.apache.org/repo/m2-snapshot-repository" />
         </chain>
-        <url name="ossrh-snapshots" m2compatible="true">
+        <url name="ossrh-snapshots" m2compatible="true" signer="pgpsigner">
             <artifact pattern="${ossrh-snapshots-repository-url}/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]" />
         </url>
-        <url name="ossrh-staging" m2compatible="true">
+        <url name="ossrh-staging" m2compatible="true" signer="pgpsigner">
             <artifact pattern="${ossrh-staging-repository-url}/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]" />
         </url>
     </resolvers>
