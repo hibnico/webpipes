@@ -182,6 +182,7 @@
                      overwrite="true">
             <!-- The standard maven2 artifacts -->
             <artifact name="webpipes" ext="pom" type="ivy" />
+            <artifact name="webpipes" ext="jar" type="jar" />
             <artifact name="webpipes" ext="jar" type="sources" classifier="sources" />
             <artifact name="webpipes" ext="jar" type="javadoc" classifier="javadoc" />
         </ivy:publish>
