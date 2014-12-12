@@ -71,7 +71,7 @@
         <ivy:resolve file="${basedir}/ivy-fixed.xml" conf="compile,runtime,test" type="jar,bundle" />
 
         <!-- to have the proper version in the ivy, and a cached resolve so the publish can work -->
-        <ivy:deliver deliverpattern="${basedir}/target/ivy.xml" pubrevision="${webpipes.version.maven}" />
+        <ivy:deliver deliverpattern="${basedir}/target/ivy.xml" pubrevision="${webpipes.version}" />
         <ivy:resolve file="${basedir}/target/ivy.xml" conf="compile,runtime,test" type="jar,bundle" log="quiet" />
 
         <ivy:cachepath pathid="compile.classpath" conf="compile" type="jar,bundle" />
