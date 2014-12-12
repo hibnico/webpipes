@@ -49,8 +49,17 @@
         <get src="http://people.apache.org/repo/m2-snapshot-repository/org/apache/commons/commons-openpgp/1.0-SNAPSHOT/commons-openpgp-${commons-openpgp.version}.jar" dest="${user.home}/.ivy2/jars/commons-openpgp-${commons-openpgp.version}.jar" usetimestamp="true" />
     </target>
 
-    <target name="init" depends="-download-ivy-jars" unless="build.initiated">
+    <target name="-init-props">
         <property name="webpipes.version" value="${webpipes.version.base}-SNAPSHOT" />
+        <property name="publish.resolver" value="ossrh-snapshots" />
+    </target>
+
+    <target name="-init-props-release">
+        <property name="webpipes.version" value="${webpipes.version.base}" />
+        <property name="publish.resolver" value="ossrh-staging" />
+    </target>
+
+    <target name="-init" depends="-init-props,-download-ivy-jars" unless="build.initiated">
         <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
             <classpath>
                 <pathelement location="${user.home}/.ivy2/jars/ivy-${ivy.version}.jar" />
@@ -62,12 +71,12 @@
         <property name="build.initiated" value="true" />
     </target>
 
-    <target name="ivy:configure" depends="init" unless="ivy.configured">
+    <target name="ivy:configure" depends="-init" unless="ivy.configured">
         <ivy:configure file="${basedir}/ivysettings.xml" />
         <property name="ivy.configured" value="true" />
     </target>
 
-    <target name="ivy:resolve" depends="init,ivy:configure" unless="ivy.resolved">
+    <target name="ivy:resolve" depends="-init,ivy:configure" unless="ivy.resolved">
         <ivy:resolve file="${basedir}/ivy-fixed.xml" conf="compile,runtime,test" type="jar,bundle" />
 
         <!-- to have the proper version in the ivy, and a cached resolve so the publish can work -->
@@ -82,7 +91,7 @@
         <property name="ivy.resolved" value="true" />
     </target>
 
-    <target name="update-deps" depends="init,ivy:configure" description="Update dependencies (to be called on ivy-manifest.xml or MANIFEST.MF change)">
+    <target name="update-deps" depends="-init,ivy:configure" description="Update dependencies (to be called on ivy-manifest.xml or MANIFEST.MF change)">
         <ivy:resolve file="${basedir}/ivy.xml" conf="*" type="jar" resolveId="update-deps" />
         <ivy:fixdeps tofile="${basedir}/ivy-fixed.xml" resolveId="update-deps" />
     </target>
@@ -155,22 +164,24 @@
         <jar destfile="${target.dir}/dist/webpipes-javadoc.jar" basedir="${target.dir}/javadoc" />
     </target>
 
-    <target name="build" depends="jar,jar-sources,jar-javadoc" />
-
-    <target name="create-pom" depends="init">
+    <target name="create-pom" depends="-init">
         <property name="ivy.pom.version" value="${webpipes.version}" />
         <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/webpipes.pom" templatefile="${basedir}/src/pom.template" />
     </target>
 
-    <target name="publish-snapshot" depends="build,create-pom">
+    <target name="build" depends="jar,jar-sources,jar-javadoc,create-pom" description="Build all artifacts"/>
+
+    <target name="-publish" depends="build">
         <input addproperty="ossrh.passwd" message="OSSRH password:">
         	<handler classname="org.apache.tools.ant.input.SecureInputHandler" />
         </input>
         <input addproperty="pgp.password" message="PGP password:">
         	<handler classname="org.apache.tools.ant.input.SecureInputHandler" />
         </input>
+
         <!-- reload the settings with the proper passwords -->
         <ivy:settings id="ivy.instance" file="ivysettings.xml" />
+
         <ivy:publish organisation="org.hibnet"
                      module="webpipes"
                      revision="${webpipes.version}"
@@ -178,14 +189,26 @@
                      artifactspattern="${basedir}/target/dist/[artifact](-[classifier]).[ext]"
                      publishivy="false"
                      conf="default"
-                     resolver="ossrh-snapshots"
+                     resolver="${publish.resolver}"
                      overwrite="true">
-            <!-- The standard maven2 artifacts -->
             <artifact name="webpipes" ext="pom" type="ivy" />
             <artifact name="webpipes" ext="jar" type="jar" />
             <artifact name="webpipes" ext="jar" type="sources" classifier="sources" />
             <artifact name="webpipes" ext="jar" type="javadoc" classifier="javadoc" />
         </ivy:publish>
 	</target>
+
+    <target name="publish-snapshot" depends="-publish">
+	</target>
+
+    <target name="-pre-release" depends="-init-props-release">
+        <!-- tag first, so this will ensure that the version is unique -->
+        <exec executable="git" failonerror="true">
+            <arg line="tag ${webpipes.version}" />
+        </exec>
+    </target>
+
+    <target name="release" depends="-pre-release,-publish">
+    </target>
 
 </project>
