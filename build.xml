@@ -16,6 +16,7 @@
 -->
 <project name="webpipes"
 	xmlns:ivy="antlib:org.apache.ivy.ant"
+	xmlns:ac="antlib:net.sf.antcontrib"
 	xmlns:openpgp="antlib:org.apache.commons.openpgp.ant">
 
     <property name="target.dir" location="${basedir}/target" />
@@ -60,6 +61,7 @@
     </target>
 
     <target name="-init" depends="-init-props,-download-ivy-jars" unless="build.initiated">
+        <!-- load Ivy tasks-->
         <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
             <classpath>
                 <pathelement location="${user.home}/.ivy2/jars/ivy-${ivy.version}.jar" />
@@ -68,6 +70,14 @@
                 <pathelement location="${user.home}/.ivy2/jars/commons-openpgp-${commons-openpgp.version}.jar" />
             </classpath>
         </taskdef>
+
+        <!-- load ant-contrib -->
+        <ivy:resolve keep="true" resolveId="antcontrib.resolve" log="download-only">
+            <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" transitive="false" />
+        </ivy:resolve>
+        <ivy:cachepath resolveId="antcontrib.resolve" pathid="antcontrib.classpath" type="jar,bundle" />
+        <taskdef resource="net/sf/antcontrib/antcontrib.properties" uri="antlib:net.sf.antcontrib" classpathref="antcontrib.classpath" />
+
         <property name="build.initiated" value="true" />
     </target>
 
@@ -208,7 +218,33 @@
         </exec>
     </target>
 
-    <target name="release" depends="-pre-release,-publish">
+    <target name="bump-version" depends="-init">
+        <!-- compute the next patch version -->
+        <ac:propertyregex property="webpipes.version.major" input="${webpipes.version}" regexp="([0-9]*).*" select="\1" />
+        <ac:propertyregex property="webpipes.version.minor" input="${webpipes.version}" regexp="[0-9]*\.([0-9]*).*" select="\1" />
+        <ac:propertyregex property="webpipes.version.patch" input="${webpipes.version}" regexp="[0-9]*\.[0-9]*\.([0-9]*).*" select="\1" />
+        <ac:math result="webpipes.version.patch.next" operand1="${webpipes.version.patch}" operation="+" operand2="1" datatype="int" />
+        <property name="webpipes.version.next.patch" value="${webpipes.version.major}.${webpipes.version.minor}.${webpipes.version.patch.next}" />
+        <!-- edit the build.properties -->
+        <loadresource property="build.properties.content.new">
+            <file file="${basedir}/build.properties" />
+            <filterchain>
+                <tokenfilter>
+                    <replaceregex pattern="^webpipes\.version\.base=.*$" replace="webpipes.version.base=${webpipes.version.next.patch}" flags="gi" />
+                </tokenfilter>
+            </filterchain>
+        </loadresource>
+        <echo message="${build.properties.content.new}" file="${basedir}/build.properties" />
+        <!-- commit -->
+        <exec executable="git" failonerror="true">
+            <arg line="add build.properties" />
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="commit -m 'v++'" />
+        </exec>
+    </target>
+
+    <target name="release" depends="-pre-release,-publish,bump-version">
     </target>
 
 </project>
