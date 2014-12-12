@@ -50,6 +50,35 @@
         <get src="http://people.apache.org/repo/m2-snapshot-repository/org/apache/commons/commons-openpgp/1.0-SNAPSHOT/commons-openpgp-${commons-openpgp.version}.jar" dest="${user.home}/.ivy2/jars/commons-openpgp-${commons-openpgp.version}.jar" usetimestamp="true" />
     </target>
 
+    <target name="-init-ivy" depends="-download-ivy-jars" unless="ivy.initiated">
+        <!-- load Ivy tasks-->
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
+            <classpath>
+                <pathelement location="${user.home}/.ivy2/jars/ivy-${ivy.version}.jar" />
+                <pathelement location="${user.home}/.ivy2/jars/bcprov-jdk15on-${bouncycastle.version}.jar" />
+                <pathelement location="${user.home}/.ivy2/jars/bcpg-jdk15on-${bouncycastle.version}.jar" />
+                <pathelement location="${user.home}/.ivy2/jars/commons-openpgp-${commons-openpgp.version}.jar" />
+            </classpath>
+        </taskdef>
+        <property name="ivy.initiated" value="true" />
+    </target>
+
+    <target name="ivy:configure" depends="-init-ivy" unless="ivy.configured">
+        <ivy:configure file="${basedir}/ivysettings.xml" />
+        <property name="ivy.configured" value="true" />
+    </target>
+
+    <target name="-init-ant-tasks" depends="ivy:configure" unless="ant-tasks.initiated">
+        <!-- load ant-contrib -->
+        <ivy:resolve keep="true" resolveId="antcontrib.resolve" log="download-only">
+            <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" transitive="false" />
+        </ivy:resolve>
+        <ivy:cachepath resolveId="antcontrib.resolve" pathid="antcontrib.classpath" type="jar,bundle" />
+        <taskdef resource="net/sf/antcontrib/antcontrib.properties" uri="antlib:net.sf.antcontrib" classpathref="antcontrib.classpath" />
+
+        <property name="ant-tasks.initiated" value="true" />
+    </target>
+
     <target name="-init-props">
         <property name="webpipes.version" value="${webpipes.version.base}-SNAPSHOT" />
         <property name="publish.resolver" value="ossrh-snapshots" />
@@ -60,30 +89,7 @@
         <property name="publish.resolver" value="ossrh-staging" />
     </target>
 
-    <target name="-init" depends="-init-props,-download-ivy-jars" unless="build.initiated">
-        <!-- load Ivy tasks-->
-        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
-            <classpath>
-                <pathelement location="${user.home}/.ivy2/jars/ivy-${ivy.version}.jar" />
-                <pathelement location="${user.home}/.ivy2/jars/bcprov-jdk15on-${bouncycastle.version}.jar" />
-                <pathelement location="${user.home}/.ivy2/jars/bcpg-jdk15on-${bouncycastle.version}.jar" />
-                <pathelement location="${user.home}/.ivy2/jars/commons-openpgp-${commons-openpgp.version}.jar" />
-            </classpath>
-        </taskdef>
-
-        <!-- load ant-contrib -->
-        <ivy:resolve keep="true" resolveId="antcontrib.resolve" log="download-only">
-            <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" transitive="false" />
-        </ivy:resolve>
-        <ivy:cachepath resolveId="antcontrib.resolve" pathid="antcontrib.classpath" type="jar,bundle" />
-        <taskdef resource="net/sf/antcontrib/antcontrib.properties" uri="antlib:net.sf.antcontrib" classpathref="antcontrib.classpath" />
-
-        <property name="build.initiated" value="true" />
-    </target>
-
-    <target name="ivy:configure" depends="-init" unless="ivy.configured">
-        <ivy:configure file="${basedir}/ivysettings.xml" />
-        <property name="ivy.configured" value="true" />
+    <target name="-init" depends="-init-props">
     </target>
 
     <target name="ivy:resolve" depends="-init,ivy:configure" unless="ivy.resolved">
@@ -156,7 +162,7 @@
         </junit>    
     </target>
 
-    <target name="jar-sources">
+    <target name="jar-sources" depends="-init">
         <jar destfile="${target.dir}/dist/webpipes-sources.jar" basedir="${basedir}/src/main/java" />
     </target>
 
@@ -174,7 +180,7 @@
         <jar destfile="${target.dir}/dist/webpipes-javadoc.jar" basedir="${target.dir}/javadoc" />
     </target>
 
-    <target name="create-pom" depends="-init">
+    <target name="create-pom" depends="-init,-init-ivy">
         <property name="ivy.pom.version" value="${webpipes.version}" />
         <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/webpipes.pom" templatefile="${basedir}/src/pom.template" />
     </target>
@@ -218,7 +224,7 @@
         </exec>
     </target>
 
-    <target name="bump-version" depends="-init">
+    <target name="bump-version" depends="-init,-init-ant-tasks">
         <!-- compute the next patch version -->
         <ac:propertyregex property="webpipes.version.major" input="${webpipes.version}" regexp="([0-9]*).*" select="\1" />
         <ac:propertyregex property="webpipes.version.minor" input="${webpipes.version}" regexp="[0-9]*\.([0-9]*).*" select="\1" />
