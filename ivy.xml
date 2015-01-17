@@ -46,6 +46,9 @@
         <dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" />
         <dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" />
 	
+	    <!-- for bourboncss -->
+	    <dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" />
+
 	    <!-- to compile less -->
 	    <dependency org="org.webjars" name="less" rev="1.7.3" />
 	    <dependency org="com.github.sommeri" name="less4j" rev="1.8.0" />

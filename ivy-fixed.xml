@@ -4,7 +4,7 @@
 		module="webpipes"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150117160823"
+		publication="20150117175911"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>
@@ -63,10 +63,14 @@
 		<dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
 		<dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
-		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
-		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
-		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
+		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="default->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
+		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="test->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
+		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="compile->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
+		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="runtime->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
+		<dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
+		<dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
+		<dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="less" rev="1.7.3" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="less" rev="1.7.3" force="true" transitive="false" conf="test->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="less" rev="1.7.3" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>

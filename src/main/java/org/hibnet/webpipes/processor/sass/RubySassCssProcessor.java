@@ -15,6 +15,10 @@
  */
 package org.hibnet.webpipes.processor.sass;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.hibnet.webpipes.processor.ResourceProcessor;
 import org.hibnet.webpipes.resource.Resource;
 import org.jruby.Ruby;
@@ -24,12 +28,18 @@ import org.jruby.util.ByteList;
 
 public class RubySassCssProcessor extends ResourceProcessor {
 
-    private static final String[] REQUIRES = { "rubygems", "sass/plugin", "sass/engine" };
+    private List<String> requires = new ArrayList<>(Arrays.asList("rubygems", "sass/plugin", "sass/engine"));
+
+    protected void addRequire(String... rs) {
+        for (String r : rs) {
+            requires.add(r);
+        }
+    }
 
     @Override
     public String process(Resource resource, String content) throws Exception {
         StringBuilder script = new StringBuilder();
-        for (String require : REQUIRES) {
+        for (String require : requires) {
             script.append("  require '" + require + "'\n");
         }
         script.append("result = Sass::Engine.new(\"");
