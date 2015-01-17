@@ -28,9 +28,9 @@ import org.hibnet.webpipes.resource.ResourceFactory;
 /**
  * A processor using sass engine:
  */
-public class SassCssProcessor extends RhinoBasedProcessor {
+public class RhinoSassCssProcessor extends RhinoBasedProcessor {
 
-    public SassCssProcessor(ResourceFactory resourceFactory) {
+    public RhinoSassCssProcessor(ResourceFactory resourceFactory) {
         super(resourceFactory);
     }
 

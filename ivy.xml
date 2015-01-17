@@ -40,6 +40,11 @@
         <dependency org="commons-pool"          name="commons-pool"          rev="1.6" />
         <dependency org="org.apache.commons" name="commons-lang3" rev="3.3.2" />
         <dependency org="com.google.guava" name="guava" rev="18.0" />
+
+        <!-- for ruby sass -->
+        <dependency org="org.jruby" name="jruby-core" rev="1.7.18" />
+        <dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" />
+        <dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" />
 	
 	    <!-- to compile less -->
 	    <dependency org="org.webjars" name="less" rev="1.7.3" />
