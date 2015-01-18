@@ -52,6 +52,10 @@
         <buildall target="build" />
     </target>
 
+    <target name="dist" depends="-build-list">
+        <buildall target="dist" />
+    </target>
+
     <target name="update-deps" depends="-build-list">
         <buildall target="update-deps" />
     </target>
