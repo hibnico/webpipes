@@ -15,7 +15,9 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-rhinoless" />
+    <info organisation="org.hibnet" module="webpipes-sass-ruby">
+        <description>This module adds support for SASS with a Ruby library.</description>
+    </info>
     <configurations>
 	    <conf name="default" extends="runtime" />
 		<conf name="runtime" description="Runtime configuration"/>
@@ -27,8 +29,10 @@
         <artifact type="javadoc" ext="jar" />
     </publications>
     <dependencies defaultconf="runtime,compile->default">
-        <dependency org="org.hibnet" name="webpipes-rhino" rev="latest.integration" />
+        <dependency org="org.hibnet" name="webpipes-core" rev="latest.integration" />
 
-	    <dependency org="org.webjars" name="less" rev="1.7.3" />
+        <dependency org="org.jruby" name="jruby-core" rev="1.7.18" />
+        <dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" />
+        <dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" />
     </dependencies>
 </ivy-module>

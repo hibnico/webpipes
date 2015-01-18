@@ -15,7 +15,9 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-rhinoless-test" />
+    <info organisation="org.hibnet" module="webpipes-less-test">
+        <description>This module contains the tests for lesscss.</description>
+    </info>
     <configurations>
 	    <conf name="default" extends="runtime" />
 		<conf name="runtime" description="Runtime configuration"/>
@@ -28,6 +30,6 @@
     </publications>
     <dependencies defaultconf="runtime,compile->default">
         <dependency org="org.hibnet" name="webpipes-core-test" rev="latest.integration" />
-        <dependency org="org.hibnet" name="webpipes-rhinoless" rev="latest.integration" />
+        <dependency org="org.hibnet" name="webpipes-less" rev="latest.integration" />
     </dependencies>
 </ivy-module>

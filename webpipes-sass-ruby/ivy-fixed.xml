@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0">
 	<info organisation="org.hibnet"
-		module="webpipes-rubysass"
+		module="webpipes-sass-ruby"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118131545"
+		publication="20150118152331"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>

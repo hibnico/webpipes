@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0">
 	<info organisation="org.hibnet"
-		module="webpipes-rubysass-test"
+		module="webpipes-sass-ruby-test"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118131607"
+		publication="20150118152348"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>
@@ -17,9 +17,9 @@
 		<dependency org="org.hibnet" name="webpipes-core-test" rev="working@latest" force="true" transitive="false" conf="default->default,runtime"/>
 		<dependency org="org.hibnet" name="webpipes-core-test" rev="working@latest" force="true" transitive="false" conf="compile->default,runtime"/>
 		<dependency org="org.hibnet" name="webpipes-core-test" rev="working@latest" force="true" transitive="false" conf="runtime->default,runtime"/>
-		<dependency org="org.hibnet" name="webpipes-rubysass" rev="working@latest" force="true" transitive="false" conf="default->default,runtime"/>
-		<dependency org="org.hibnet" name="webpipes-rubysass" rev="working@latest" force="true" transitive="false" conf="compile->default,runtime"/>
-		<dependency org="org.hibnet" name="webpipes-rubysass" rev="working@latest" force="true" transitive="false" conf="runtime->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="working@latest" force="true" transitive="false" conf="default->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="working@latest" force="true" transitive="false" conf="compile->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="working@latest" force="true" transitive="false" conf="runtime->default,runtime"/>
 		<dependency org="org.hibnet" name="webpipes-core" rev="working@latest" force="true" transitive="false" conf="default->default,runtime"/>
 		<dependency org="org.hibnet" name="webpipes-core" rev="working@latest" force="true" transitive="false" conf="compile->default,runtime"/>
 		<dependency org="org.hibnet" name="webpipes-core" rev="working@latest" force="true" transitive="false" conf="runtime->default,runtime"/>

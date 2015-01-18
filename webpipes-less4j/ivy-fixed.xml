@@ -4,7 +4,7 @@
 		module="webpipes-less4j"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118131601"
+		publication="20150118152346"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>

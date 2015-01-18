@@ -15,7 +15,9 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-rubysass-test" />
+    <info organisation="org.hibnet" module="webpipes-less">
+        <description>This module adds support for lesscss.</description>
+    </info>
     <configurations>
 	    <conf name="default" extends="runtime" />
 		<conf name="runtime" description="Runtime configuration"/>
@@ -27,7 +29,8 @@
         <artifact type="javadoc" ext="jar" />
     </publications>
     <dependencies defaultconf="runtime,compile->default">
-        <dependency org="org.hibnet" name="webpipes-core-test" rev="latest.integration" />
-        <dependency org="org.hibnet" name="webpipes-rubysass" rev="latest.integration" />
+        <dependency org="org.hibnet" name="webpipes-rhino" rev="latest.integration" />
+
+	    <dependency org="org.webjars" name="less" rev="1.7.3" />
     </dependencies>
 </ivy-module>
