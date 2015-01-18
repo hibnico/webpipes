@@ -4,123 +4,54 @@
 		module="webpipes-bourbon"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118161808"
-	/>
+		publication="20150118171536"
+	>
+		<description>
+		This module adds support for the Bourbon mixin library for SASS.
+		</description>
+	</info>
 	<configurations>
 		<conf name="default" visibility="public"/>
-		<conf name="runtime" visibility="public"/>
-		<conf name="compile" visibility="public"/>
 	</configurations>
 	<publications>
+		<artifact name="webpipes-bourbon" type="jar" ext="jar" conf="default"/>
 	</publications>
 	<dependencies>
-		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="working@latest" force="true" transitive="false" conf="default->default,runtime"/>
-		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="working@latest" force="true" transitive="false" conf="compile->default,runtime"/>
-		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="working@latest" force="true" transitive="false" conf="runtime->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="working@latest" force="true" transitive="false" conf="default->default"/>
 		<dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
-		<dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
-		<dependency org="org.hibnet" name="webpipes-core" rev="working@latest" force="true" transitive="false" conf="default->default,runtime"/>
-		<dependency org="org.hibnet" name="webpipes-core" rev="working@latest" force="true" transitive="false" conf="compile->default,runtime"/>
-		<dependency org="org.hibnet" name="webpipes-core" rev="working@latest" force="true" transitive="false" conf="runtime->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-core" rev="working@latest" force="true" transitive="false" conf="default->default"/>
 		<dependency org="org.jruby" name="jruby-core" rev="1.7.18" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.jruby" name="jruby-core" rev="1.7.18" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
-		<dependency org="org.jruby" name="jruby-core" rev="1.7.18" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
-		<dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="default->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
-		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="compile->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
-		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="runtime->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
-		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="commons-io" name="commons-io" rev="2.4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="commons-io" name="commons-io" rev="2.4" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
-		<dependency org="commons-io" name="commons-io" rev="2.4" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.ow2.asm" name="asm" rev="4.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.ow2.asm" name="asm" rev="4.0" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.ow2.asm" name="asm" rev="4.0" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.ow2.asm" name="asm-commons" rev="4.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.ow2.asm" name="asm-commons" rev="4.0" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.ow2.asm" name="asm-commons" rev="4.0" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.ow2.asm" name="asm-analysis" rev="4.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.ow2.asm" name="asm-analysis" rev="4.0" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.ow2.asm" name="asm-analysis" rev="4.0" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.ow2.asm" name="asm-util" rev="4.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.ow2.asm" name="asm-util" rev="4.0" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.ow2.asm" name="asm-util" rev="4.0" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.jruby.joni" name="joni" rev="2.1.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.jruby.joni" name="joni" rev="2.1.3" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.jruby.joni" name="joni" rev="2.1.3" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.github.jnr" name="jnr-netdb" rev="1.1.2" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-netdb" rev="1.1.2" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-netdb" rev="1.1.2" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.github.jnr" name="jnr-enxio" rev="0.4" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-enxio" rev="0.4" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-enxio" rev="0.4" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.github.jnr" name="jnr-x86asm" rev="1.0.2" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-x86asm" rev="1.0.2" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-x86asm" rev="1.0.2" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.github.jnr" name="jnr-unixsocket" rev="0.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-unixsocket" rev="0.3" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-unixsocket" rev="0.3" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.github.jnr" name="jnr-posix" rev="3.0.9" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-posix" rev="3.0.9" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-posix" rev="3.0.9" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.jruby.extras" name="bytelist" rev="1.0.11" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.jruby.extras" name="bytelist" rev="1.0.11" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.jruby.extras" name="bytelist" rev="1.0.11" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.github.jnr" name="jnr-constants" rev="0.8.5" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-constants" rev="0.8.5" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-constants" rev="0.8.5" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.jruby.jcodings" name="jcodings" rev="1.0.10" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.jruby.jcodings" name="jcodings" rev="1.0.10" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.jruby.jcodings" name="jcodings" rev="1.0.10" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.github.jnr" name="jnr-ffi" rev="2.0.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-ffi" rev="2.0.0" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jnr-ffi" rev="2.0.0" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.github.jnr" name="jffi" rev="1.2.7" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jffi" rev="1.2.7" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.github.jnr" name="jffi" rev="1.2.7" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.yaml" name="snakeyaml" rev="1.13" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.yaml" name="snakeyaml" rev="1.13" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.yaml" name="snakeyaml" rev="1.13" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.jcraft" name="jzlib" rev="1.1.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.jcraft" name="jzlib" rev="1.1.3" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.jcraft" name="jzlib" rev="1.1.3" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.headius" name="invokebinder" rev="1.2" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.headius" name="invokebinder" rev="1.2" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.headius" name="invokebinder" rev="1.2" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.martiansoftware" name="nailgun-server" rev="0.9.1" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.martiansoftware" name="nailgun-server" rev="0.9.1" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.martiansoftware" name="nailgun-server" rev="0.9.1" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.jruby" name="yecht" rev="1.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.jruby" name="yecht" rev="1.0" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.jruby" name="yecht" rev="1.0" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="joda-time" name="joda-time" rev="2.5" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="joda-time" name="joda-time" rev="2.5" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="joda-time" name="joda-time" rev="2.5" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="com.headius" name="options" rev="1.2" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.headius" name="options" rev="1.2" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.headius" name="options" rev="1.2" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.ow2.asm" name="asm-tree" rev="4.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.ow2.asm" name="asm-tree" rev="4.0" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.ow2.asm" name="asm-tree" rev="4.0" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
 	</dependencies>
 </ivy-module>

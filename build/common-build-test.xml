@@ -27,7 +27,7 @@
             <jvmarg value="-XX:-UseSplitVerifier"/>
             <classpath>
                 <pathelement location="${target.dir}/classes"/>
-                <path refid="runtime.classpath"/> 
+                <path refid="ivy.default.classpath"/> 
             </classpath>
             <formatter type="plain" usefile="no" />
             <formatter type="xml"/>

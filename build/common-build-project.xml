@@ -39,8 +39,7 @@ Project ${project.name}
         <ivy:deliver deliverpattern="${basedir}/target/ivy.xml" pubrevision="${webpipes.version}" />
         <ivy:resolve file="${basedir}/target/ivy.xml" conf="*" type="jar,bundle" log="quiet" />
 
-        <ivy:cachepath pathid="compile.classpath" conf="compile" type="jar,bundle" />
-        <ivy:cachepath pathid="runtime.classpath" conf="runtime" type="jar,bundle" />
+        <ivy:cachepath pathid="ivy.default.classpath" conf="default" type="jar,bundle" />
         <ivy:deliver deliverpattern="${basedir}/target/ivy.xml" />
         
         <property name="ivy.resolved" value="true" />
@@ -65,10 +64,7 @@ Project ${project.name}
     		</else>
     	</ac:if>
         <property name="ivy.pom.version" value="${webpipes.version}" />
-        <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/${project.name}.pom" templatefile="${webpipes-build.dir}/pom.template" description="${ivy.info.description}">
-            <mapping conf="default,compile" scope="compile" />
-            <mapping conf="runtime" scope="runtime" />
-        </ivy:makepom>
+        <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/${project.name}.pom" templatefile="${webpipes-build.dir}/pom.template" description="${ivy.info.description}" />
     </target>
 
     <extension-point name="build" description="Build the main artifact" />
@@ -84,16 +80,14 @@ Project ${project.name}
         <ivy:publish organisation="org.hibnet"
                      module="${project.name}"
                      revision="${webpipes.version}"
-                     srcivypattern="${basedir}/ivy.xml"
-                     artifactspattern="${basedir}/target/dist/[artifact](-[classifier]).[ext]"
                      publishivy="false"
                      conf="default"
                      resolver="${publish.resolver}"
                      overwrite="true">
-            <artifact name="${project.name}" ext="pom" type="ivy" />
-            <artifact name="${project.name}" ext="jar" type="jar" />
-            <artifact name="${project.name}" ext="jar" type="sources" classifier="sources" />
-            <artifact name="${project.name}" ext="jar" type="javadoc" classifier="javadoc" />
+            <artifact type="ivy"     ext="pom" />
+            <artifact type="jar"     ext="jar" />
+            <artifact type="sources" ext="jar" classifier="sources" />
+            <artifact type="javadoc" ext="jar" classifier="javadoc" />
         </ivy:publish>
     </target>
 

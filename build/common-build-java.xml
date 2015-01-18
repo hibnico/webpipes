@@ -26,7 +26,7 @@
 
     <target name="compile" depends="ivy:resolve" description="Compile the sources">
         <mkdir dir="${target.dir}/classes/" />
-        <javac srcdir="${basedir}/src/java" destdir="${target.dir}/classes" debug="on" includeantruntime="false" source="1.7" target="1.7" classpathref="compile.classpath" />
+        <javac srcdir="${basedir}/src/java" destdir="${target.dir}/classes" debug="on" includeantruntime="false" source="1.7" target="1.7" classpathref="ivy.default.classpath" />
         <copy todir="${target.dir}/classes">
             <fileset dir="${basedir}/src/java">
                 <exclude name="**/*.java" />
@@ -46,7 +46,7 @@
         <javadoc use="true" private="true" destdir="${target.dir}/javadoc" 
                  author="false" version="true"
                  sourcepath="${basedir}/src/java"
-                 classpathref="compile.classpath"
+                 classpathref="ivy.default.classpath"
                  windowtitle="Webpipes ${webpipes.version}">
             <doctitle>Webpipes ${webpipes.version}</doctitle>
         </javadoc>

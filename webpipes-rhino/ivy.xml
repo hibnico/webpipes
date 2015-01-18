@@ -18,17 +18,7 @@
     <info organisation="org.hibnet" module="webpipes-rhino">
         <description>This module offers the base classes to run javascript on Rhino.</description>
     </info>
-    <configurations>
-	    <conf name="default" extends="runtime" />
-		<conf name="runtime" description="Runtime configuration"/>
-		<conf name="compile" description="Used only for compilation" />
-	</configurations>
-    <publications>
-        <artifact type="jar"     ext="jar" />
-        <artifact type="sources" ext="jar" />
-        <artifact type="javadoc" ext="jar" />
-    </publications>
-    <dependencies defaultconf="compile,runtime->default">
+    <dependencies defaultconf="default->default">
         <dependency org="org.hibnet" name="webpipes-core" rev="latest.integration" />
 
 	    <dependency org="org.mozilla" name="rhino" rev="1.7R4" />

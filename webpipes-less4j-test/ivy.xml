@@ -18,17 +18,7 @@
     <info organisation="org.hibnet" module="webpipes-less4j-test">
         <description>This module contains the tests for lesscss with less4j.</description>
     </info>
-    <configurations>
-	    <conf name="default" extends="runtime" />
-		<conf name="runtime" description="Runtime configuration"/>
-		<conf name="compile" description="Used only for compilation" />
-	</configurations>
-    <publications>
-        <artifact type="jar"     ext="jar" />
-        <artifact type="sources" ext="jar" />
-        <artifact type="javadoc" ext="jar" />
-    </publications>
-    <dependencies defaultconf="compile,runtime->default">
+    <dependencies defaultconf="default->default">
         <dependency org="org.hibnet" name="webpipes-core-test" rev="latest.integration" />
         <dependency org="org.hibnet" name="webpipes-less4j" rev="latest.integration" />
     </dependencies>
