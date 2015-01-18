@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2014-2015 WebPipes contributors
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<project name="webpipes"
+    xmlns:ivy="antlib:org.apache.ivy.ant"
+    xmlns:ac="antlib:net.sf.antcontrib"
+    xmlns:openpgp="antlib:org.apache.commons.openpgp.ant">
+
+    <dirname property="webpipes-build.dir" file="${ant.file.webpipes}" />
+    <property name="webpipes-root.dir" location="${webpipes-build.dir}/.." />
+
+    <import file="${webpipes-build.dir}/common-build.xml" />
+
+    <target name="-build-list" depends="init,ivy:configure">
+        <ivy:buildlist reference="build-list" ivyfilepath="ivy.xml">
+            <fileset dir="${webpipes-root.dir}" includes="webpipes-*/build.xml" />
+        </ivy:buildlist>
+    </target>
+
+    <macrodef name="buildall">
+    	<attribute name="target" />
+    	<element name="subant-elements" implicit="yes" optional="true" />
+    	<sequential>
+            <subant target="@{target}" buildpathref="build-list" inheritAll="false">
+    		    <property name="webpipes.version" value="${webpipes.version}" />
+    		    <property name="publish.resolver" value="${publish.resolver}" />
+    		    <property name="ivy.dconfigured" value="${ivy.configured}" />
+    		    <subant-elements />
+            </subant>
+        </sequential>
+    </macrodef>
+
+    <target name="clean" depends="-build-list">
+        <buildall target="clean" />
+    </target>
+
+    <target name="build" depends="-build-list">
+        <buildall target="build" />
+    </target>
+
+    <target name="update-deps" depends="-build-list">
+        <buildall target="update-deps" />
+    </target>
+
+    <target name="update-deps-and-build" depends="-build-list">
+        <buildall target="update-deps-and-build" />
+    </target>
+
+    <target name="ci-build" depends="-build-list">
+        <buildall target="ci-build" />
+    </target>
+
+    <target name="bump-version" depends="init,init:ant-tasks">
+        <!-- compute the next patch version -->
+        <ac:propertyregex property="webpipes.version.major" input="${webpipes.version}" regexp="([0-9]*).*" select="\1" />
+        <ac:propertyregex property="webpipes.version.minor" input="${webpipes.version}" regexp="[0-9]*\.([0-9]*).*" select="\1" />
+        <ac:propertyregex property="webpipes.version.patch" input="${webpipes.version}" regexp="[0-9]*\.[0-9]*\.([0-9]*).*" select="\1" />
+        <ac:math result="webpipes.version.patch.next" operand1="${webpipes.version.patch}" operation="+" operand2="1" datatype="int" />
+        <property name="webpipes.version.next.patch" value="${webpipes.version.major}.${webpipes.version.minor}.${webpipes.version.patch.next}" />
+        <!-- edit the build.properties -->
+        <loadresource property="build.properties.content.new">
+            <file file="${basedir}/build.properties" />
+            <filterchain>
+                <tokenfilter>
+                    <replaceregex pattern="^webpipes\.version\.base=.*$" replace="webpipes.version.base=${webpipes.version.next.patch}" flags="gi" />
+                </tokenfilter>
+            </filterchain>
+        </loadresource>
+        <echo message="${build.properties.content.new}" file="${basedir}/build.properties" />
+        <!-- commit -->
+        <git command="add build.properties" />
+        <git command="commit -m 'v++'" />
+    </target>
+
+    <target name="-publish-all" depends="init:publish-properties,-build-list">
+        <buildall target="publish">
+            <property name="ossrh.passwd" value="${ossrh.passwd}" />
+            <property name="pgp.password" value="${pgp.password}" />
+        </buildall>
+    </target>
+
+    <target name="publish-snapshot" depends="-publish-all">
+    </target>
+
+    <target name="-pre-release" depends="init:props-release">
+        <!-- tag first, so this will ensure that the version is unique -->
+        <git command="tag ${webpipes.version}" />
+    </target>
+
+    <target name="release" depends="-pre-release,-publish-all,bump-version" description="Release the entire project">
+    </target>
+
+</project>

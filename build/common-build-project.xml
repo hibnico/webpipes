@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2014-2015 WebPipes contributors
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<project name="webpipes-common-build-project"
+    xmlns:ivy="antlib:org.apache.ivy.ant"
+    xmlns:ac="antlib:net.sf.antcontrib"
+    xmlns:openpgp="antlib:org.apache.commons.openpgp.ant">
+
+    <dirname property="webpipes-build.dir" file="${ant.file.webpipes-common-build-project}" />
+    <property name="webpipes-root.dir" location="${webpipes-build.dir}/.." />
+
+    <import file="${webpipes-build.dir}/common-build.xml" />
+
+    <basename property="project.name" file="${basedir}" />
+	<echo>
+===========================
+Project ${project.name}
+===========================
+	</echo>
+
+    <target name="ivy:resolve" depends="init,ivy:configure" unless="ivy.resolved">
+        <ivy:resolve file="${basedir}/ivy-fixed.xml" conf="*" type="jar,bundle" />
+
+        <!-- to have the proper version in the ivy, and a cached resolve so the publish can work -->
+        <ivy:deliver deliverpattern="${basedir}/target/ivy.xml" pubrevision="${webpipes.version}" />
+        <ivy:resolve file="${basedir}/target/ivy.xml" conf="*" type="jar,bundle" log="quiet" />
+
+        <ivy:cachepath pathid="compile.classpath" conf="compile" type="jar,bundle" />
+        <ivy:cachepath pathid="runtime.classpath" conf="runtime" type="jar,bundle" />
+        <ivy:deliver deliverpattern="${basedir}/target/ivy.xml" />
+        
+        <property name="ivy.resolved" value="true" />
+    </target>
+
+    <target name="update-deps" depends="init,ivy:configure" description="Update dependencies (to be called on ivy-manifest.xml or MANIFEST.MF change)">
+        <ivy:resolve file="${basedir}/ivy.xml" conf="*" type="jar" resolveId="update-deps" />
+        <ivy:fixdeps tofile="${basedir}/ivy-fixed.xml" resolveId="update-deps">
+        	<keep org="org.hibnet" module="*" />
+        </ivy:fixdeps>
+    </target>
+
+    <target name="create-pom" depends="init,ivy:configure">
+        <property name="ivy.pom.version" value="${webpipes.version}" />
+        <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/${project.name}.pom" templatefile="${webpipes-build.dir}/pom.template" />
+    </target>
+
+    <extension-point name="build" description="Build the main artifact" />
+
+	<extension-point name="dist" depends="build,create-pom" description="Build all artifacts"/>
+
+	<target name="update-deps-and-build" depends="update-deps,build" />
+
+    <target name="publish" depends="dist,init:ivy,init:publish-properties">
+        <!-- reload the settings with the proper passwords -->
+        <ivy:settings id="ivy.instance" file="${webpipes-build.dir}/ivysettings.xml" />
+
+        <ivy:publish organisation="org.hibnet"
+                     module="${project.name}"
+                     revision="${webpipes.version}"
+                     srcivypattern="${basedir}/ivy.xml"
+                     artifactspattern="${basedir}/target/dist/[artifact](-[classifier]).[ext]"
+                     publishivy="false"
+                     conf="default"
+                     resolver="${publish.resolver}"
+                     overwrite="true">
+            <artifact name="${project.name}" ext="pom" type="ivy" />
+            <artifact name="${project.name}" ext="jar" type="jar" />
+            <artifact name="${project.name}" ext="jar" type="sources" classifier="sources" />
+            <artifact name="${project.name}" ext="jar" type="javadoc" classifier="javadoc" />
+        </ivy:publish>
+    </target>
+
+    <extension-point name="ci-build" depends="build" />
+
+</project>

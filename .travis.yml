@@ -1,5 +1,5 @@
 language: java
-script: ant clean build test
+script: ant ci-build
 jdk:
   - openjdk7
 notifications:

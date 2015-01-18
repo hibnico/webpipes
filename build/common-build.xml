@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2014-2015 WebPipes contributors
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<project name="webpipes-common-build"
+    xmlns:ivy="antlib:org.apache.ivy.ant"
+    xmlns:ac="antlib:net.sf.antcontrib"
+    xmlns:openpgp="antlib:org.apache.commons.openpgp.ant">
+
+    <dirname property="webpipes-build.dir" file="${ant.file.webpipes-common-build}" />
+    <property name="webpipes-root.dir" location="${webpipes-build.dir}/.." />
+
+    <property name="target.dir" location="${basedir}/target" />
+
+    <property name="ivy.version" value="2.4.0-rc1" />
+    <property name="bouncycastle.version" value="1.50" />
+    <property name="commons-openpgp.version" value="1.0-20080726.092946-4" />
+
+    <property file="${basedir}/build.properties" />
+    <property file="${webpipes-build.dir}/build.properties" />
+
+    <target name="clean" description="Clean build artifacts">
+        <delete dir="${target.dir}" />
+    </target>
+
+    <target name="-check-ivy-jars" unless="ivy-jars.exist">
+        <condition property="ivy-jars.exist">
+            <and>
+                <available file="${user.home}/.ivy2/jars/ivy-${ivy.version}.jar" />
+                <available file="${user.home}/.ivy2/jars/bcprov-jdk15on-${bouncycastle.version}.jar" />
+                <available file="${user.home}/.ivy2/jars/bcpg-jdk15on-${bouncycastle.version}.jar" />
+                <available file="${user.home}/.ivy2/jars/commons-openpgp-${commons-openpgp.version}.jar" />
+            </and>
+        </condition>
+    </target>
+
+    <target name="-download-ivy-jars" depends="-check-ivy-jars" unless="ivy-jars.exist">
+        <mkdir dir="${user.home}/.ivy2/jars" />
+        <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${user.home}/.ivy2/jars/ivy-${ivy.version}.jar" usetimestamp="true" />
+        <get src="http://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk15on/${bouncycastle.version}/bcprov-jdk15on-${bouncycastle.version}.jar" dest="${user.home}/.ivy2/jars/bcprov-jdk15on-${bouncycastle.version}.jar" usetimestamp="true" />
+        <get src="http://repo1.maven.org/maven2/org/bouncycastle/bcpg-jdk15on/${bouncycastle.version}/bcpg-jdk15on-${bouncycastle.version}.jar" dest="${user.home}/.ivy2/jars/bcpg-jdk15on-${bouncycastle.version}.jar" usetimestamp="true" />
+        <get src="http://people.apache.org/repo/m2-snapshot-repository/org/apache/commons/commons-openpgp/1.0-SNAPSHOT/commons-openpgp-${commons-openpgp.version}.jar" dest="${user.home}/.ivy2/jars/commons-openpgp-${commons-openpgp.version}.jar" usetimestamp="true" />
+    </target>
+
+    <target name="init:ivy" depends="-download-ivy-jars" unless="ivy.initiated">
+        <!-- load Ivy tasks-->
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
+            <classpath>
+                <pathelement location="${user.home}/.ivy2/jars/ivy-${ivy.version}.jar" />
+                <pathelement location="${user.home}/.ivy2/jars/bcprov-jdk15on-${bouncycastle.version}.jar" />
+                <pathelement location="${user.home}/.ivy2/jars/bcpg-jdk15on-${bouncycastle.version}.jar" />
+                <pathelement location="${user.home}/.ivy2/jars/commons-openpgp-${commons-openpgp.version}.jar" />
+            </classpath>
+        </taskdef>
+        <property name="ivy.initiated" value="true" />
+    </target>
+
+    <target name="ivy:configure" depends="init:ivy" unless="ivy.configured">
+        <ivy:configure file="${webpipes-build.dir}/ivysettings.xml" />
+        <property name="ivy.configured" value="true" />
+    </target>
+
+    <target name="init:ant-tasks" depends="ivy:configure" unless="ant-tasks.initiated">
+        <!-- load ant-contrib -->
+        <ivy:resolve keep="true" resolveId="antcontrib.resolve" log="download-only">
+            <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" transitive="false" />
+        </ivy:resolve>
+        <ivy:cachepath resolveId="antcontrib.resolve" pathid="antcontrib.classpath" type="jar,bundle" />
+        <taskdef resource="net/sf/antcontrib/antcontrib.properties" uri="antlib:net.sf.antcontrib" classpathref="antcontrib.classpath" />
+
+        <property name="ant-tasks.initiated" value="true" />
+    </target>
+
+    <target name="init:props">
+        <property name="webpipes.version" value="${webpipes.version.base}-SNAPSHOT" />
+        <property name="publish.resolver" value="ossrh-snapshots" />
+    </target>
+
+    <target name="init:props-release">
+        <property name="webpipes.version" value="${webpipes.version.base}" />
+        <property name="publish.resolver" value="ossrh-staging" />
+    </target>
+
+    <target name="init" depends="init:props">
+    </target>
+
+    <target name="-check-publish-properties">
+        <condition property="publish-properties.initiated" value="true">
+            <and>
+                <isset property="ossrh.passwd" />
+                <isset property="pgp.password" />
+            </and>
+        </condition>
+    </target>
+
+    <target name="init:publish-properties" depends="-check-publish-properties" unless="publish-properties.initiated">
+        <input addproperty="ossrh.passwd" message="OSSRH password:">
+            <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+        </input>
+        <input addproperty="pgp.password" message="PGP password:">
+            <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+        </input>
+    </target>
+
+    <macrodef name="git">
+        <attribute name="command" />
+        <sequential>
+            <echo message="git @{command}" />
+            <exec executable="git" failonerror="true">
+                <arg line="@{command}" />
+            </exec>
+        </sequential>
+    </macrodef>
+
+</project>

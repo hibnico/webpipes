@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2014-2015 WebPipes contributors
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<project name="webpipes-common-build-java"
+    xmlns:ivy="antlib:org.apache.ivy.ant"
+    xmlns:ac="antlib:net.sf.antcontrib"
+    xmlns:openpgp="antlib:org.apache.commons.openpgp.ant">
+
+    <dirname property="webpipes-build.dir" file="${ant.file.webpipes-common-build-java}" />
+    <property name="webpipes-root.dir" location="${webpipes-build.dir}/.." />
+
+    <import file="${webpipes-build.dir}/common-build-project.xml" />
+
+    <target name="compile" depends="ivy:resolve" description="Compile the sources">
+        <mkdir dir="${target.dir}/classes/" />
+        <javac srcdir="${basedir}/src/java" destdir="${target.dir}/classes" debug="on" includeantruntime="false" source="1.7" target="1.7" classpathref="compile.classpath" />
+        <copy todir="${target.dir}/classes">
+            <fileset dir="${basedir}/src/java">
+                <exclude name="**/*.java" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="jar" depends="compile" description="Build the jar" extensionOf="build">
+        <jar destfile="${target.dir}/dist/${project.name}.jar" basedir="${target.dir}/classes" />
+    </target>
+
+    <target name="jar-sources" depends="init" extensionOf="dist">
+        <jar destfile="${target.dir}/dist/${project.name}-sources.jar" basedir="${basedir}/src/java" />
+    </target>
+
+    <target name="javadoc" depends="ivy:resolve">
+        <javadoc use="true" private="true" destdir="${target.dir}/javadoc" 
+                 author="false" version="true"
+                 sourcepath="${basedir}/src/java"
+                 classpathref="compile.classpath"
+                 windowtitle="Webpipes ${webpipes.version}">
+            <doctitle>Webpipes ${webpipes.version}</doctitle>
+        </javadoc>
+    </target>
+
+    <target name="jar-javadoc" depends="javadoc" extensionOf="dist">
+        <jar destfile="${target.dir}/dist/${project.name}-javadoc.jar" basedir="${target.dir}/javadoc" />
+    </target>
+
+</project>

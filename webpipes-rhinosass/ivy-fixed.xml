@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0">
+	<info organisation="org.hibnet"
+		module="webpipes-rhinosass"
+		revision="working@hibpro.local"
+		status="integration"
+		publication="20150118131604"
+	/>
+	<configurations>
+		<conf name="default" visibility="public"/>
+		<conf name="runtime" visibility="public"/>
+		<conf name="compile" visibility="public"/>
+	</configurations>
+	<publications>
+	</publications>
+	<dependencies>
+		<dependency org="org.hibnet" name="webpipes-rhino" rev="working@latest" force="true" transitive="false" conf="default->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-rhino" rev="working@latest" force="true" transitive="false" conf="compile->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-rhino" rev="working@latest" force="true" transitive="false" conf="runtime->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-core" rev="working@latest" force="true" transitive="false" conf="default->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-core" rev="working@latest" force="true" transitive="false" conf="compile->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-core" rev="working@latest" force="true" transitive="false" conf="runtime->default,runtime"/>
+		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
+		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
+		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
+		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
+		<dependency org="commons-io" name="commons-io" rev="2.4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="commons-io" name="commons-io" rev="2.4" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
+		<dependency org="commons-io" name="commons-io" rev="2.4" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
+	</dependencies>
+</ivy-module>
