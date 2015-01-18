@@ -92,7 +92,9 @@ public class GenerateFilesTask extends Task {
             }
             List<Webpipe> webpipes;
             try {
-                webpipes = (List<Webpipe>) res;
+                @SuppressWarnings("unchecked")
+                List<Webpipe> casted = (List<Webpipe>) res;
+                webpipes = casted;
             } catch (ClassCastException e) {
                 throw new BuildException("The method 'buildWebpipes' on " + webpipesBuilder + " is not returning a List<Webpipe>", e);
             }
