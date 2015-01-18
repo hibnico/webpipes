@@ -4,7 +4,7 @@
 		module="webpipes-jsonhpack-test"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118131600"
+		publication="20150118161810"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>

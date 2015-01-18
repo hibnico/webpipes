@@ -4,7 +4,7 @@
 		module="webpipes-uglify"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118131608"
+		publication="20150118161812"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>

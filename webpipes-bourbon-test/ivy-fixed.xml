@@ -4,7 +4,7 @@
 		module="webpipes-bourbon-test"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118131548"
+		publication="20150118161808"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>
@@ -53,9 +53,9 @@
 		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.1" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.1" force="true" transitive="false" conf="compile->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.1" force="true" transitive="false" conf="runtime->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.hibnet" name="webpipes-rubysass" rev="working@latest" force="true" transitive="false" conf="default->default,runtime"/>
-		<dependency org="org.hibnet" name="webpipes-rubysass" rev="working@latest" force="true" transitive="false" conf="compile->default,runtime"/>
-		<dependency org="org.hibnet" name="webpipes-rubysass" rev="working@latest" force="true" transitive="false" conf="runtime->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="working@latest" force="true" transitive="false" conf="default->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="working@latest" force="true" transitive="false" conf="compile->default,runtime"/>
+		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="working@latest" force="true" transitive="false" conf="runtime->default,runtime"/>
 		<dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" force="true" transitive="false" conf="compile->default,compile,runtime,master"/>
 		<dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" force="true" transitive="false" conf="runtime->default,compile,runtime,master"/>

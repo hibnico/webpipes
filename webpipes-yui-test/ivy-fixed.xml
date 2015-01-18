@@ -4,7 +4,7 @@
 		module="webpipes-yui-test"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118131610"
+		publication="20150118161812"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>

@@ -28,7 +28,7 @@
         <artifact type="sources" ext="jar" />
         <artifact type="javadoc" ext="jar" />
     </publications>
-    <dependencies defaultconf="runtime,compile->default">
+    <dependencies defaultconf="compile,runtime->default">
         <dependency org="org.hibnet" name="webpipes-rhino" rev="latest.integration" />
 
 	    <dependency org="org.webjars" name="less" rev="1.7.3" />

@@ -37,7 +37,8 @@
             <subant target="@{target}" buildpathref="build-list" inheritAll="false">
     		    <property name="webpipes.version" value="${webpipes.version}" />
     		    <property name="publish.resolver" value="${publish.resolver}" />
-    		    <property name="ivy.dconfigured" value="${ivy.configured}" />
+                <property name="build-deps.downloaded" value="${build-deps.downloaded}" />
+                <property name="ivy.initiated" value="${ivy.initiated}" />
     		    <subant-elements />
             </subant>
         </sequential>

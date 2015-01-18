@@ -4,7 +4,7 @@
 		module="webpipes-sass-js"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118152347"
+		publication="20150118161811"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>

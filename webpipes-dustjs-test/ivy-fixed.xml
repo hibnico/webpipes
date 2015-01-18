@@ -4,7 +4,7 @@
 		module="webpipes-dustjs-test"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118131553"
+		publication="20150118161809"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>

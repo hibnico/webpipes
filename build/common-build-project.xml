@@ -17,7 +17,8 @@
 <project name="webpipes-common-build-project"
     xmlns:ivy="antlib:org.apache.ivy.ant"
     xmlns:ac="antlib:net.sf.antcontrib"
-    xmlns:openpgp="antlib:org.apache.commons.openpgp.ant">
+    xmlns:openpgp="antlib:org.apache.commons.openpgp.ant"
+    xmlns:andariel="antlib:andariel">
 
     <dirname property="webpipes-build.dir" file="${ant.file.webpipes-common-build-project}" />
     <property name="webpipes-root.dir" location="${webpipes-build.dir}/.." />
@@ -31,7 +32,7 @@ Project ${project.name}
 ===========================
 	</echo>
 
-    <target name="ivy:resolve" depends="init,ivy:configure" unless="ivy.resolved">
+	<target name="ivy:resolve" depends="init,ivy:configure" unless="ivy.resolved">
         <ivy:resolve file="${basedir}/ivy-fixed.xml" conf="*" type="jar,bundle" />
 
         <!-- to have the proper version in the ivy, and a cached resolve so the publish can work -->
@@ -52,9 +53,22 @@ Project ${project.name}
         </ivy:fixdeps>
     </target>
 
-    <target name="create-pom" depends="init,ivy:configure">
+    <target name="create-pom" depends="init,ivy:configure,init:ant-tasks">
+        <andariel:xpath file="${basedir}/ivy.xml" expression="/ivy-module/info/description/text()" outputproperty="ivy.xml.info.description" />
+    	<ac:if>
+    		<equals arg1="${ivy.xml.info.description}" arg2="null" />
+    		<then>
+    			<property name="ivy.info.description" value="" />
+    		</then>
+    		<else>
+    			<property name="ivy.info.description" value="${ivy.xml.info.description}" />
+    		</else>
+    	</ac:if>
         <property name="ivy.pom.version" value="${webpipes.version}" />
-        <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/${project.name}.pom" templatefile="${webpipes-build.dir}/pom.template" />
+        <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/${project.name}.pom" templatefile="${webpipes-build.dir}/pom.template" description="${ivy.info.description}">
+            <mapping conf="default,compile" scope="compile" />
+            <mapping conf="runtime" scope="runtime" />
+        </ivy:makepom>
     </target>
 
     <extension-point name="build" description="Build the main artifact" />

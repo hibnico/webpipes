@@ -15,7 +15,9 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-core" />
+    <info organisation="org.hibnet" module="webpipes-core">
+        <description>This module is the core implementation of the library.</description>
+    </info>
     <configurations>
 	    <conf name="default" extends="runtime" />
 		<conf name="runtime" description="Runtime configuration"/>
@@ -26,7 +28,7 @@
         <artifact type="sources" ext="jar" />
         <artifact type="javadoc" ext="jar" />
     </publications>
-    <dependencies defaultconf="runtime,compile->default">
+    <dependencies defaultconf="compile,runtime->default">
         <dependency org="org.webjars" name="webjars-locator" rev="0.17" />
 
         <dependency org="commons-pool" name="commons-pool" rev="1.6" />

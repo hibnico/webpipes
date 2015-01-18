@@ -4,7 +4,7 @@
 		module="webpipes-ant"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118131543"
+		publication="20150118161806"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>
