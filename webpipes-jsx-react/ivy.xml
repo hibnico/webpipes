@@ -15,13 +15,13 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-jsx">
+    <info organisation="org.hibnet" module="webpipes-jsx-react">
         <description>This module adds support for JSX transformer from React.</description>
     </info>
     <dependencies defaultconf="default->default">
         <dependency org="org.hibnet" name="webpipes-rhino" rev="latest.integration" />
 
 	    <dependency org="org.webjars" name="requirejs" rev="2.1.14-1" />
-        <dependency org="org.webjars" name="react" rev="0.11.1" />
+        <dependency org="org.webjars" name="react" rev="0.12.2" />
     </dependencies>
 </ivy-module>

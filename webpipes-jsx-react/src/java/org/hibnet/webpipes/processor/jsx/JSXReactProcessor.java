@@ -17,33 +17,31 @@ package org.hibnet.webpipes.processor.jsx;
 
 import java.io.IOException;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.NativeObject;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
-
 import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
 import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.ResourceFactory;
-import org.hibnet.webpipes.resource.WebJarResourceFactory;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 
-public class JSXTransformerProcessor extends RhinoBasedProcessor {
+public class JSXReactProcessor extends RhinoBasedProcessor {
 
-    private Scriptable module;
-
-    public JSXTransformerProcessor(ResourceFactory resourceFactory) {
+    public JSXReactProcessor(ResourceFactory resourceFactory) {
         super(resourceFactory);
     }
 
     @Override
     protected void initScope(Context context, ScriptableObject globalScope) throws IOException {
-        module = setupModule(context, globalScope, resourceFactory.get(WebJarResourceFactory.TYPE, "JSXTransformer.js"), "JSXTransformer.js");
+        addCommon(context, globalScope);
+        addClientSideEnvironment(context, globalScope);
+        evaluateFromWebjar(context, globalScope, "JSXTransformer.js");
     }
 
     @Override
     protected String process(Context context, Scriptable scope, Resource resource, String content) throws Exception {
-        NativeObject result = callModuleFunction(context, scope, module, "transform", new String[] {content});
-        return result.get("code").toString();
+        String script = buildSimpleRunScript("JSXTransformer.transform", content) + ".code";
+        String result = evaluate(context, scope, script);
+        return result;
     }
 
 }

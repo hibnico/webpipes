@@ -157,7 +157,7 @@ public abstract class RhinoBasedProcessor extends ResourceProcessor {
                 command.append(extraArg);
             }
         }
-        command.append(");");
+        command.append(")");
         return command.toString();
     }
 
