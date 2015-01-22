@@ -4,7 +4,7 @@
 		module="webpipes-googleclosure"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118171537"
+		publication="20150122224503"
 	>
 		<description>
 		This module adds support for the Closure Compiler by Google.
@@ -17,7 +17,7 @@
 		<artifact name="webpipes-googleclosure" type="jar" ext="jar" conf="default"/>
 	</publications>
 	<dependencies>
-		<dependency org="org.hibnet" name="webpipes-core" rev="working@latest" force="true" transitive="false" conf="default->default"/>
+		<dependency org="org.hibnet" name="webpipes-core" rev="latest.integration" transitive="false" conf="default->default"/>
 		<dependency org="com.google.javascript" name="closure-compiler" rev="v20140730" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="default->default,compile,runtime,master"/>

@@ -4,7 +4,7 @@
 		module="webpipes-core"
 		revision="working@hibpro.local"
 		status="integration"
-		publication="20150118171533"
+		publication="20150122224456"
 	>
 		<description>
 		This module is the core implementation of the library.

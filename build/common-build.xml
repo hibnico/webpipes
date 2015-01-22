@@ -31,7 +31,7 @@
         <delete dir="${target.dir}" />
     </target>
 
-    <property name="ivy.version" value="2.4.0-rc1" />
+    <property name="ivy.version" value="2.5.0-alpha-dev" />
     <property name="bouncycastle.version" value="1.50" />
     <property name="commons-openpgp.version" value="1.0-20080726.092946-4" />
 
@@ -54,8 +54,8 @@
         <mkdir dir="${webpipes-build.dir}/build-deps/andariel-1.2.3" />
         <unzip src="${webpipes-build.dir}/build-deps/andariel-1.2.3.zip" dest="${webpipes-build.dir}/build-deps/andariel-1.2.3" />
 
-        <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${webpipes-build.dir}/build-deps/ivy-${ivy.version}.jar" usetimestamp="true" />
-        <!--get src="https://builds.apache.org/job/Ivy/lastSuccessfulBuild/artifact/build/artifact/jars/ivy.jar" dest="${webpipes-build.dir}/build-deps/ivy-${ivy.version}.jar" usetimestamp="true" /-->
+        <!--get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${webpipes-build.dir}/build-deps/ivy-${ivy.version}.jar" usetimestamp="true" /-->
+        <get src="https://builds.apache.org/job/Ivy/lastSuccessfulBuild/artifact/build/artifact/jars/ivy.jar" dest="${webpipes-build.dir}/build-deps/ivy-${ivy.version}.jar" usetimestamp="true" />
         <get src="http://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk15on/${bouncycastle.version}/bcprov-jdk15on-${bouncycastle.version}.jar" dest="${webpipes-build.dir}/build-deps/bcprov-jdk15on-${bouncycastle.version}.jar" usetimestamp="true" />
         <get src="http://repo1.maven.org/maven2/org/bouncycastle/bcpg-jdk15on/${bouncycastle.version}/bcpg-jdk15on-${bouncycastle.version}.jar" dest="${webpipes-build.dir}/build-deps/bcpg-jdk15on-${bouncycastle.version}.jar" usetimestamp="true" />
         <get src="http://people.apache.org/repo/m2-snapshot-repository/org/apache/commons/commons-openpgp/1.0-SNAPSHOT/commons-openpgp-${commons-openpgp.version}.jar" dest="${webpipes-build.dir}/build-deps/commons-openpgp-${commons-openpgp.version}.jar" usetimestamp="true" />
