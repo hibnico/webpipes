@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hibnet.webpipes.processor.ResourceProcessor;
-import org.hibnet.webpipes.resource.Resource;
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.processor.WebpipeProcessor;
 import org.jruby.Ruby;
 import org.jruby.ast.Node;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.jruby.util.ByteList;
 
-public class RubySassCssProcessor extends ResourceProcessor {
+public class RubySassCssProcessor extends WebpipeProcessor {
 
     private List<String> requires = new ArrayList<>(Arrays.asList("rubygems", "sass/plugin", "sass/engine"));
 
@@ -37,7 +37,7 @@ public class RubySassCssProcessor extends ResourceProcessor {
     }
 
     @Override
-    public String process(Resource resource, String content) throws Exception {
+    public String process(Webpipe webpipe, String content) throws Exception {
         StringBuilder script = new StringBuilder();
         for (String require : requires) {
             script.append("  require '" + require + "'\n");
@@ -71,7 +71,7 @@ public class RubySassCssProcessor extends ResourceProcessor {
         script.append("\", {:syntax => :scss}).render");
 
         Ruby runtime = Ruby.newInstance();
-        Node node = runtime.parse(ByteList.create(script), resource.getName(), runtime.getCurrentContext().getCurrentScope(), 0, false);
+        Node node = runtime.parse(ByteList.create(script), webpipe.getId(), runtime.getCurrentContext().getCurrentScope(), 0, false);
         IRubyObject result = runtime.runNormally(node);
         return result.toString();
     }

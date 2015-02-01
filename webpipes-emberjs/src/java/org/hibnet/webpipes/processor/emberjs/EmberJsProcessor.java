@@ -15,16 +15,12 @@
  */
 package org.hibnet.webpipes.processor.emberjs;
 
-import java.io.IOException;
-
-import org.apache.commons.io.FilenameUtils;
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
+import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
-
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.Resource;
-import org.hibnet.webpipes.resource.ResourceFactory;
 
 /**
  * Compiles EmberJS templates to javascript. The processor loads emberJs library and all its dependencies from the webjar.
@@ -36,7 +32,7 @@ public class EmberJsProcessor extends RhinoBasedProcessor {
     }
 
     @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws IOException {
+    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
         addCommon(context, globalScope);
         addClientSideEnvironment(context, globalScope);
         evaluateFromWebjar(context, globalScope, "jquery.js");
@@ -48,11 +44,10 @@ public class EmberJsProcessor extends RhinoBasedProcessor {
     }
 
     @Override
-    protected String process(Context context, Scriptable scope, Resource resource, String content) throws Exception {
-        String name = resource == null ? "" : FilenameUtils.getBaseName(resource.getName());
+    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
         String script = buildSimpleRunScript("precompile", content);
         String result = evaluate(context, scope, script);
-        return "(function() {Ember.TEMPLATES['" + name + "'] = Ember.Handlebars.template(" + result + ")})();";
+        return "(function() {Ember.TEMPLATES['" + webpipe.getId() + "'] = Ember.Handlebars.template(" + result + ")})();";
     }
 
 }

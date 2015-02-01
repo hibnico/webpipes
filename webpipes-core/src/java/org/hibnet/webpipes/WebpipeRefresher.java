@@ -13,26 +13,18 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hibnet.webpipes.resource;
+package org.hibnet.webpipes;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.hibnet.webpipes.Webpipe;
-
-public class ResourceRefresher {
+public class WebpipeRefresher {
 
     private volatile long sleepTime = 1000;
 
     private List<Webpipe> webpipes = new CopyOnWriteArrayList<>();
-
-    private List<Resource> resources = new CopyOnWriteArrayList<>();
 
     private volatile boolean sleepTimeChanged = false;
 
@@ -64,18 +56,6 @@ public class ResourceRefresher {
         webpipes.remove(webpipe);
     }
 
-    public void setResources(Collection< ? extends Resource> resources) {
-        this.resources = new CopyOnWriteArrayList<>(resources);
-    }
-
-    public void addResource(Resource resource) {
-        resources.add(resource);
-    }
-
-    public void removeResource(Resource resource) {
-        resources.remove(resource);
-    }
-
     public synchronized void startWatcher() {
         if (thread != null) {
             return;
@@ -86,7 +66,7 @@ public class ResourceRefresher {
                 while (true) {
                     try {
                         refreshAll();
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
@@ -98,7 +78,7 @@ public class ResourceRefresher {
             }
 
             private boolean sleep() {
-                synchronized (ResourceRefresher.this) {
+                synchronized (WebpipeRefresher.this) {
                     if (stop) {
                         stop = false;
                         return true;
@@ -113,7 +93,7 @@ public class ResourceRefresher {
                             Thread.sleep(sleep);
                             return false;
                         } catch (InterruptedException e) {
-                            synchronized (ResourceRefresher.this) {
+                            synchronized (WebpipeRefresher.this) {
                                 if (sleepTimeChanged) {
                                     // interrupted so the sleep time can actually changed
                                     // compute the remaining time to sleep according to what has been already done what what is newly expected
@@ -151,43 +131,15 @@ public class ResourceRefresher {
         thread = null;
     }
 
-    public void refreshAll() throws IOException {
-        List<Webpipe> webpipesToRefresh = new ArrayList<>();
-        Map<Resource, Boolean> changedResources = new HashMap<>();
-
-        // find resources that have changed
-        for (Resource r : resources) {
-            Boolean changedResource = changedResources.get(r);
-            if (changedResource == null) {
-                changedResource = r.refresh();
-                changedResources.put(r, changedResource);
-            }
-        }
-
-        // find webpipes which at least one resource has changed
+    public void refreshAll() throws Exception {
+        List<Webpipe> webpipesRefreshed = new ArrayList<>();
         for (Webpipe webpipe : webpipes) {
-            boolean changed = false;
-            for (Resource r : webpipe.getResources()) {
-                // we expect every resource of the webpipe to have been checked in
-                changed = changedResources.get(r);
-                if (changed) {
-                    break;
-                }
-            }
-            if (changed) {
-                webpipe.invalidateCachedContent();
-                webpipesToRefresh.add(webpipe);
+            if (webpipe.refresh()) {
+                webpipesRefreshed.add(webpipe);
             }
         }
-
-        // force the regeneration
-        for (Entry<Resource, Boolean> resourceStatus : changedResources.entrySet()) {
-            if (resourceStatus.getValue()) {
-                resourceStatus.getKey().getContent();
-            }
-        }
-        for (Webpipe webpipe : webpipesToRefresh) {
-            webpipe.getContents();
+        for (Webpipe webpipe : webpipesRefreshed) {
+            webpipe.getContent();
         }
     }
 

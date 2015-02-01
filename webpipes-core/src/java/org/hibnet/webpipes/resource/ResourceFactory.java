@@ -24,8 +24,6 @@ public class ResourceFactory {
 
     private Map<String, Map<String, Resource>> cache = new ConcurrentHashMap<>();
 
-    private ResourceRefresher resourceRefresher = null;
-
     public ResourceFactory() {
         this(true);
     }
@@ -49,10 +47,6 @@ public class ResourceFactory {
         factories.put(factory.getType(), factory);
     }
 
-    public void setResourceRefresher(ResourceRefresher resourceRefresher) {
-        this.resourceRefresher = resourceRefresher;
-    }
-
     public Resource get(String type, String path) {
         Map<String, Resource> resources = cache.get(type);
         if (resources == null) {
@@ -67,9 +61,6 @@ public class ResourceFactory {
             }
             resource = factory.get(path);
             resources.put(path, resource);
-            if (resourceRefresher != null) {
-                resourceRefresher.addResource(resource);
-            }
         }
         return resource;
     }

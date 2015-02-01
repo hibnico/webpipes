@@ -31,17 +31,17 @@ public class AbstractProcessorTest {
         return new File(getClass().getResource(path).getPath());
     }
 
-    public void testFiles(ResourceProcessor processor, String testExtension, String expectedExtension) throws Exception {
+    public void testFiles(WebpipeProcessor processor, String testExtension, String expectedExtension) throws Exception {
         testFiles(getClasspathDir("."), processor, testExtension, expectedExtension);
     }
 
-    public void testFiles(File dir, ResourceProcessor processor, String testExtension, String expectedExtension) throws Exception {
+    public void testFiles(File dir, WebpipeProcessor processor, String testExtension, String expectedExtension) throws Exception {
         File testDir = new File(dir, "test");
         File expectedDir = new File(dir, "expected");
         testFiles(testDir, expectedDir, processor, testExtension, expectedExtension);
     }
 
-    public void testFiles(File testDir, File expectedDir, ResourceProcessor processor, String testExtension, String expectedExtension)
+    public void testFiles(File testDir, File expectedDir, WebpipeProcessor processor, String testExtension, String expectedExtension)
             throws Exception {
         for (File testFile : testDir.listFiles()) {
             String baseName = testFile.getName().substring(0, testFile.getName().length() - testExtension.length());
@@ -66,7 +66,7 @@ public class AbstractProcessorTest {
         }
     }
 
-    public void testInvalidFiles(File testDir, ResourceProcessor processor) throws Exception {
+    public void testInvalidFiles(File testDir, WebpipeProcessor processor) throws Exception {
         for (File testFile : testDir.listFiles()) {
             FileResource testResource = new FileResource(testFile);
             try {

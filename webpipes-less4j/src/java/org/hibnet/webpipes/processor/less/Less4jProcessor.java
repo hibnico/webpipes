@@ -15,8 +15,9 @@
  */
 package org.hibnet.webpipes.processor.less;
 
-import java.io.IOException;
-
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.processor.WebpipeProcessor;
+import org.hibnet.webpipes.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,13 +27,11 @@ import com.github.sommeri.less4j.LessCompiler.Problem;
 import com.github.sommeri.less4j.LessSource;
 import com.github.sommeri.less4j.LessSource.StringSource;
 import com.github.sommeri.less4j.core.DefaultLessCompiler;
-import org.hibnet.webpipes.processor.ResourceProcessor;
-import org.hibnet.webpipes.resource.Resource;
 
 /**
  * Yet another processor which compiles less to css. This implementation uses open source java library called less4j.
  */
-public class Less4jProcessor extends ResourceProcessor {
+public class Less4jProcessor extends WebpipeProcessor {
 
     private static final Logger LOG = LoggerFactory.getLogger(Less4jProcessor.class);
 
@@ -52,7 +51,7 @@ public class Less4jProcessor extends ResourceProcessor {
             try {
                 Resource relativeResource = resource.resolve(relativePath);
                 return new RelativeAwareLessSource(relativeResource, relativeResource.getContent());
-            } catch (IOException e) {
+            } catch (Exception e) {
                 LOG.error("Failed to compute relative resource: {}", resource, e);
                 throw new StringSourceException();
             }
@@ -62,10 +61,10 @@ public class Less4jProcessor extends ResourceProcessor {
     private final LessCompiler compiler = new DefaultLessCompiler();
 
     @Override
-    public String process(Resource resource, String content) throws Exception {
+    public String process(Webpipe webpipe, String content) throws Exception {
         StringSource lessSource;
-        if (resource != null) {
-            lessSource = new RelativeAwareLessSource(resource, content);
+        if (webpipe instanceof Resource) {
+            lessSource = new RelativeAwareLessSource((Resource) webpipe, content);
         } else {
             lessSource = new StringSource(content);
         }

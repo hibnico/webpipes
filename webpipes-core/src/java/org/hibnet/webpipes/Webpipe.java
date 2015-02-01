@@ -15,146 +15,139 @@
  */
 package org.hibnet.webpipes;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
-import org.hibnet.webpipes.processor.ProcessorPipeline;
-import org.hibnet.webpipes.processor.ResourceProcessor;
-import org.hibnet.webpipes.resource.Resource;
-import org.hibnet.webpipes.resource.ResourceFactory;
-import org.hibnet.webpipes.resource.ResourceRefresher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Webpipe {
+public abstract class Webpipe {
 
-    private final List<Resource> resources = Collections.synchronizedList(new ArrayList<Resource>());
+    protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    private ResourceRefresher resourceRefresher;
+    private static final String NO_CONTENT = "";
 
-    private ResourceFactory resourceFactory;
+    private static final String INVALIDATED_CONTENT = "";
 
-    private ProcessorPipeline processorPipeline = new ProcessorPipeline();
+    protected Charset UTF8 = Charset.forName("UTF-8");
 
-    private volatile boolean firstFetch = true;
+    private File cacheDir;
 
-    private WebpipeCache webpipeCache = null;
+    private volatile String content = NO_CONTENT;
 
-    private volatile List<String> contents;
+    public abstract String getId();
 
-    private List<String> paths;
+    public abstract boolean refresh() throws IOException;
 
-    public Webpipe(ResourceFactory resourceFactory, ResourceRefresher resourceRefresher, String... paths) {
-        this.resourceFactory = resourceFactory;
-        this.resourceRefresher = resourceRefresher;
-        if (resourceRefresher != null) {
-            resourceRefresher.addWebpipe(this);
+    public void setCacheDir(File cacheDir) {
+        this.cacheDir = cacheDir;
+    }
+
+    protected void invalidateCache() {
+        synchronized (content) {
+            content = INVALIDATED_CONTENT;
         }
-        this.paths = Arrays.asList(paths);
     }
 
-    public void setWebpipeCache(WebpipeCache webpipeCache) {
-        this.webpipeCache = webpipeCache;
-    }
-
-    public void setProcessorPipeline(ProcessorPipeline pipeline) {
-        this.processorPipeline = pipeline;
-    }
-
-    public List<Resource> getResources() {
-        return new ArrayList<Resource>(resources);
-    }
-
-    public List<String> getPaths() {
-        return paths;
-    }
-
-    public List<String> getContents() throws IOException {
-        if (contents == null) {
-            synchronized (this) {
-                if (contents == null) {
-                    if (firstFetch) {
-                        // content is null and first fetch, then try to load from disc
-                        if (webpipeCache != null) {
-                            contents = webpipeCache.getContents(this);
-                        }
-                        firstFetch = false;
+    public final String getContent() throws Exception {
+        if (content == NO_CONTENT || content == INVALIDATED_CONTENT) {
+            synchronized (content) {
+                if (content == NO_CONTENT) {
+                    content = readContent();
+                    if (content == NO_CONTENT) {
+                        content = fetchContent();
+                        storeContent(content);
                     }
-                    if (contents == null) {
-                        contents = fetchContents();
-                    }
-                    if (webpipeCache != null) {
-                        webpipeCache.storeContents(this, contents);
-                    }
+                } else if (content == INVALIDATED_CONTENT) {
+                    content = fetchContent();
+                    storeContent(content);
                 }
             }
         }
-        return contents;
+        return content;
     }
 
-    protected List<String> fetchContents() throws IOException {
-        if (processorPipeline == null) {
-            return null;
+    abstract protected String fetchContent() throws Exception;
+
+    private String readContent() throws Exception {
+        if (cacheDir == null) {
+            // no durable cache configured
+            return NO_CONTENT;
         }
+
+        File sha1File = new File(cacheDir, getId() + ".sha1");
+        if (!sha1File.exists()) {
+            return NO_CONTENT;
+        }
+
+        byte[] expectedSha1 = computeSHA1();
+
+        if (sha1File.length() != expectedSha1.length) {
+            // wrong size : don't even bother to read it
+            return NO_CONTENT;
+        }
+        byte[] actualSha1 = readFile(sha1File);
+
+        if (!Arrays.equals(expectedSha1, actualSha1)) {
+            return NO_CONTENT;
+        }
+
+        // same sha1, get the content out
+        byte[] data = readFile(new File(cacheDir, getId() + ".txt"));
+        return new String(data, UTF8);
+    }
+
+    private byte[] readFile(File file) throws IOException, FileNotFoundException {
+        int size = (int) file.length();
+        byte[] data = new byte[size];
+        int offset = 0;
+        int readed = 0;
+        try (InputStream in = new FileInputStream(file)) {
+            while (offset < size && (readed = in.read(data, offset, size - offset)) != -1) {
+                offset += readed;
+            }
+        }
+        return data;
+    }
+
+    private void storeContent(String content) throws Exception {
+        if (cacheDir == null) {
+            // no durable cache configured
+            return;
+        }
+
+        byte[] sha1 = computeSHA1();
+
+        try (OutputStream out = new FileOutputStream(new File(cacheDir, getId() + ".sha1"))) {
+            out.write(sha1);
+        }
+
+        try (OutputStream out = new FileOutputStream(new File(cacheDir, getId() + ".txt"))) {
+            out.write(content.getBytes(UTF8));
+        }
+    }
+
+    private byte[] computeSHA1() throws Exception {
+        MessageDigest digest;
         try {
-            return processorPipeline.buildContents(getResources());
-        } catch (Exception e) {
-            throw new IOException("Failure of the pipeline of processors", e);
+            digest = MessageDigest.getInstance("SHA-1");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-1 is not supported", e);
         }
+        updateDigest(digest);
+        byte[] sha1 = digest.digest();
+        return sha1;
     }
 
-    public synchronized void invalidateCachedContent() {
-        contents = null;
-    }
-
-    public synchronized Webpipe addResource(Resource resource) {
-        if (resourceRefresher != null) {
-            resourceRefresher.addResource(resource);
-        }
-        resources.add(resource);
-        invalidateCachedContent();
-        return this;
-    }
-
-    public void addResource(String resource) {
-        if (resourceFactory == null) {
-            throw new IllegalStateException("Unconfigured resource factory");
-        }
-        int i = resource.indexOf(":");
-        if (i < 0) {
-            throw new IllegalArgumentException();
-        }
-        String type = resource.substring(0, i);
-        String path = resource.substring(i + 1);
-        addResource(resourceFactory.get(type, path));
-    }
-
-    public synchronized void setResources(List<String> resources) {
-        this.resources.clear();
-        for (String resource : resources) {
-            addResource(resource);
-        }
-    }
-
-    public void setResource(String resource) {
-        setResources(Collections.singletonList(resource));
-    }
-
-    public void setPreProcessors(List<ResourceProcessor> preProcessors) {
-        processorPipeline.setPreProcessors(preProcessors);
-    }
-
-    public void setPostProcessors(List<ResourceProcessor> postProcessors) {
-        processorPipeline.setPostProcessors(postProcessors);
-    }
-
-    public void setPreProcessor(ResourceProcessor preProcessor) {
-        setPreProcessors(Collections.singletonList(preProcessor));
-    }
-
-    public void setPostProcessor(ResourceProcessor postProcessor) {
-        setPostProcessors(Collections.singletonList(postProcessor));
-    }
+    protected abstract void updateDigest(MessageDigest digest) throws Exception;
 
 }

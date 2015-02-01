@@ -15,10 +15,10 @@
  */
 package org.hibnet.webpipes.processor.rhino;
 
-import java.io.IOException;
 import java.net.URI;
 
-import org.hibnet.webpipes.processor.ResourceProcessor;
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.processor.WebpipeProcessor;
 import org.hibnet.webpipes.resource.ClasspathResource;
 import org.hibnet.webpipes.resource.ClasspathResourceFactory;
 import org.hibnet.webpipes.resource.Resource;
@@ -38,7 +38,7 @@ import org.mozilla.javascript.tools.ToolErrorReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class RhinoBasedProcessor extends ResourceProcessor {
+public abstract class RhinoBasedProcessor extends WebpipeProcessor {
 
     protected static Resource commonsScript = new ClasspathResource("commons.js", RhinoBasedProcessor.class);
 
@@ -59,7 +59,7 @@ public abstract class RhinoBasedProcessor extends ResourceProcessor {
             globalScope = context.initStandardObjects();
             initScope(context, globalScope);
             globalScope.sealObject();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException("The resources necessary to initialize the processor could not be accessed", e);
         } finally {
             Context.exit();
@@ -75,36 +75,36 @@ public abstract class RhinoBasedProcessor extends ResourceProcessor {
         return context;
     }
 
-    abstract protected void initScope(Context context, ScriptableObject globalScope) throws IOException;
+    abstract protected void initScope(Context context, ScriptableObject globalScope) throws Exception;
 
-    protected void addCommon(Context context, Scriptable scope) throws IOException {
+    protected void addCommon(Context context, Scriptable scope) throws Exception {
         evaluate(context, scope, commonsScript);
     }
 
-    protected void addClientSideEnvironment(Context context, Scriptable scope) throws IOException {
+    protected void addClientSideEnvironment(Context context, Scriptable scope) throws Exception {
         evaluate(context, scope, envScript);
     }
 
-    public void addJSON(Context context, Scriptable scope) throws IOException {
+    public void addJSON(Context context, Scriptable scope) throws Exception {
         evaluateFromWebjar(context, scope, "20110223/json2.js");
         evaluate(context, scope, cycleScript);
     }
 
     @Override
-    public String process(Resource resource, String content) throws Exception {
+    public String process(Webpipe webpipe, String content) throws Exception {
         Context context = enterContext();
         try {
             Scriptable scope = context.newObject(globalScope);
             scope.setPrototype(null);
             scope.setParentScope(globalScope);
-            content = process(context, scope, resource, content);
+            content = process(context, scope, webpipe, content);
         } finally {
             Context.exit();
         }
         return content;
     }
 
-    abstract protected String process(Context context, Scriptable scope, Resource resource, String content) throws Exception;
+    abstract protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception;
 
     protected <T> T evaluate(Context context, Scriptable scope, String script, String sourceName) {
         @SuppressWarnings("unchecked")
@@ -116,15 +116,15 @@ public abstract class RhinoBasedProcessor extends ResourceProcessor {
         return evaluate(context, scope, script, this.getClass().getSimpleName());
     }
 
-    protected <T> T evaluate(Context context, Scriptable scope, Resource script) throws IOException {
-        return evaluate(context, scope, script.getContent(), script.getName());
+    protected <T> T evaluate(Context context, Scriptable scope, Resource script) throws Exception {
+        return evaluate(context, scope, script.getContent(), script.getId());
     }
 
-    protected <T> T evaluateFromClasspath(Context context, Scriptable scope, String path) throws IOException {
+    protected <T> T evaluateFromClasspath(Context context, Scriptable scope, String path) throws Exception {
         return evaluate(context, scope, resourceFactory.get(ClasspathResourceFactory.TYPE, path));
     }
 
-    protected <T> T evaluateFromWebjar(Context context, Scriptable scope, String path) throws IOException {
+    protected <T> T evaluateFromWebjar(Context context, Scriptable scope, String path) throws Exception {
         return evaluate(context, scope, resourceFactory.get(WebJarResourceFactory.TYPE, path));
     }
 
@@ -134,8 +134,8 @@ public abstract class RhinoBasedProcessor extends ResourceProcessor {
         requireBuilder.setModuleScriptProvider(new ModuleScriptProvider() {
             @Override
             public ModuleScript getModuleScript(Context cx, String moduleId, URI moduleUri, URI baseUri, Scriptable paths) throws Exception {
-                Script script = cx.compileString(moduleResource.getContent(), moduleResource.getName(), 1, null);
-                return new ModuleScript(script, URI.create(moduleResource.getName()), URI.create(moduleResource.getName()));
+                Script script = cx.compileString(moduleResource.getContent(), moduleResource.getId(), 1, null);
+                return new ModuleScript(script, URI.create(moduleResource.getId()), URI.create(moduleResource.getId()));
             }
         });
         Require require = requireBuilder.createRequire(context, scope);
@@ -162,8 +162,8 @@ public abstract class RhinoBasedProcessor extends ResourceProcessor {
     }
 
     /**
-     * Transforms a java multi-line string into javascript multi-line string. This technique was found at
-     * {@link http://stackoverflow.com/questions/805107/multiline-strings-in-javascript/}
+     * Transforms a java multi-line string into javascript multi-line string. This technique was found at {@link http
+     * ://stackoverflow.com/questions/805107/multiline-strings-in-javascript/}
      *
      * @param data
      *            a string containing new lines.

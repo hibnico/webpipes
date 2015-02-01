@@ -16,34 +16,23 @@
 package org.hibnet.webpipes.resource;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+
+import org.hibnet.webpipes.Webpipe;
 
 /**
  * Encapsulates information about a resource. This class is not final because we need to mock it in unit tests.
  */
-public abstract class Resource {
-
-    private volatile String content;
-
-    public synchronized String getContent() throws IOException {
-        if (content == null) {
-            content = fetchContent();
-        }
-        return content;
-    }
-
-    public abstract String getName();
-
-    public abstract String fetchContent() throws IOException;
-
-    public abstract boolean refresh() throws IOException;
+public abstract class Resource extends Webpipe {
 
     @SuppressWarnings("unused")
     public Resource resolve(String relativePath) throws IOException {
         return null;
     }
 
-    public synchronized void invalidateCachedContent() {
-        content = null;
+    @Override
+    protected void updateDigest(MessageDigest digest) throws Exception {
+        String content = getContent();
+        digest.digest(content.getBytes(UTF8));
     }
-
 }

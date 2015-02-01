@@ -15,10 +15,8 @@
  */
 package org.hibnet.webpipes.processor.jsx;
 
-import java.io.IOException;
-
+import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
@@ -31,14 +29,14 @@ public class JSXReactProcessor extends RhinoBasedProcessor {
     }
 
     @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws IOException {
+    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
         addCommon(context, globalScope);
         addClientSideEnvironment(context, globalScope);
         evaluateFromWebjar(context, globalScope, "JSXTransformer.js");
     }
 
     @Override
-    protected String process(Context context, Scriptable scope, Resource resource, String content) throws Exception {
+    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
         String script = buildSimpleRunScript("JSXTransformer.transform", content) + ".code";
         String result = evaluate(context, scope, script);
         return result;

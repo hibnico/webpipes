@@ -50,7 +50,7 @@ public class ClasspathResource extends StreamResource {
     }
 
     @Override
-    public String getName() {
+    public String getId() {
         return location;
     }
 
@@ -81,7 +81,7 @@ public class ClasspathResource extends StreamResource {
         String newProtocol = url.getProtocol();
         boolean update = newProtocol != protocol;
         if (update) {
-            invalidateCachedContent();
+            invalidateCache();
             return true;
         }
         File file = null;
@@ -96,7 +96,7 @@ public class ClasspathResource extends StreamResource {
         long newJarTimestamp = file.lastModified();
         update = newJarTimestamp != timestamp;
         if (update) {
-            invalidateCachedContent();
+            invalidateCache();
         }
         return update;
     }

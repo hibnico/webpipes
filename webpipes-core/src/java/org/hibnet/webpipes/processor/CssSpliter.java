@@ -18,13 +18,9 @@ package org.hibnet.webpipes.processor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibnet.webpipes.resource.Resource;
+public class CssSpliter {
 
-public class CssSpliterProcessorPipeline extends ProcessorPipeline {
-
-    @Override
-    public List<String> buildContents(List<Resource> resources) throws Exception {
-        String content = super.buildContents(resources).get(0);
+    public List<String> split(String content) throws Exception {
         List<String> result = new ArrayList<>();
 
         StringBuilder current = null;

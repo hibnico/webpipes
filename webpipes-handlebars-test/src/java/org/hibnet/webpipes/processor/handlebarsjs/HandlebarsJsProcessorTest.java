@@ -20,13 +20,13 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
-import org.hibnet.webpipes.processor.ResourceProcessor;
+import org.hibnet.webpipes.processor.WebpipeProcessor;
 import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.StringResource;
 
 public class HandlebarsJsProcessorTest extends AbstractProcessorTest {
 
-    private ResourceProcessor processor = new HandlebarsJsProcessor(resourceFactory);
+    private WebpipeProcessor processor = new HandlebarsJsProcessor(resourceFactory);
 
     @Test
     public void testSimpleString() throws Exception {

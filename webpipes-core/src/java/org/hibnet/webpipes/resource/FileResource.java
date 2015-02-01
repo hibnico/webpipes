@@ -37,7 +37,7 @@ public class FileResource extends StreamResource {
     }
 
     @Override
-    public String getName() {
+    public String getId() {
         return file.getName();
     }
 
@@ -52,7 +52,7 @@ public class FileResource extends StreamResource {
         long newJarTimestamp = file.lastModified();
         boolean update = newJarTimestamp != timestamp;
         if (update) {
-            invalidateCachedContent();
+            invalidateCache();
         }
         return update;
     }

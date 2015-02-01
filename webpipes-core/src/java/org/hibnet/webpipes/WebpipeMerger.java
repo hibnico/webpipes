@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014-2015 WebPipes contributors
+ *  Copyright 2015 WebPipes contributors
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13,33 +13,39 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hibnet.webpipes.resource;
+package org.hibnet.webpipes;
 
-import java.io.IOException;
+import java.util.List;
 
-public class StringResource extends Resource {
+public class WebpipeMerger extends WebpipeCollection {
 
-    private String name;
+    private List<Webpipe> webpipes;
 
-    private String content;
+    private String id;
 
-    public StringResource(String name, String content) {
-        this.name = name;
-        this.content = content;
+    public WebpipeMerger(List<Webpipe> webpipes) {
+        this.webpipes = webpipes;
+
+        StringBuilder buffer = new StringBuilder("merged");
+        for (Webpipe webpipe : webpipes) {
+            buffer.append("-");
+            buffer.append(webpipe.getId());
+        }
+        id = buffer.toString();
     }
 
     @Override
     public String getId() {
-        return name;
+        return id;
     }
 
     @Override
-    public String fetchContent() throws IOException {
-        return content;
+    protected List<Webpipe> buildCollection() {
+        return webpipes;
     }
 
     @Override
-    public boolean refresh() throws IOException {
+    protected boolean refreshCollection() {
         return false;
     }
 

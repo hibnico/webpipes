@@ -37,7 +37,7 @@ public class UrlResource extends StreamResource {
     }
 
     @Override
-    public String getName() {
+    public String getId() {
         return url.toExternalForm();
     }
 

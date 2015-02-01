@@ -15,16 +15,12 @@
  */
 package org.hibnet.webpipes.processor.dustjs;
 
-import java.io.IOException;
-
-import org.apache.commons.io.FilenameUtils;
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
+import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
-
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.Resource;
-import org.hibnet.webpipes.resource.ResourceFactory;
 
 /**
  * A processor for dustJs template framework. Uses <a href="https://github.com/linkedin/dustjs">dustjs</a> library to transform a template into plain
@@ -37,15 +33,14 @@ public class DustJsProcessor extends RhinoBasedProcessor {
     }
 
     @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws IOException {
+    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
         addCommon(context, globalScope);
         evaluateFromClasspath(context, globalScope, "/org/hibnet/webpipes/processor/dustjs/dust-full-1.1.1.min.js");
     }
 
     @Override
-    protected String process(Context context, Scriptable scope, Resource resource, String content) throws Exception {
-        final String name = resource == null ? "" : FilenameUtils.getBaseName(resource.getName());
-        String argument = String.format("'%s'", name);
+    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
+        String argument = String.format("'%s'", webpipe.getId());
         String script = buildSimpleRunScript("dust.compile", content, argument);
         return evaluate(context, scope, script);
     }

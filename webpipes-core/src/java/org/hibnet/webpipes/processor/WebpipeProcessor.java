@@ -15,14 +15,10 @@
  */
 package org.hibnet.webpipes.processor;
 
-import org.hibnet.webpipes.resource.Resource;
+import org.hibnet.webpipes.Webpipe;
 
-public abstract class ResourceProcessor {
+public abstract class WebpipeProcessor {
 
-    abstract public String process(Resource resource, String content) throws Exception;
-
-    public void destroy() throws Exception {
-        // nothing to do by default
-    }
+    public abstract String process(Webpipe webpipe, String content) throws Exception;
 
 }

@@ -99,29 +99,28 @@ public class GenerateFilesTask extends Task {
                 throw new BuildException("The method 'buildWebpipes' on " + webpipesBuilder + " is not returning a List<Webpipe>", e);
             }
             for (Webpipe webpipe : webpipes) {
-                List<String> contents;
+                String content;
                 try {
-                    contents = webpipe.getContents();
+                    content = webpipe.getContent();
+                } catch (Exception e) {
+                    throw new BuildException("IO error while getting contents from webpipe " + webpipe.getId() + ": " + e.getMessage(), e);
+                }
+                String path = webpipe.getId();
+                path = path.replaceAll("/", File.separator).replaceAll("\\", File.separator);
+                File dest = new File(dir, path);
+                if (!dest.getParentFile().exists()) {
+                    dest.getParentFile().mkdirs();
+                } else if (!dest.getParentFile().isDirectory()) {
+                    dest.getParentFile().delete();
+                    dest.getParentFile().mkdirs();
+                }
+                try (OutputStream out = new FileOutputStream(dest)) {
+                    log("Generating " + dest.getAbsolutePath());
+                    out.write(content.getBytes(encoding));
                 } catch (IOException e) {
-                    throw new BuildException("IO error while getting contents from webpipe " + webpipe.getPaths() + ": " + e.getMessage(), e);
+                    throw new BuildException("IO error while writing the file " + dest.getAbsolutePath(), e);
                 }
-                for (int i = 0; i < webpipe.getPaths().size(); i++) {
-                    String path = webpipe.getPaths().get(i);
-                    path = path.replaceAll("/", File.separator).replaceAll("\\", File.separator);
-                    File dest = new File(dir, path);
-                    if (!dest.getParentFile().exists()) {
-                        dest.getParentFile().mkdirs();
-                    } else if (!dest.getParentFile().isDirectory()) {
-                        dest.getParentFile().delete();
-                        dest.getParentFile().mkdirs();
-                    }
-                    try (OutputStream out = new FileOutputStream(dest)) {
-                        log("Generating " + dest.getAbsolutePath());
-                        out.write(contents.get(i).getBytes(encoding));
-                    } catch (IOException e) {
-                        throw new BuildException("IO error while writing the file " + dest.getAbsolutePath(), e);
-                    }
-                }
+
             }
             log(webpipes.size() + " webpipes to processed");
         } finally {

@@ -15,16 +15,13 @@
  */
 package org.hibnet.webpipes.processor.uglify;
 
-import java.io.IOException;
-
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
+import org.hibnet.webpipes.resource.ClasspathResource;
+import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
-
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.ClasspathResource;
-import org.hibnet.webpipes.resource.Resource;
-import org.hibnet.webpipes.resource.ResourceFactory;
 
 /**
  * Compress js using uglifyJs utility.
@@ -57,13 +54,13 @@ public class UglifyJsProcessor extends RhinoBasedProcessor {
     }
 
     @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws IOException {
+    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
         evaluateFromClasspath(context, globalScope, "/org/hibnet/webpipes/processor/uglify/init.js");
         evaluateFromClasspath(context, globalScope, "/org/hibnet/webpipes/processor/uglify/uglifyJs.min.js");
     }
 
     @Override
-    protected String process(Context context, Scriptable scope, Resource resource, String content) throws Exception {
+    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
         String optionsAsJson = createOptionsAsJson();
         String script = String.format(invokeResource.getContent(), toJSMultiLineString(content), optionsAsJson);
         return evaluate(context, scope, script);
@@ -76,7 +73,7 @@ public class UglifyJsProcessor extends RhinoBasedProcessor {
         return this.reservedNames == null ? "" : reservedNames;
     }
 
-    protected String createOptionsAsJson() throws IOException {
+    protected String createOptionsAsJson() throws Exception {
         return String.format(defaultOptionsResource.getContent(), !uglify, getReservedNames());
     }
 }

@@ -15,15 +15,12 @@
  */
 package org.hibnet.webpipes.processor.sass;
 
-import java.io.IOException;
-
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
+import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
-
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.Resource;
-import org.hibnet.webpipes.resource.ResourceFactory;
 
 /**
  * A processor using sass engine:
@@ -35,13 +32,13 @@ public class RhinoSassCssProcessor extends RhinoBasedProcessor {
     }
 
     @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws IOException {
+    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
         evaluate(context, globalScope, "var exports = {};", "initSass");
         evaluateFromClasspath(context, globalScope, "/org/hibnet/webpipes/processor/sass/sass-0.5.0.min.js");
     }
 
     @Override
-    protected String process(Context context, Scriptable scope, Resource resource, String content) throws Exception {
+    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
         String script = buildSimpleRunScript("exports.render", content);
         return evaluate(context, scope, script);
     }

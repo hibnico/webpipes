@@ -17,10 +17,9 @@ package org.hibnet.webpipes.processor.dustjs;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
 import org.hibnet.webpipes.resource.StringResource;
+import org.junit.Test;
 
 public class DustJsProcessorTest extends AbstractProcessorTest {
 

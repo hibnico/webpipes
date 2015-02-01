@@ -15,15 +15,12 @@
  */
 package org.hibnet.webpipes.processor.coffeescript;
 
-import java.io.IOException;
-
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
+import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
-
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.Resource;
-import org.hibnet.webpipes.resource.ResourceFactory;
 
 /**
  * Uses coffee script library loaded from the webjar to compile to javascript code.
@@ -41,12 +38,12 @@ public class CoffeeScriptProcessor extends RhinoBasedProcessor {
     }
 
     @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws IOException {
+    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
         evaluateFromWebjar(context, globalScope, "coffee-script.min.js");
     }
 
     @Override
-    protected String process(Context context, Scriptable scope, Resource resource, String content) throws Exception {
+    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
         StringBuilder script = new StringBuilder("CoffeeScript.compile(");
         script.append(toJSMultiLineString(content));
         script.append(",{");

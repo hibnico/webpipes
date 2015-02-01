@@ -19,22 +19,20 @@ import java.util.List;
 
 import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.ResourceFactory;
-import org.hibnet.webpipes.resource.ResourceRefresher;
 
 public abstract class WebpipesBuilder {
 
     protected ResourceFactory resourceFactory = buildResourceFactory();
 
-    private ResourceRefresher resourceRefresher;
+    private WebpipeRefresher webpipeRefresher;
 
     protected ResourceFactory buildResourceFactory() {
         return new ResourceFactory();
     }
 
     public void enableResourceRefresher() {
-        resourceRefresher = new ResourceRefresher();
-        resourceFactory.setResourceRefresher(resourceRefresher);
-        resourceRefresher.startWatcher();
+        webpipeRefresher = new WebpipeRefresher();
+        webpipeRefresher.startWatcher();
     }
 
     abstract public List<Webpipe> buildWebpipes();
@@ -43,7 +41,4 @@ public abstract class WebpipesBuilder {
         return resourceFactory.get(type, path);
     }
 
-    protected Webpipe newWebpipe(String... paths) {
-        return new Webpipe(resourceFactory, resourceRefresher, paths);
-    }
 }

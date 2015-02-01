@@ -19,10 +19,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 
+import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.ObjectPoolHelper;
 import org.hibnet.webpipes.processor.ObjectPoolHelper.ObjectFactory;
-import org.hibnet.webpipes.processor.ResourceProcessor;
-import org.hibnet.webpipes.resource.Resource;
+import org.hibnet.webpipes.processor.WebpipeProcessor;
 
 import com.google.javascript.jscomp.CheckLevel;
 import com.google.javascript.jscomp.ClosureCodingConvention;
@@ -38,7 +38,7 @@ import com.google.javascript.jscomp.SourceFile;
  *
  * @see http://blog.bolinfest.com/2009/11/calling-closure-compiler-from-java.html
  */
-public class GoogleClosureCompressorProcessor extends ResourceProcessor {
+public class GoogleClosureCompressorProcessor extends WebpipeProcessor {
 
     /**
      * {@link CompilationLevel} to use for compression.
@@ -83,13 +83,12 @@ public class GoogleClosureCompressorProcessor extends ResourceProcessor {
     }
 
     @Override
-    public String process(Resource resource, String content) throws IOException {
+    public String process(Webpipe webpipe, String content) throws IOException {
         CompilerOptions compilerOptions = optionsPool.getObject();
         Compiler compiler = newCompiler(compilerOptions);
         try {
-            String fileName = resource == null ? "wro4j-processed-file.js" : resource.getName();
-            SourceFile[] input = new SourceFile[] {SourceFile.fromCode(fileName, content)};
-            SourceFile[] externs = getExterns(resource);
+            SourceFile[] input = new SourceFile[] { SourceFile.fromCode(webpipe.getId(), content) };
+            SourceFile[] externs = getExterns(webpipe);
             if (externs == null) {
                 // fallback to empty array when null is provided.
                 externs = new SourceFile[] {};
@@ -121,7 +120,7 @@ public class GoogleClosureCompressorProcessor extends ResourceProcessor {
      * @param resource Currently processed resource. The resource can be null, when the closure compiler is used as a post processor.
      * @return An Array of externs files for the resource to process.
      */
-    protected SourceFile[] getExterns(Resource resource) {
+    protected SourceFile[] getExterns(Webpipe webpipe) {
         return new SourceFile[] {};
     }
 
@@ -140,7 +139,6 @@ public class GoogleClosureCompressorProcessor extends ResourceProcessor {
         return options;
     }
 
-    @Override
     public void destroy() throws Exception {
         optionsPool.destroy();
     }
