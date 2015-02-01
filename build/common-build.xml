@@ -75,7 +75,12 @@
     </target>
 
     <target name="ivy:configure" depends="init:ivy" unless="ivy.configured">
-        <ivy:configure file="${webpipes-build.dir}/ivysettings.xml" />
+        <ivy:configure file="${webpipes-build.dir}/ivysettings.xml">
+            <workspaceResolver name="webpipes-projects">
+                <fileset dir="${webpipes-root.dir}" includes="*/ivy.xml" />
+                <artifact type="dir" ext="" path="target/classes" />
+            </workspaceResolver>
+        </ivy:configure>
         <property name="ivy.configured" value="true" />
     </target>
 
@@ -85,7 +90,7 @@
             <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" transitive="false" />
         </ivy:resolve>
         <ivy:cachepath resolveId="antcontrib.resolve" pathid="antcontrib.classpath" type="jar,bundle" />
-        <taskdef resource="net/sf/antcontrib/antcontrib.properties" uri="antlib:net.sf.antcontrib" classpathref="antcontrib.classpath" />
+        <taskdef resource="net/sf/antcontrib/antlib.xml" uri="antlib:net.sf.antcontrib" classpathref="antcontrib.classpath" />
 
     	<taskdef uri="antlib:andariel" resource="net/uworks/andariel/andariel.properties" classpath="${webpipes-build.dir}/build-deps/andariel-1.2.3/andariel-1.2.3.jar" />
 

@@ -2,9 +2,9 @@
 <ivy-module version="2.0">
 	<info organisation="org.hibnet"
 		module="webpipes-core"
-		revision="working@hibpro.local"
+		revision="0.0.2"
 		status="integration"
-		publication="20150122224456"
+		publication="20150125130853"
 	>
 		<description>
 		This module is the core implementation of the library.

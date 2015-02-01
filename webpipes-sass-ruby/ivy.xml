@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-sass-ruby">
+    <info organisation="org.hibnet" module="webpipes-sass-ruby" revision="0.0.2">
         <description>This module adds support for SASS with a Ruby library.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-core" rev="latest.integration" />
+        <dependency org="org.hibnet" name="webpipes-core" rev="[0.0.2,0.0.3)" />
 
         <dependency org="org.jruby" name="jruby-core" rev="1.7.18" />
         <dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" />

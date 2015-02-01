@@ -31,15 +31,15 @@
     </target>
 
     <macrodef name="buildall">
-    	<attribute name="target" />
-    	<element name="subant-elements" implicit="yes" optional="true" />
-    	<sequential>
+        <attribute name="target" />
+        <element name="subant-elements" implicit="yes" optional="true" />
+        <sequential>
             <subant target="@{target}" buildpathref="build-list" inheritAll="false">
-    		    <property name="webpipes.version" value="${webpipes.version}" />
-    		    <property name="publish.resolver" value="${publish.resolver}" />
+                <property name="webpipes.version" value="${webpipes.version}" />
+                <property name="publish.resolver" value="${publish.resolver}" />
                 <property name="build-deps.downloaded" value="${build-deps.downloaded}" />
                 <property name="ivy.initiated" value="${ivy.initiated}" />
-    		    <subant-elements />
+                <subant-elements />
             </subant>
         </sequential>
     </macrodef>
@@ -68,23 +68,58 @@
         <buildall target="ci-build" />
     </target>
 
-    <target name="bump-version" depends="init,init:ant-tasks">
-        <!-- compute the next patch version -->
+    <target name="-compute-next-version" depends="init,init:ant-tasks">
         <ac:propertyregex property="webpipes.version.major" input="${webpipes.version}" regexp="([0-9]*).*" select="\1" />
         <ac:propertyregex property="webpipes.version.minor" input="${webpipes.version}" regexp="[0-9]*\.([0-9]*).*" select="\1" />
         <ac:propertyregex property="webpipes.version.patch" input="${webpipes.version}" regexp="[0-9]*\.[0-9]*\.([0-9]*).*" select="\1" />
         <ac:math result="webpipes.version.patch.next" operand1="${webpipes.version.patch}" operation="+" operand2="1" datatype="int" />
-        <property name="webpipes.version.next.patch" value="${webpipes.version.major}.${webpipes.version.minor}.${webpipes.version.patch.next}" />
-        <!-- edit the build.properties -->
+        <property name="webpipes.version.next" value="${webpipes.version.major}.${webpipes.version.minor}.${webpipes.version.patch.next}" />
+    </target>
+
+    <target name="-ask-version" depends="-compute-next-version" unless="newversion">
+        <input addproperty="newversion" message="New version: " defaultvalue="${webpipes.version.next}" />
+    </target>
+
+    <target name="set-version" depends="init:ant-tasks,-ask-version" description="Set the new version of webpipes">
+        <!-- compute the next major version -->
+        <ac:propertyregex property="newversion.major" input="${newversion}" regexp="([0-9]*).*" select="\1" />
+        <ac:propertyregex property="newversion.minor" input="${newversion}" regexp="[0-9]*\.([0-9]*).*" select="\1" />
+        <ac:propertyregex property="newversion.patch" input="${newversion}" regexp="[0-9]*\.[0-9]*\.([0-9]*).*" select="\1" />
+        <ac:math result="newversion.patch.next" operand1="${newversion.patch}" operation="+" operand2="1" datatype="int" />
+        <property name="newversion.next" value="${newversion.major}.${newversion.minor}.${newversion.patch.next}" />
         <loadresource property="build.properties.content.new">
-            <file file="${basedir}/build.properties" />
+            <file file="${webpipes-build.dir}/build.properties" />
             <filterchain>
                 <tokenfilter>
-                    <replaceregex pattern="^webpipes\.version\.base=.*$" replace="webpipes.version.base=${webpipes.version.next.patch}" flags="gi" />
+                    <replaceregex pattern="^webpipes\.version\.base=.*$" replace="webpipes.version.base=${newversion}" flags="gi" />
                 </tokenfilter>
             </filterchain>
         </loadresource>
-        <echo message="${build.properties.content.new}" file="${basedir}/build.properties" />
+        <echo message="${build.properties.content.new}" file="${webpipes-build.dir}/build.properties" />
+        <ac:for param="ivyfile">
+            <fileset dir="${basedir}" includes="*/ivy.xml" />
+            <sequential>
+                <loadresource property="@{ivyfile}.content.new">
+                    <file file="@{ivyfile}" />
+                    <filterchain>
+                        <tokenfilter>
+                            <replaceregex pattern="&lt;info\s+organisation\s*=\s*&quot;org.hibnet&quot;\s+module\s*=\s*&quot;webpipes-([^&quot;]*)&quot;\s+revision\s*=\s*&quot;[^&quot;]*&quot;"
+                                replace="&lt;info organisation=&quot;org.hibnet&quot; module=&quot;webpipes-\1&quot; revision=&quot;${newversion}&quot;" flags="gi" />
+                            <replaceregex pattern="&lt;dependency\s+org\s*=\s*&quot;org.hibnet&quot;\s+name\s*=\s*&quot;webpipes-([^&quot;]*)&quot;\s+rev\s*=\s*&quot;[^&quot;]*&quot;"
+                                replace="&lt;dependency org=&quot;org.hibnet&quot; name=&quot;webpipes-\1&quot; rev=&quot;[${newversion},${newversion.next})&quot;" flags="gi" />
+                        </tokenfilter>
+                    </filterchain>
+                </loadresource>
+                <echo message="${@{ivyfile}.content.new}" file="@{ivyfile}" />
+            </sequential>
+        </ac:for>        
+    </target>
+
+    <target name="-set-next-version" depends="-compute-next-version">
+        <property name="newversion" value="${webpipes.version.next}" />
+    </target>
+
+    <target name="bump-version" depends="-set-next-version,set-version">
         <!-- commit -->
         <git command="add build.properties" />
         <git command="commit -m 'v++'" />

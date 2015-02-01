@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-handlebars-test">
+    <info organisation="org.hibnet" module="webpipes-handlebars-test" revision="0.0.2">
         <description>This module contains the tests for the Handlebars.js.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-core-test" rev="latest.integration" />
-        <dependency org="org.hibnet" name="webpipes-handlebars" rev="latest.integration" />
+        <dependency org="org.hibnet" name="webpipes-core-test" rev="[0.0.2,0.0.3)" />
+        <dependency org="org.hibnet" name="webpipes-handlebars" rev="[0.0.2,0.0.3)" />
     </dependencies>
 </ivy-module>

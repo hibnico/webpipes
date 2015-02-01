@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-coffeescript">
+    <info organisation="org.hibnet" module="webpipes-coffeescript" revision="0.0.2">
         <description>This module adds support for CoffeeScript.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-rhino" rev="latest.integration" />
+        <dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.2,0.0.3)" />
 
         <dependency org="org.webjars" name="coffee-script" rev="1.8.0" />
     </dependencies>

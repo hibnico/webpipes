@@ -15,7 +15,7 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-core">
+    <info organisation="org.hibnet" module="webpipes-core" revision="0.0.2">
         <description>This module is the core implementation of the library.</description>
     </info>
     <dependencies defaultconf="default->default">
