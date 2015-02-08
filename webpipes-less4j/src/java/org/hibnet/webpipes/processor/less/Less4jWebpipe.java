@@ -56,19 +56,21 @@ public class Less4jWebpipe extends ProcessingWebpipe {
 
     @Override
     protected String fetchContent() throws Exception {
-        importedResources.clear();
+        synchronized (importedResources) {
+            importedResources.clear();
 
-        String content = webpipe.getContent();
-        StringSource lessSource;
-        if (webpipe instanceof Resource) {
-            lessSource = new RelativeAwareLessSource((Resource) webpipe, content);
-        } else {
-            lessSource = new StringSource(content);
+            String content = webpipe.getContent();
+            StringSource lessSource;
+            if (webpipe instanceof Resource) {
+                lessSource = new RelativeAwareLessSource((Resource) webpipe, content);
+            } else {
+                lessSource = new StringSource(content);
+            }
+            CompilationResult result = compiler.compile(lessSource);
+            logWarnings(result);
+            content = result.getCss();
+            return content;
         }
-        CompilationResult result = compiler.compile(lessSource);
-        logWarnings(result);
-        content = result.getCss();
-        return content;
     }
 
     @Override
@@ -83,7 +85,9 @@ public class Less4jWebpipe extends ProcessingWebpipe {
 
     @Override
     protected List<Webpipe> buildChildrenList() throws IOException {
-        return new ArrayList<Webpipe>(importedResources);
+        synchronized (importedResources) {
+            return new ArrayList<Webpipe>(importedResources);
+        }
     }
 
     private void logWarnings(CompilationResult result) {
