@@ -15,10 +15,9 @@
  */
 package org.hibnet.webpipes.processor.lesscss;
 
-import org.junit.Test;
-
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
 import org.hibnet.webpipes.processor.less.LessCssProcessor;
+import org.junit.Test;
 
 public class LessCssProcessorTest extends AbstractProcessorTest {
 
@@ -31,7 +30,7 @@ public class LessCssProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void shouldFailWhenInvalidLessCssIsProcessed() throws Exception {
-        testInvalidFiles(getClasspathDir("invalid"), processor);
+        testInvalidFiles(packageDir + "/invalid/*.css", processor);
     }
 
 }

@@ -47,7 +47,7 @@ public class EmberJsProcessor extends RhinoBasedProcessor {
     protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
         String script = buildSimpleRunScript("precompile", content);
         String result = evaluate(context, scope, script);
-        return "(function() {Ember.TEMPLATES['" + webpipe.getId() + "'] = Ember.Handlebars.template(" + result + ")})();";
+        return "(function() {Ember.TEMPLATES['" + getVarName(webpipe) + "'] = Ember.Handlebars.template(" + result + ")})();";
     }
 
 }

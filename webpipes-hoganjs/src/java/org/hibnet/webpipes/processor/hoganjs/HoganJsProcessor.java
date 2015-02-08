@@ -44,7 +44,7 @@ public class HoganJsProcessor extends RhinoBasedProcessor {
         script.append(toJSMultiLineString(content));
         script.append(",{asString: true});");
         String result = evaluate(context, scope, script.toString());
-        return "Hogan.cache['" + webpipe.getId() + "'] = " + result + ";";
+        return "Hogan.cache['" + getVarName(webpipe) + "'] = " + result + ";";
     }
 
 }

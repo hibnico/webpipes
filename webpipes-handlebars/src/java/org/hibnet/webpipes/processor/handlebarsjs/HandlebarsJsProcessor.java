@@ -42,7 +42,7 @@ public class HandlebarsJsProcessor extends RhinoBasedProcessor {
         String script = buildSimpleRunScript("Handlebars.precompile", content);
         String result = evaluate(context, scope, script);
         return "(function() { var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};templates['"
-                + webpipe.getId()
+                + getVarName(webpipe)
                 + "'] = template(" + result + " ); })();";
     }
 

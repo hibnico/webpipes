@@ -29,7 +29,7 @@ public class HoganJsProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testSimpleString() throws Exception {
-        Resource r = new StringResource("Hello {{name}}!");
+        Resource r = new StringResource("template", "Hello {{name}}!");
         String result = processor.process(r, r.getContent());
         assertTrue(result.contains("Hogan.cache['template']"));
     }

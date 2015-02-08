@@ -21,27 +21,32 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 
+import org.hibnet.webpipes.WebpipeUtils;
+
 public class ClasspathResource extends StreamResource {
 
     private String location;
 
     private ClassLoader classLoader;
 
-    private Class< ? > cls;
+    private Class<?> cls;
 
     private String protocol;
 
     private long timestamp;
 
+    private String name;
+
     private URI uri;
 
     public ClasspathResource(String location) {
-        this.location = location;
-        this.uri = URI.create("classpath:" + location);
+        this.location = location.startsWith("/") ? location : ("/" + location);
+        this.name = location.substring(this.location.lastIndexOf('/'));
+        this.uri = URI.create("classpath:" + this.location);
     }
 
-    public ClasspathResource(String location, Class< ? > cls) {
-        this(location);
+    public ClasspathResource(String location, Class<?> cls) {
+        this(location.startsWith("/") ? location : (WebpipeUtils.getPackageDir(cls) + "/" + location));
         this.cls = cls;
     }
 
@@ -53,6 +58,16 @@ public class ClasspathResource extends StreamResource {
     @Override
     public URI getURI() {
         return uri;
+    }
+
+    @Override
+    public Resource resolve(String relativePath) {
+        return new ClasspathResource(uri.resolve(relativePath).getSchemeSpecificPart());
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

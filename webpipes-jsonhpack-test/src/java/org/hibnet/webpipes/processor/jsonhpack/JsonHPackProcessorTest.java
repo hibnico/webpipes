@@ -15,22 +15,21 @@
  */
 package org.hibnet.webpipes.processor.jsonhpack;
 
-import org.junit.Test;
-
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
+import org.junit.Test;
 
 public class JsonHPackProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testPackFiles() throws Exception {
         JsonHPackProcessor processor = new JsonHPackProcessor(true, resourceFactory);
-        testFiles(getClasspathDir("test"), getClasspathDir("pack"), processor, ".js", ".js");
+        testFiles(packageDir + "/test/*.js", packageDir + "/pack/*.js", processor);
     }
 
     @Test
     public void testUnpackFiles() throws Exception {
         JsonHPackProcessor processor = new JsonHPackProcessor(false, resourceFactory);
-        testFiles(getClasspathDir("pack"), getClasspathDir("unpack"), processor, ".js", ".js");
+        testFiles(packageDir + "/pack/*.js", packageDir + "/unpack/*.js", processor);
     }
 
 }

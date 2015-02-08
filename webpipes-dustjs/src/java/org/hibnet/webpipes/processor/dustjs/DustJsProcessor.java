@@ -40,8 +40,7 @@ public class DustJsProcessor extends RhinoBasedProcessor {
 
     @Override
     protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
-        String argument = String.format("'%s'", webpipe.getId());
-        String script = buildSimpleRunScript("dust.compile", content, argument);
+        String script = buildSimpleRunScript("dust.compile", content, "'" + getVarName(webpipe) + "'");
         return evaluate(context, scope, script);
     }
 

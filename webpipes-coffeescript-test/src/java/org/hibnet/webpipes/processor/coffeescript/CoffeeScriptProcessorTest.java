@@ -15,9 +15,8 @@
  */
 package org.hibnet.webpipes.processor.coffeescript;
 
-import org.junit.Test;
-
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
+import org.junit.Test;
 
 public class CoffeeScriptProcessorTest extends AbstractProcessorTest {
 
@@ -25,17 +24,17 @@ public class CoffeeScriptProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testExceptions() throws Exception {
-        testInvalidFiles(getClasspathDir("exceptions"), processor);
+        testInvalidFiles(packageDir + "/exceptions/*.js", processor);
     }
 
     @Test
     public void testSimple() throws Exception {
-        testFiles(getClasspathDir("simple"), processor, ".js", ".js");
+        testFiles(packageDir + "/simple", processor, ".js", ".js");
     }
 
     @Test
     public void testAdvanced() throws Exception {
-        testFiles(getClasspathDir("advanced"), processor, ".js", ".js");
+        testFiles(packageDir + "/advanced", processor, ".js", ".js");
     }
 
 }

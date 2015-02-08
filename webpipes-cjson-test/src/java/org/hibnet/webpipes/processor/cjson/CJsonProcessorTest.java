@@ -15,22 +15,21 @@
  */
 package org.hibnet.webpipes.processor.cjson;
 
-import org.junit.Test;
-
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
+import org.junit.Test;
 
 public class CJsonProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testPack() throws Exception {
         CJsonProcessor processor = new CJsonProcessor(resourceFactory, true);
-        testFiles(getClasspathDir("test"), getClasspathDir("pack"), processor, ".js", ".js");
+        testFiles(packageDir + "/test/*.js", packageDir + "/pack/*.js", processor);
     }
 
     @Test
     public void testUnpack() throws Exception {
         CJsonProcessor processor = new CJsonProcessor(resourceFactory, false);
-        testFiles(getClasspathDir("pack"), getClasspathDir("unpack"), processor, ".js", ".js");
+        testFiles(packageDir + "/pack/*.js", packageDir + "/unpack/*.js", processor);
     }
 
 }

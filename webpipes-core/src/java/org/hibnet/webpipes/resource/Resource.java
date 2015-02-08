@@ -26,11 +26,13 @@ import org.hibnet.webpipes.WebpipeUtils;
  */
 public abstract class Resource extends Webpipe {
 
+    abstract public Resource resolve(String relativePath);
+
     abstract public URI getURI();
 
     @Override
     public String getId() {
-        return getURI().toString();
+        return getURI().toASCIIString();
     }
 
     @Override

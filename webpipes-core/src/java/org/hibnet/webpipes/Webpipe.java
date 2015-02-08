@@ -54,6 +54,13 @@ public abstract class Webpipe {
 
     public abstract String getId();
 
+    public abstract String getName();
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
     protected List<Webpipe> getChildren() throws IOException {
         if (children == INVALIDATED_CHILDREN || children == NOT_INITIALIZED_CHILDREN) {
             synchronized (children) {

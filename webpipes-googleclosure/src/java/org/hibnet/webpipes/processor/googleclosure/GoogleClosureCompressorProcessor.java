@@ -87,7 +87,7 @@ public class GoogleClosureCompressorProcessor extends WebpipeProcessor {
         CompilerOptions compilerOptions = optionsPool.getObject();
         Compiler compiler = newCompiler(compilerOptions);
         try {
-            SourceFile[] input = new SourceFile[] { SourceFile.fromCode(webpipe.getId(), content) };
+            SourceFile[] input = new SourceFile[] { SourceFile.fromCode(webpipe.getName(), content) };
             SourceFile[] externs = getExterns(webpipe);
             if (externs == null) {
                 // fallback to empty array when null is provided.

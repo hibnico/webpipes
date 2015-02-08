@@ -30,8 +30,11 @@ public class FilePatternResource extends Resource {
 
     private PathMatcher pathMatcher = new AntPathMatcher();
 
+    private URI uri;
+
     public FilePatternResource(String pattern) {
         this.pattern = pattern;
+        this.uri = URI.create("files:" + pattern);
     }
 
     public void setPathMatcher(PathMatcher pathMatcher) {
@@ -40,6 +43,16 @@ public class FilePatternResource extends Resource {
 
     @Override
     public URI getURI() {
+        return uri;
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public Resource resolve(String relativePath) {
         return null;
     }
 

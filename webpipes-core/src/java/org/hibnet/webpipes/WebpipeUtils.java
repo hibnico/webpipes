@@ -16,7 +16,6 @@
 package org.hibnet.webpipes;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -220,14 +219,6 @@ public class WebpipeUtils {
         return sb.toString();
     }
 
-    public static URL relativeUrl(URL rootUrl, String relativePath) {
-        try {
-            return new URL(rootUrl, relativePath);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static File urlToFile(URL url) {
         try {
             return new File(url.toURI()).getAbsoluteFile();
@@ -236,4 +227,10 @@ public class WebpipeUtils {
         }
     }
 
+    public static String getPackageDir(Class<?> cl) {
+        String packageDir = cl.getCanonicalName();
+        packageDir = packageDir.substring(0, packageDir.lastIndexOf("."));
+        packageDir = "/" + packageDir.replaceAll("\\.", "/");
+        return packageDir;
+    }
 }

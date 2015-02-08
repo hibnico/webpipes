@@ -24,16 +24,29 @@ public class StringResource extends Resource {
 
     private String content;
 
+    private String name;
+
     private URI uri;
 
-    public StringResource(String content) {
+    public StringResource(String name, String content) {
+        this.name = name;
         this.content = content;
         this.uri = URI.create("string:" + WebpipeUtils.sha1HexEncoded(content));
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public URI getURI() {
         return uri;
+    }
+
+    @Override
+    public Resource resolve(String relativePath) {
+        return null;
     }
 
     @Override

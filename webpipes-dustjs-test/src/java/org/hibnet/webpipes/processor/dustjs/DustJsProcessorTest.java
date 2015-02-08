@@ -27,7 +27,7 @@ public class DustJsProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testSimpleString() throws Exception {
-        StringResource r = new StringResource("Hello {name}!");
+        StringResource r = new StringResource("test", "Hello {name}!");
         String result = processor.process(r, r.getContent());
         assertTrue(result.matches("\\(function\\(\\)\\{.*\\}\\)\\(\\);"));
     }

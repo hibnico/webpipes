@@ -31,7 +31,7 @@ public class YUICssCompressorProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testInvalidCss() throws Exception {
-        Resource r = new StringResource("invalid CSS!!@#!@#!");
+        Resource r = new StringResource("test", "invalid CSS!!@#!@#!");
         processor.process(r, r.getContent());
     }
 }

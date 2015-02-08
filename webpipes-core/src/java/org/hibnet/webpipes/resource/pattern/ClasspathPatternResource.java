@@ -29,8 +29,11 @@ public class ClasspathPatternResource extends Resource {
 
     private String pattern;
 
+    private URI uri;
+
     public ClasspathPatternResource(String pattern) {
         this.pattern = pattern;
+        this.uri = URI.create("classpaths:" + pattern);
     }
 
     public void setPathMatcher(PathMatcher pathMatcher) {
@@ -38,7 +41,17 @@ public class ClasspathPatternResource extends Resource {
     }
 
     @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
     public URI getURI() {
+        return uri;
+    }
+
+    @Override
+    public Resource resolve(String relativePath) {
         return null;
     }
 

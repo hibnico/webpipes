@@ -117,7 +117,7 @@ public abstract class RhinoBasedProcessor extends WebpipeProcessor {
     }
 
     protected <T> T evaluate(Context context, Scriptable scope, Resource script) throws Exception {
-        return evaluate(context, scope, script.getContent(), script.getId());
+        return evaluate(context, scope, script.getContent(), script.getName());
     }
 
     protected <T> T evaluateFromClasspath(Context context, Scriptable scope, String path) throws Exception {
@@ -134,8 +134,8 @@ public abstract class RhinoBasedProcessor extends WebpipeProcessor {
         requireBuilder.setModuleScriptProvider(new ModuleScriptProvider() {
             @Override
             public ModuleScript getModuleScript(Context cx, String moduleId, URI moduleUri, URI baseUri, Scriptable paths) throws Exception {
-                Script script = cx.compileString(moduleResource.getContent(), moduleResource.getId(), 1, null);
-                return new ModuleScript(script, URI.create(moduleResource.getId()), URI.create(moduleResource.getId()));
+                Script script = cx.compileString(moduleResource.getContent(), moduleResource.getName(), 1, null);
+                return new ModuleScript(script, URI.create(moduleResource.getName()), URI.create(moduleResource.getName()));
             }
         });
         Require require = requireBuilder.createRequire(context, scope);
@@ -194,4 +194,12 @@ public abstract class RhinoBasedProcessor extends WebpipeProcessor {
         return result.toString();
     }
 
+    protected String getVarName(Webpipe webpipe) {
+        String name = webpipe.getName();
+        int i = name.lastIndexOf(".");
+        if (i > 0) {
+            return name.substring(0, i);
+        }
+        return name;
+    }
 }

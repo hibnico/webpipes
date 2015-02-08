@@ -21,16 +21,16 @@ import org.junit.Test;
 
 public class Less4jProcessorTest extends AbstractProcessorTest {
 
-    private Less4jProcessor processor = new Less4jProcessor(resourceFactory);
+    private Less4jProcessor processor = new Less4jProcessor();
 
     @Test
     public void testFiles() throws Exception {
-        testFiles(getClasspathDir("test"), getClasspathDir("expectedless4j"), processor, ".css", ".css");
+        testFiles(packageDir + "/test/*.css", packageDir + "/expectedless4j/*.css", processor);
     }
 
     @Test
     public void testInvalidFiles() throws Exception {
-        testInvalidFiles(getClasspathDir("invalid"), processor);
+        testInvalidFiles(packageDir + "/invalid/*.css", processor);
     }
 
 }

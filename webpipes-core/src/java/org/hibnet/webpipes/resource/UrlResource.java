@@ -18,6 +18,7 @@ package org.hibnet.webpipes.resource;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -29,10 +30,13 @@ public class UrlResource extends StreamResource {
 
     private URL url;
 
+    private String name;
+
     private URI uri;
 
     public UrlResource(URL url) {
         this.url = url;
+        this.name = url.getPath().substring(url.getPath().lastIndexOf("/"));
         try {
             this.uri = url.toURI();
         } catch (URISyntaxException e) {
@@ -45,8 +49,22 @@ public class UrlResource extends StreamResource {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public URI getURI() {
         return uri;
+    }
+
+    @Override
+    public Resource resolve(String relativePath) {
+        try {
+            return new UrlResource(new URL(this.url, relativePath));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

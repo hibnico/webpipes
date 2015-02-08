@@ -41,6 +41,16 @@ public class FileResource extends StreamResource {
     }
 
     @Override
+    public String getName() {
+        return file.getName();
+    }
+
+    @Override
+    public Resource resolve(String relativePath) {
+        return new FileResource(new File(file.getAbsoluteFile().toURI().resolve(relativePath)));
+    }
+
+    @Override
     protected InputStream fetchStream() throws IOException {
         timestamp = file.lastModified();
         return new FileInputStream(file);

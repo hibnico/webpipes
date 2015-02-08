@@ -216,7 +216,7 @@ public class PatternHelper {
                 if (entryPath.startsWith(rootEntryPath)) {
                     String relativePath = entryPath.substring(rootEntryPath.length());
                     if (pathMatcher.match(subPattern, relativePath)) {
-                        result.add(new UrlResource(WebpipeUtils.relativeUrl(rootUrl, relativePath)));
+                        result.add(new UrlResource(new URL(rootUrl, relativePath)));
                     }
                 }
             }

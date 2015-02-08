@@ -40,13 +40,18 @@ public class ProcessedWebpipe extends Webpipe {
             buffer.append(processor.getClass().getSimpleName());
             buffer.append("-");
         }
-        buffer.append(webpipe.getId());
+        buffer.append(webpipe.getName());
         id = buffer.toString();
     }
 
     @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public String getName() {
+        return webpipe.getName();
     }
 
     @Override

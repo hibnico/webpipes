@@ -15,11 +15,8 @@
  */
 package org.hibnet.webpipes.processor.uglify;
 
-import java.io.File;
-
-import org.junit.Test;
-
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
+import org.junit.Test;
 
 public class UglifyJsProcessorTest extends AbstractProcessorTest {
 
@@ -27,14 +24,13 @@ public class UglifyJsProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testFiles() throws Exception {
-        testFiles(commonTestDir, getClasspathDir("expected"), processor, ".js", ".js");
+        testFiles(commonTestFilesPattern, packageDir + "/expected/*.js", processor);
     }
 
     @Test
     public void testReservedNames() throws Exception {
         processor.setReservedNames("name,value");
-        File dir = new File(getClass().getResource("reservednames").getPath());
-        testFiles(dir, processor, ".js", ".js");
+        testFiles(packageDir + "/reservednames", processor, ".js", ".js");
     }
 
 }

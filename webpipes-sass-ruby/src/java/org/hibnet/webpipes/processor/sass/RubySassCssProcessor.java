@@ -71,7 +71,7 @@ public class RubySassCssProcessor extends WebpipeProcessor {
         script.append("\", {:syntax => :scss}).render");
 
         Ruby runtime = Ruby.newInstance();
-        Node node = runtime.parse(ByteList.create(script), webpipe.getId(), runtime.getCurrentContext().getCurrentScope(), 0, false);
+        Node node = runtime.parse(ByteList.create(script), webpipe.getName(), runtime.getCurrentContext().getCurrentScope(), 0, false);
         IRubyObject result = runtime.runNormally(node);
         return result.toString();
     }
