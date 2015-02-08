@@ -18,6 +18,7 @@ package org.hibnet.webpipes.processor.less;
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.WebpipeProcessor;
 import org.hibnet.webpipes.resource.Resource;
+import org.hibnet.webpipes.resource.ResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,10 +36,16 @@ public class Less4jProcessor extends WebpipeProcessor {
 
     private static final Logger LOG = LoggerFactory.getLogger(Less4jProcessor.class);
 
+    private ResourceFactory resourceFactory;
+
+    public Less4jProcessor(ResourceFactory resourceFactory) {
+        this.resourceFactory = resourceFactory;
+    }
+
     /**
      * Required to use the less4j import mechanism.
      */
-    private static class RelativeAwareLessSource extends StringSource {
+    private class RelativeAwareLessSource extends StringSource {
         private final Resource resource;
 
         public RelativeAwareLessSource(Resource resource, String content) {
@@ -49,7 +56,7 @@ public class Less4jProcessor extends WebpipeProcessor {
         @Override
         public LessSource relativeSource(String relativePath) throws StringSourceException {
             try {
-                Resource relativeResource = resource.resolve(relativePath);
+                Resource relativeResource = resourceFactory.get(resource.getURI().resolve(relativePath));
                 return new RelativeAwareLessSource(relativeResource, relativeResource.getContent());
             } catch (Exception e) {
                 LOG.error("Failed to compute relative resource: {}", resource, e);

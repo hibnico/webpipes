@@ -21,8 +21,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 
-import org.apache.commons.io.FilenameUtils;
-
 public class ClasspathResource extends StreamResource {
 
     private String location;
@@ -35,8 +33,11 @@ public class ClasspathResource extends StreamResource {
 
     private long timestamp;
 
+    private URI uri;
+
     public ClasspathResource(String location) {
         this.location = location;
+        this.uri = URI.create("classpath:" + location);
     }
 
     public ClasspathResource(String location, Class< ? > cls) {
@@ -50,8 +51,8 @@ public class ClasspathResource extends StreamResource {
     }
 
     @Override
-    public String getId() {
-        return location;
+    public URI getURI() {
+        return uri;
     }
 
     @Override
@@ -81,7 +82,7 @@ public class ClasspathResource extends StreamResource {
         String newProtocol = url.getProtocol();
         boolean update = newProtocol != protocol;
         if (update) {
-            invalidateCache();
+            invalidateContentCache();
             return true;
         }
         File file = null;
@@ -96,7 +97,7 @@ public class ClasspathResource extends StreamResource {
         long newJarTimestamp = file.lastModified();
         update = newJarTimestamp != timestamp;
         if (update) {
-            invalidateCache();
+            invalidateContentCache();
         }
         return update;
     }
@@ -119,10 +120,4 @@ public class ClasspathResource extends StreamResource {
         return url;
     }
 
-    @Override
-    public Resource resolve(String relativePath) {
-        String fullPath = FilenameUtils.getFullPath(location) + relativePath;
-        String normalized = FilenameUtils.normalize(fullPath);
-        return new ClasspathResource(normalized, cls);
-    }
 }

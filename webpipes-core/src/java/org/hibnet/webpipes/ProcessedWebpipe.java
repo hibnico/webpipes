@@ -57,7 +57,7 @@ public class ProcessedWebpipe extends Webpipe {
     @Override
     public boolean refresh() throws IOException {
         boolean needUpdate = webpipe.refresh();
-        invalidateCache();
+        invalidateContentCache();
         return needUpdate;
     }
 

@@ -17,12 +17,11 @@ package org.hibnet.webpipes.processor.hoganjs;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
 import org.hibnet.webpipes.processor.WebpipeProcessor;
 import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.StringResource;
+import org.junit.Test;
 
 public class HoganJsProcessorTest extends AbstractProcessorTest {
 
@@ -30,7 +29,7 @@ public class HoganJsProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testSimpleString() throws Exception {
-        Resource r = new StringResource("template", "Hello {{name}}!");
+        Resource r = new StringResource("Hello {{name}}!");
         String result = processor.process(r, r.getContent());
         assertTrue(result.contains("Hogan.cache['template']"));
     }

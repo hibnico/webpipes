@@ -22,10 +22,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,36 +34,96 @@ public abstract class Webpipe {
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    private static final String NO_CONTENT = "";
+    private static final String NOT_INITIALIZED_CONTENT = "";
+
+    public static final String NO_CONTENT = "";
 
     private static final String INVALIDATED_CONTENT = "";
 
-    protected Charset UTF8 = Charset.forName("UTF-8");
+    private static final List<Webpipe> NOT_INITIALIZED_CHILDREN = new ArrayList<>();
+
+    public static final List<Webpipe> NO_CHILDREN = new ArrayList<>();
+
+    private static final List<Webpipe> INVALIDATED_CHILDREN = new ArrayList<>();
 
     private File cacheDir;
 
     private volatile String content = NO_CONTENT;
 
+    private List<Webpipe> children;
+
     public abstract String getId();
 
+    protected List<Webpipe> getChildren() throws IOException {
+        if (children == INVALIDATED_CHILDREN || children == NOT_INITIALIZED_CHILDREN) {
+            synchronized (children) {
+                if (children == INVALIDATED_CHILDREN || children == NOT_INITIALIZED_CHILDREN) {
+                    children = buildChildrenList();
+                }
+            }
+        }
+        return children;
+    }
+
+    protected List<Webpipe> buildChildrenList() throws IOException {
+        return NO_CHILDREN;
+    }
+
     public abstract boolean refresh() throws IOException;
+
+    protected boolean refreshChildren() throws IOException {
+        boolean refresh = refreshChildrenList();
+        for (Webpipe webpipe : getChildren()) {
+            refresh = refresh || webpipe.refresh();
+        }
+        if (refresh) {
+            invalidateContentCache();
+        }
+        return refresh;
+    }
+
+    protected boolean refreshChildrenList() throws IOException {
+        List<Webpipe> cachedChildren = getChildren();
+        List<Webpipe> newChildren = buildChildrenList();
+        boolean refresh = cachedChildren.size() != newChildren.size();
+        if (!refresh) {
+            for (int i = 0; i < cachedChildren.size(); i++) {
+                refresh = !newChildren.get(i).getId().equals(cachedChildren.get(i).getId());
+                if (refresh) {
+                    break;
+                }
+            }
+        }
+        if (refresh) {
+            synchronized (children) {
+                children = newChildren;
+            }
+        }
+        return refresh;
+    }
 
     public void setCacheDir(File cacheDir) {
         this.cacheDir = cacheDir;
     }
 
-    protected void invalidateCache() {
+    protected void invalidateContentCache() {
         synchronized (content) {
             content = INVALIDATED_CONTENT;
         }
     }
 
+    protected void invalidateChildrenListCache() {
+        synchronized (children) {
+            children = INVALIDATED_CHILDREN;
+        }
+    }
+
     public final String getContent() throws Exception {
-        if (content == NO_CONTENT || content == INVALIDATED_CONTENT) {
+        if (content == NOT_INITIALIZED_CONTENT || content == INVALIDATED_CONTENT) {
             synchronized (content) {
-                if (content == NO_CONTENT) {
+                if (content == NOT_INITIALIZED_CONTENT) {
                     content = readContent();
-                    if (content == NO_CONTENT) {
+                    if (content == NOT_INITIALIZED_CONTENT) {
                         content = fetchContent();
                         storeContent(content);
                     }
@@ -78,32 +138,41 @@ public abstract class Webpipe {
 
     abstract protected String fetchContent() throws Exception;
 
+    protected String fetchChildrenContent() throws Exception {
+        StringBuilder buffer = new StringBuilder();
+        for (Webpipe webpipe : getChildren()) {
+            buffer.append(webpipe.getContent());
+            buffer.append("\n");
+        }
+        return buffer.toString();
+    }
+
     private String readContent() throws Exception {
         if (cacheDir == null) {
             // no durable cache configured
-            return NO_CONTENT;
+            return NOT_INITIALIZED_CONTENT;
         }
 
         File sha1File = new File(cacheDir, getId() + ".sha1");
         if (!sha1File.exists()) {
-            return NO_CONTENT;
+            return NOT_INITIALIZED_CONTENT;
         }
 
         byte[] expectedSha1 = computeSHA1();
 
         if (sha1File.length() != expectedSha1.length) {
             // wrong size : don't even bother to read it
-            return NO_CONTENT;
+            return NOT_INITIALIZED_CONTENT;
         }
         byte[] actualSha1 = readFile(sha1File);
 
         if (!Arrays.equals(expectedSha1, actualSha1)) {
-            return NO_CONTENT;
+            return NOT_INITIALIZED_CONTENT;
         }
 
         // same sha1, get the content out
         byte[] data = readFile(new File(cacheDir, getId() + ".txt"));
-        return new String(data, UTF8);
+        return new String(data, WebpipeUtils.UTF8);
     }
 
     private byte[] readFile(File file) throws IOException, FileNotFoundException {
@@ -132,22 +201,24 @@ public abstract class Webpipe {
         }
 
         try (OutputStream out = new FileOutputStream(new File(cacheDir, getId() + ".txt"))) {
-            out.write(content.getBytes(UTF8));
+            out.write(content.getBytes(WebpipeUtils.UTF8));
         }
     }
 
     private byte[] computeSHA1() throws Exception {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("SHA-1");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("SHA-1 is not supported", e);
-        }
+        MessageDigest digest = WebpipeUtils.buildSHA1Digest();
         updateDigest(digest);
         byte[] sha1 = digest.digest();
         return sha1;
     }
 
     protected abstract void updateDigest(MessageDigest digest) throws Exception;
+
+    protected void updateChildrenDigest(MessageDigest digest) throws Exception {
+        for (Webpipe webpipe : getChildren()) {
+            webpipe.updateDigest(digest);
+            digest.update((byte) '\n');
+        }
+    }
 
 }

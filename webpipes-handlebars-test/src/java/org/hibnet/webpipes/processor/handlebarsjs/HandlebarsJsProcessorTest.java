@@ -17,12 +17,11 @@ package org.hibnet.webpipes.processor.handlebarsjs;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
 import org.hibnet.webpipes.processor.WebpipeProcessor;
 import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.StringResource;
+import org.junit.Test;
 
 public class HandlebarsJsProcessorTest extends AbstractProcessorTest {
 
@@ -30,7 +29,7 @@ public class HandlebarsJsProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testSimpleString() throws Exception {
-        Resource r = new StringResource("test", "Hello {name}!");
+        Resource r = new StringResource("Hello {name}!");
         String result = processor.process(r, r.getContent());
         assertTrue(result.contains("return \"Hello {name}!\\n\";"));
     }

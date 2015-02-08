@@ -18,6 +18,7 @@ package org.hibnet.webpipes.resource;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -28,8 +29,15 @@ public class UrlResource extends StreamResource {
 
     private URL url;
 
+    private URI uri;
+
     public UrlResource(URL url) {
         this.url = url;
+        try {
+            this.uri = url.toURI();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setTimeout(int timeout) {
@@ -37,8 +45,8 @@ public class UrlResource extends StreamResource {
     }
 
     @Override
-    public String getId() {
-        return url.toExternalForm();
+    public URI getURI() {
+        return uri;
     }
 
     @Override
@@ -60,12 +68,4 @@ public class UrlResource extends StreamResource {
         return false;
     }
 
-    @Override
-    public Resource resolve(String relativePath) throws IOException {
-        try {
-            return new UrlResource(url.toURI().resolve(relativePath).toURL());
-        } catch (URISyntaxException e) {
-            return null;
-        }
-    }
 }

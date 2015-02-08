@@ -40,14 +40,14 @@ public class TestRubySassCssProcessor extends AbstractProcessorTest {
     @Test
     public void shouldSucceedAfterAFailure() throws Exception {
         try {
-            Resource r = new StringResource("test", "$base= #f938ab;");
+            Resource r = new StringResource("$base= #f938ab;");
             processor.process(r, r.getContent());
             fail("Should have failed");
         } catch (final Exception e) {
 
         }
         String sass = ".valid {color: red}  @mixin rounded($side, $radius: 10px) { border-#{$side}-radius: $radius; -moz-border-radius-#{$side}: $radius; -webkit-border-#{$side}-radius: $radius;}#navbar li { @include rounded(top); }";
-        Resource r = new StringResource("test", sass);
+        Resource r = new StringResource(sass);
         processor.process(r, r.getContent());
     }
 

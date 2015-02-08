@@ -15,14 +15,13 @@
  */
 package org.hibnet.webpipes.processor.lesscss;
 
-import org.junit.Test;
-
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
 import org.hibnet.webpipes.processor.less.Less4jProcessor;
+import org.junit.Test;
 
 public class Less4jProcessorTest extends AbstractProcessorTest {
 
-    private Less4jProcessor processor = new Less4jProcessor();
+    private Less4jProcessor processor = new Less4jProcessor(resourceFactory);
 
     @Test
     public void testFiles() throws Exception {

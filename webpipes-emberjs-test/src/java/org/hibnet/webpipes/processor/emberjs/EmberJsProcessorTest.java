@@ -17,12 +17,11 @@ package org.hibnet.webpipes.processor.emberjs;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
 import org.hibnet.webpipes.processor.WebpipeProcessor;
 import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.StringResource;
+import org.junit.Test;
 
 public class EmberJsProcessorTest extends AbstractProcessorTest {
 
@@ -30,7 +29,7 @@ public class EmberJsProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testSimpleString() throws Exception {
-        Resource r = new StringResource("test", "Hello {name}!");
+        Resource r = new StringResource("Hello {name}!");
         String result = processor.process(r, r.getContent());
         assertTrue(result.startsWith("(function() {Ember.TEMPLATES["));
         assertTrue(result.contains("data.buffer.push(\"Hello {name}!\\n\");"));

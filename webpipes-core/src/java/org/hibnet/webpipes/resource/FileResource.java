@@ -19,8 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.commons.io.FilenameUtils;
+import java.net.URI;
 
 public class FileResource extends StreamResource {
 
@@ -37,8 +36,8 @@ public class FileResource extends StreamResource {
     }
 
     @Override
-    public String getId() {
-        return file.getName();
+    public URI getURI() {
+        return file.toURI();
     }
 
     @Override
@@ -52,16 +51,9 @@ public class FileResource extends StreamResource {
         long newJarTimestamp = file.lastModified();
         boolean update = newJarTimestamp != timestamp;
         if (update) {
-            invalidateCache();
+            invalidateContentCache();
         }
         return update;
-    }
-
-    @Override
-    public Resource resolve(String relativePath) {
-        String fullPath = FilenameUtils.getFullPath(file.getAbsolutePath()) + relativePath;
-        String normalized = FilenameUtils.normalize(fullPath);
-        return new FileResource(new File(normalized));
     }
 
 }

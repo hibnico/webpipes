@@ -15,24 +15,28 @@
  */
 package org.hibnet.webpipes.resource;
 
-import java.io.IOException;
+import java.net.URI;
 import java.security.MessageDigest;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeUtils;
 
 /**
  * Encapsulates information about a resource. This class is not final because we need to mock it in unit tests.
  */
 public abstract class Resource extends Webpipe {
 
-    @SuppressWarnings("unused")
-    public Resource resolve(String relativePath) throws IOException {
-        return null;
+    abstract public URI getURI();
+
+    @Override
+    public String getId() {
+        return getURI().toString();
     }
 
     @Override
     protected void updateDigest(MessageDigest digest) throws Exception {
         String content = getContent();
-        digest.digest(content.getBytes(UTF8));
+        digest.digest(content.getBytes(WebpipeUtils.UTF8));
     }
+
 }

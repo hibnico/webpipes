@@ -15,11 +15,10 @@
  */
 package org.hibnet.webpipes.processor.yui;
 
-import org.junit.Test;
-
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
 import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.StringResource;
+import org.junit.Test;
 
 public class YUICssCompressorProcessorTest extends AbstractProcessorTest {
 
@@ -32,7 +31,7 @@ public class YUICssCompressorProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testInvalidCss() throws Exception {
-        Resource r = new StringResource("test", "invalid CSS!!@#!@#!");
+        Resource r = new StringResource("invalid CSS!!@#!@#!");
         processor.process(r, r.getContent());
     }
 }

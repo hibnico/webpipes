@@ -15,6 +15,7 @@
  */
 package org.hibnet.webpipes.resource;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -45,6 +46,10 @@ public class ResourceFactory {
 
     public void register(TypedResourceFactory factory) {
         factories.put(factory.getType(), factory);
+    }
+
+    public Resource get(URI uri) {
+        return get(uri.getScheme(), uri.getSchemeSpecificPart());
     }
 
     public Resource get(String type, String path) {
