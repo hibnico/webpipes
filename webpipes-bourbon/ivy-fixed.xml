@@ -2,9 +2,9 @@
 <ivy-module version="2.0">
 	<info organisation="org.hibnet"
 		module="webpipes-bourbon"
-		revision="working@hibpro.local"
+		revision="0.0.2"
 		status="integration"
-		publication="20150122224500"
+		publication="20150208170709"
 	>
 		<description>
 		This module adds support for the Bourbon mixin library for SASS.
@@ -17,19 +17,14 @@
 		<artifact name="webpipes-bourbon" type="jar" ext="jar" conf="default"/>
 	</publications>
 	<dependencies>
-		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="latest.integration" transitive="false" conf="default->default"/>
+		<dependency org="org.hibnet" name="webpipes-sass-ruby" rev="[0.0.2,0.0.3)" transitive="false" conf="default->default"/>
 		<dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.hibnet" name="webpipes-core" rev="latest.integration" transitive="false" conf="default->default"/>
+		<dependency org="org.hibnet" name="webpipes-core" rev="[0.0.2,0.0.3)" transitive="false" conf="default->default"/>
 		<dependency org="org.jruby" name="jruby-core" rev="1.7.18" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="default->default,compile,runtime,master,master(*),compile(*),runtime(*)"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="commons-io" name="commons-io" rev="2.4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.ow2.asm" name="asm" rev="4.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.ow2.asm" name="asm-commons" rev="4.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.ow2.asm" name="asm-analysis" rev="4.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>

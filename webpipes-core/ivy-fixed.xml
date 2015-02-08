@@ -4,7 +4,7 @@
 		module="webpipes-core"
 		revision="0.0.2"
 		status="integration"
-		publication="20150125130853"
+		publication="20150208170704"
 	>
 		<description>
 		This module is the core implementation of the library.
@@ -18,11 +18,6 @@
 	</publications>
 	<dependencies>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="commons-pool" name="commons-pool" rev="1.6" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="commons-io" name="commons-io" rev="2.4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.3.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.3.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.3.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 	</dependencies>
 </ivy-module>

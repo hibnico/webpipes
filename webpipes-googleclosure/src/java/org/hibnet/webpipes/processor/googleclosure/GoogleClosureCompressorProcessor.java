@@ -20,8 +20,6 @@ import java.util.Arrays;
 import java.util.logging.Level;
 
 import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.ObjectPoolHelper;
-import org.hibnet.webpipes.processor.ObjectPoolHelper.ObjectFactory;
 import org.hibnet.webpipes.processor.WebpipeProcessor;
 
 import com.google.javascript.jscomp.CheckLevel;
@@ -46,11 +44,6 @@ public class GoogleClosureCompressorProcessor extends WebpipeProcessor {
     private CompilationLevel compilationLevel;
 
     /**
-     * Reuse options(which are not thread safe).
-     */
-    private ObjectPoolHelper<CompilerOptions> optionsPool;
-
-    /**
      * Uses google closure compiler with default compilation level: {@link CompilationLevel#SIMPLE_OPTIMIZATIONS}
      */
     public GoogleClosureCompressorProcessor() {
@@ -58,7 +51,8 @@ public class GoogleClosureCompressorProcessor extends WebpipeProcessor {
     }
 
     /**
-     * @param compilationLevel the compilationLevel to set
+     * @param compilationLevel
+     *            the compilationLevel to set
      */
     public void setCompilationLevel(CompilationLevel compilationLevel) {
         this.compilationLevel = compilationLevel;
@@ -67,41 +61,29 @@ public class GoogleClosureCompressorProcessor extends WebpipeProcessor {
     /**
      * Uses google closure compiler with specified compilation level.
      *
-     * @param compilationLevel not null {@link CompilationLevel} enum.
+     * @param compilationLevel
+     *            not null {@link CompilationLevel} enum.
      */
     public GoogleClosureCompressorProcessor(CompilationLevel compilationLevel) {
-        /**
-         * Using pool to fix the threadSafety issue. See <a href="http://code.google.com/p/closure-compiler/issues/detail?id=781">issue</a>.
-         */
-        optionsPool = new ObjectPoolHelper<CompilerOptions>(new ObjectFactory<CompilerOptions>() {
-            @Override
-            public CompilerOptions create() {
-                return newCompilerOptions();
-            }
-        });
         this.compilationLevel = compilationLevel;
     }
 
     @Override
     public String process(Webpipe webpipe, String content) throws IOException {
-        CompilerOptions compilerOptions = optionsPool.getObject();
+        CompilerOptions compilerOptions = newCompilerOptions();
         Compiler compiler = newCompiler(compilerOptions);
-        try {
-            SourceFile[] input = new SourceFile[] { SourceFile.fromCode(webpipe.getName(), content) };
-            SourceFile[] externs = getExterns(webpipe);
-            if (externs == null) {
-                // fallback to empty array when null is provided.
-                externs = new SourceFile[] {};
-            }
-            Result result = null;
-            result = compiler.compile(Arrays.asList(externs), Arrays.asList(input), compilerOptions);
-            if (result.success) {
-                content = compiler.toSource();
-            } else {
-                throw new RuntimeException("Compilation has errors: " + Arrays.asList(result.errors));
-            }
-        } finally {
-            optionsPool.returnObject(compilerOptions);
+        SourceFile[] input = new SourceFile[] { SourceFile.fromCode(webpipe.getName(), content) };
+        SourceFile[] externs = getExterns(webpipe);
+        if (externs == null) {
+            // fallback to empty array when null is provided.
+            externs = new SourceFile[] {};
+        }
+        Result result = null;
+        result = compiler.compile(Arrays.asList(externs), Arrays.asList(input), compilerOptions);
+        if (result.success) {
+            content = compiler.toSource();
+        } else {
+            throw new RuntimeException("Compilation has errors: " + Arrays.asList(result.errors));
         }
         return content;
     }
@@ -117,7 +99,8 @@ public class GoogleClosureCompressorProcessor extends WebpipeProcessor {
     }
 
     /**
-     * @param resource Currently processed resource. The resource can be null, when the closure compiler is used as a post processor.
+     * @param resource
+     *            Currently processed resource. The resource can be null, when the closure compiler is used as a post processor.
      * @return An Array of externs files for the resource to process.
      */
     protected SourceFile[] getExterns(Webpipe webpipe) {
@@ -137,9 +120,5 @@ public class GoogleClosureCompressorProcessor extends WebpipeProcessor {
         // set it to warning, otherwise compiler will fail
         options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
         return options;
-    }
-
-    public void destroy() throws Exception {
-        optionsPool.destroy();
     }
 }

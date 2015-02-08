@@ -17,10 +17,10 @@ package org.hibnet.webpipes.resource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-
-import org.apache.commons.io.IOUtils;
 
 public abstract class StreamResource extends Resource {
 
@@ -33,7 +33,14 @@ public abstract class StreamResource extends Resource {
     @Override
     public String fetchContent() throws IOException {
         try (InputStream is = fetchStream()) {
-            return IOUtils.toString(is, encoding);
+            InputStreamReader reader = new InputStreamReader(is, encoding);
+            StringWriter writer = new StringWriter();
+            char[] buffer = new char[1024 * 4];
+            int n = 0;
+            while (-1 != (n = reader.read(buffer))) {
+                writer.write(buffer, 0, n);
+            }
+            return writer.toString();
         }
     }
 

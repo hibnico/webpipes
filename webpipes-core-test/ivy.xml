@@ -22,6 +22,6 @@
         <dependency org="org.hibnet" name="webpipes-core" rev="[0.0.2,0.0.3)" />
 
         <dependency org="junit" name="junit" rev="4.10" />
-        <dependency org="org.slf4j" name="slf4j-simple" rev="1.7.7" />
+        <dependency org="org.slf4j" name="slf4j-simple" rev="1.7.10" />
     </dependencies>
 </ivy-module>
