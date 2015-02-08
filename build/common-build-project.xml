@@ -37,9 +37,9 @@ Project ${project.name}
 
         <!-- to have the proper version in the ivy, and a cached resolve so the publish can work -->
         <ivy:deliver deliverpattern="${basedir}/target/ivy.xml" pubrevision="${webpipes.version}" />
-        <ivy:resolve file="${basedir}/target/ivy.xml" conf="*" type="jar,bundle" log="quiet" />
+        <ivy:resolve file="${basedir}/target/ivy.xml" conf="*" type="dir,jar,bundle" log="quiet" />
 
-        <ivy:cachepath pathid="ivy.default.classpath" conf="default" type="jar,bundle" />
+        <ivy:cachepath pathid="ivy.default.classpath" conf="default" type="dir,jar,bundle" />
         <ivy:deliver deliverpattern="${basedir}/target/ivy.xml" />
         
         <property name="ivy.resolved" value="true" />
