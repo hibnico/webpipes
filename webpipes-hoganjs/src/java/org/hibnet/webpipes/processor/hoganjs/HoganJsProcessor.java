@@ -17,7 +17,6 @@ package org.hibnet.webpipes.processor.hoganjs;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -27,10 +26,6 @@ import org.mozilla.javascript.ScriptableObject;
  * plain javascript.
  */
 public class HoganJsProcessor extends RhinoBasedProcessor {
-
-    public HoganJsProcessor(ResourceFactory resourceFactory) {
-        super(resourceFactory);
-    }
 
     @Override
     protected void initScope(Context context, ScriptableObject globalScope) throws Exception {

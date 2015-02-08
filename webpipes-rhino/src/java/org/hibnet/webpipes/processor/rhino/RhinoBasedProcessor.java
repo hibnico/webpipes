@@ -20,10 +20,8 @@ import java.net.URI;
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.WebpipeProcessor;
 import org.hibnet.webpipes.resource.ClasspathResource;
-import org.hibnet.webpipes.resource.ClasspathResourceFactory;
 import org.hibnet.webpipes.resource.Resource;
-import org.hibnet.webpipes.resource.ResourceFactory;
-import org.hibnet.webpipes.resource.WebJarResourceFactory;
+import org.hibnet.webpipes.resource.WebJarHelper;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeObject;
@@ -50,10 +48,7 @@ public abstract class RhinoBasedProcessor extends WebpipeProcessor {
 
     private ScriptableObject globalScope;
 
-    protected ResourceFactory resourceFactory;
-
-    public RhinoBasedProcessor(ResourceFactory resourceFactory) {
-        this.resourceFactory = resourceFactory;
+    public RhinoBasedProcessor() {
         Context context = enterContext();
         try {
             globalScope = context.initStandardObjects();
@@ -121,11 +116,11 @@ public abstract class RhinoBasedProcessor extends WebpipeProcessor {
     }
 
     protected <T> T evaluateFromClasspath(Context context, Scriptable scope, String path) throws Exception {
-        return evaluate(context, scope, resourceFactory.get(ClasspathResourceFactory.TYPE, path));
+        return evaluate(context, scope, new ClasspathResource(path));
     }
 
     protected <T> T evaluateFromWebjar(Context context, Scriptable scope, String path) throws Exception {
-        return evaluate(context, scope, resourceFactory.get(WebJarResourceFactory.TYPE, path));
+        return evaluate(context, scope, WebJarHelper.getResource(path));
     }
 
     protected Scriptable setupModule(Context context, Scriptable scope, final Resource moduleResource, String moduleId) {

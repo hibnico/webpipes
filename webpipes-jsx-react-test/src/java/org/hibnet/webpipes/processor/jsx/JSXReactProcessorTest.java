@@ -20,7 +20,7 @@ import org.junit.Test;
 
 public class JSXReactProcessorTest extends AbstractProcessorTest {
 
-    private JSXReactProcessor processor = new JSXReactProcessor(resourceFactory);
+    private JSXReactProcessor processor = new JSXReactProcessor();
 
     @Test
     public void testFiles() throws Exception {

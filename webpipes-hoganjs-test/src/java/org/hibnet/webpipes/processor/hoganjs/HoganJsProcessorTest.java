@@ -25,7 +25,7 @@ import org.junit.Test;
 
 public class HoganJsProcessorTest extends AbstractProcessorTest {
 
-    private WebpipeProcessor processor = new HoganJsProcessor(resourceFactory);
+    private WebpipeProcessor processor = new HoganJsProcessor();
 
     @Test
     public void testSimpleString() throws Exception {

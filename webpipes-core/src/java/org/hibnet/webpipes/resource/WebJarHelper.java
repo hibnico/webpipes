@@ -15,18 +15,21 @@
  */
 package org.hibnet.webpipes.resource;
 
-public class ClasspathResourceFactory implements TypedResourceFactory {
+import java.util.regex.Pattern;
 
-    public static final String TYPE = "classpath";
+import org.webjars.WebJarAssetLocator;
 
-    @Override
-    public String getType() {
-        return TYPE;
+public class WebJarHelper {
+
+    private static WebJarAssetLocator webJarAssetLocator = new WebJarAssetLocator(WebJarAssetLocator.getFullPathIndex(Pattern.compile(".*"),
+            WebJarHelper.class.getClassLoader()));
+
+    public static WebJarAssetLocator getWebJarAssetLocator() {
+        return webJarAssetLocator;
     }
 
-    @Override
-    public Resource get(String path) {
-        return new ClasspathResource(path);
+    public static Resource getResource(String path) {
+        return new ClasspathResource(webJarAssetLocator.getFullPath(path));
     }
 
 }

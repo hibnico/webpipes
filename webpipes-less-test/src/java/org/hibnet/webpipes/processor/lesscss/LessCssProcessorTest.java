@@ -21,7 +21,7 @@ import org.junit.Test;
 
 public class LessCssProcessorTest extends AbstractProcessorTest {
 
-    private LessCssProcessor processor = new LessCssProcessor(resourceFactory);
+    private LessCssProcessor processor = new LessCssProcessor();
 
     @Test
     public void testFromFolder() throws Exception {

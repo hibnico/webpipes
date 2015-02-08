@@ -22,13 +22,13 @@ public class CJsonProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testPack() throws Exception {
-        CJsonProcessor processor = new CJsonProcessor(resourceFactory, true);
+        CJsonProcessor processor = new CJsonProcessor(true);
         testFiles(packageDir + "/test/*.js", packageDir + "/pack/*.js", processor);
     }
 
     @Test
     public void testUnpack() throws Exception {
-        CJsonProcessor processor = new CJsonProcessor(resourceFactory, false);
+        CJsonProcessor processor = new CJsonProcessor(false);
         testFiles(packageDir + "/pack/*.js", packageDir + "/unpack/*.js", processor);
     }
 

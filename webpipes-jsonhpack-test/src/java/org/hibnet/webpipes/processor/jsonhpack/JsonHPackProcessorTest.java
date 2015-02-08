@@ -22,13 +22,13 @@ public class JsonHPackProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testPackFiles() throws Exception {
-        JsonHPackProcessor processor = new JsonHPackProcessor(true, resourceFactory);
+        JsonHPackProcessor processor = new JsonHPackProcessor(true);
         testFiles(packageDir + "/test/*.js", packageDir + "/pack/*.js", processor);
     }
 
     @Test
     public void testUnpackFiles() throws Exception {
-        JsonHPackProcessor processor = new JsonHPackProcessor(false, resourceFactory);
+        JsonHPackProcessor processor = new JsonHPackProcessor(false);
         testFiles(packageDir + "/pack/*.js", packageDir + "/unpack/*.js", processor);
     }
 

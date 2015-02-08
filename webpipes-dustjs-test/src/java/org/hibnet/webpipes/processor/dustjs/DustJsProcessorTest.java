@@ -23,7 +23,7 @@ import org.junit.Test;
 
 public class DustJsProcessorTest extends AbstractProcessorTest {
 
-    private DustJsProcessor processor = new DustJsProcessor(resourceFactory);
+    private DustJsProcessor processor = new DustJsProcessor();
 
     @Test
     public void testSimpleString() throws Exception {

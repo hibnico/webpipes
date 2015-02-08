@@ -17,7 +17,6 @@ package org.hibnet.webpipes.processor.dustjs;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -27,10 +26,6 @@ import org.mozilla.javascript.ScriptableObject;
  * javascript.
  */
 public class DustJsProcessor extends RhinoBasedProcessor {
-
-    public DustJsProcessor(ResourceFactory resourceFactory) {
-        super(resourceFactory);
-    }
 
     @Override
     protected void initScope(Context context, ScriptableObject globalScope) throws Exception {

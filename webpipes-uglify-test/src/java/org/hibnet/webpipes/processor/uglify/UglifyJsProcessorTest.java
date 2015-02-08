@@ -20,7 +20,7 @@ import org.junit.Test;
 
 public class UglifyJsProcessorTest extends AbstractProcessorTest {
 
-    private UglifyJsProcessor processor = new UglifyJsProcessor(true, resourceFactory);
+    private UglifyJsProcessor processor = new UglifyJsProcessor(true);
 
     @Test
     public void testFiles() throws Exception {

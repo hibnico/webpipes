@@ -17,7 +17,6 @@ package org.hibnet.webpipes.processor.emberjs;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -26,10 +25,6 @@ import org.mozilla.javascript.ScriptableObject;
  * Compiles EmberJS templates to javascript. The processor loads emberJs library and all its dependencies from the webjar.
  */
 public class EmberJsProcessor extends RhinoBasedProcessor {
-
-    public EmberJsProcessor(ResourceFactory resourceFactory) {
-        super(resourceFactory);
-    }
 
     @Override
     protected void initScope(Context context, ScriptableObject globalScope) throws Exception {

@@ -18,7 +18,6 @@ package org.hibnet.webpipes.processor.uglify;
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
 import org.hibnet.webpipes.resource.ClasspathResource;
-import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -36,8 +35,7 @@ public class UglifyJsProcessor extends RhinoBasedProcessor {
 
     private ClasspathResource defaultOptionsResource;
 
-    public UglifyJsProcessor(boolean uglify, ResourceFactory resourceFactory) {
-        super(resourceFactory);
+    public UglifyJsProcessor(boolean uglify) {
         this.uglify = uglify;
         invokeResource = new ClasspathResource("invoke.js", UglifyJsProcessor.class);
         defaultOptionsResource = new ClasspathResource("options.js", UglifyJsProcessor.class);

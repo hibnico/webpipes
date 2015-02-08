@@ -17,7 +17,6 @@ package org.hibnet.webpipes.processor.coffeescript;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -28,10 +27,6 @@ import org.mozilla.javascript.ScriptableObject;
 public class CoffeeScriptProcessor extends RhinoBasedProcessor {
 
     private String[] options;
-
-    public CoffeeScriptProcessor(ResourceFactory resourceFactory) {
-        super(resourceFactory);
-    }
 
     public void setOptions(String... options) {
         this.options = options;

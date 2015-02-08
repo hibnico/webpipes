@@ -19,24 +19,21 @@ import java.util.List;
 
 import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.resource.Resource;
-import org.hibnet.webpipes.resource.ResourceFactory;
 import org.hibnet.webpipes.resource.pattern.AntPathMatcher;
 import org.hibnet.webpipes.resource.pattern.PatternHelper;
 import org.junit.Assert;
 
 public class AbstractProcessorTest {
 
-    protected ResourceFactory resourceFactory = new ResourceFactory();
-
     protected String commonTestFilesPattern = "/org/hibnet/webpipes/processor/test/*.js";
 
     protected String packageDir = WebpipeUtils.getPackageDir(getClass());
 
-    public void testFiles(WebpipeProcessor processor, String testExtension, String expectedExtension) throws Exception {
+    protected void testFiles(WebpipeProcessor processor, String testExtension, String expectedExtension) throws Exception {
         testFiles(packageDir, processor, testExtension, expectedExtension);
     }
 
-    public void testFiles(String dir, WebpipeProcessor processor, String testExtension, String expectedExtension) throws Exception {
+    protected void testFiles(String dir, WebpipeProcessor processor, String testExtension, String expectedExtension) throws Exception {
         testFiles(dir + "/test/*" + testExtension, dir + "/expected/*" + expectedExtension, processor);
     }
 
@@ -49,7 +46,7 @@ public class AbstractProcessorTest {
         return name;
     }
 
-    public void testFiles(String testFilesPattern, String expectedFilesPattern, WebpipeProcessor processor) throws Exception {
+    protected void testFiles(String testFilesPattern, String expectedFilesPattern, WebpipeProcessor processor) throws Exception {
         List<Resource> testFiles = PatternHelper.getClasspathResources(new AntPathMatcher(), null, testFilesPattern);
         if (testFiles.isEmpty()) {
             throw new RuntimeException("No test files");
@@ -75,7 +72,7 @@ public class AbstractProcessorTest {
         }
     }
 
-    public void testInvalidFiles(String testFilesPattern, WebpipeProcessor processor) throws Exception {
+    protected void testInvalidFiles(String testFilesPattern, WebpipeProcessor processor) throws Exception {
         List<Resource> testFiles = PatternHelper.getClasspathResources(new AntPathMatcher(), null, testFilesPattern);
         for (Resource testFile : testFiles) {
             try {

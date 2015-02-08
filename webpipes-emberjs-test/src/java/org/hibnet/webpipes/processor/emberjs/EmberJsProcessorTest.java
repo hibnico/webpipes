@@ -25,7 +25,7 @@ import org.junit.Test;
 
 public class EmberJsProcessorTest extends AbstractProcessorTest {
 
-    private WebpipeProcessor processor = new EmberJsProcessor(resourceFactory);
+    private WebpipeProcessor processor = new EmberJsProcessor();
 
     @Test
     public void testSimpleString() throws Exception {

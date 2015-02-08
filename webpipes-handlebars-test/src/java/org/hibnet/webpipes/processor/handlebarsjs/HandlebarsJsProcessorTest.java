@@ -25,7 +25,7 @@ import org.junit.Test;
 
 public class HandlebarsJsProcessorTest extends AbstractProcessorTest {
 
-    private WebpipeProcessor processor = new HandlebarsJsProcessor(resourceFactory);
+    private WebpipeProcessor processor = new HandlebarsJsProcessor();
 
     @Test
     public void testSimpleString() throws Exception {

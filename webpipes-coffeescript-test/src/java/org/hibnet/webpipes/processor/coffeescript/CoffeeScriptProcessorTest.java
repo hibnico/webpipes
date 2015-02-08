@@ -20,7 +20,7 @@ import org.junit.Test;
 
 public class CoffeeScriptProcessorTest extends AbstractProcessorTest {
 
-    private CoffeeScriptProcessor processor = new CoffeeScriptProcessor(resourceFactory);
+    private CoffeeScriptProcessor processor = new CoffeeScriptProcessor();
 
     @Test
     public void testExceptions() throws Exception {

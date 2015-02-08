@@ -17,7 +17,6 @@ package org.hibnet.webpipes.processor.jsonhpack;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.ResourceFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -29,8 +28,7 @@ public class JsonHPackProcessor extends RhinoBasedProcessor {
 
     private boolean pack;
 
-    public JsonHPackProcessor(boolean pack, ResourceFactory resourceFactory) {
-        super(resourceFactory);
+    public JsonHPackProcessor(boolean pack) {
         this.pack = pack;
     }
 
