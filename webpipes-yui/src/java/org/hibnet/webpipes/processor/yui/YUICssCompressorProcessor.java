@@ -15,18 +15,17 @@
  */
 package org.hibnet.webpipes.processor.yui;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
 import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.WebpipeProcessor;
+import org.hibnet.webpipes.processor.StatelessWebpipeProcessor;
 
 /**
  * YUICssCompressorProcessor. Use YUI css compression utility for processing a css resource.
  */
-public class YUICssCompressorProcessor extends WebpipeProcessor {
+public class YUICssCompressorProcessor extends StatelessWebpipeProcessor {
 
     /**
      * An option of CssCompressor.
@@ -34,7 +33,8 @@ public class YUICssCompressorProcessor extends WebpipeProcessor {
     private static final int linebreakpos = -1;
 
     @Override
-    public String process(Webpipe webpipe, String content) throws IOException {
+    public String process(Webpipe webpipe) throws Exception {
+        String content = webpipe.getContent();
         Writer writer = new StringWriter();
         try {
             YuiCssCompressor compressor = new YuiCssCompressor(new StringReader(content));

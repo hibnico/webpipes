@@ -15,30 +15,19 @@
  */
 package org.hibnet.webpipes.processor.handlebarsjs;
 
-import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
 
 /**
  * Compiles HandlebarsJS templates to javascript.
  */
-public class HandlebarsJsProcessor extends RhinoBasedProcessor {
+public class HandlebarsJsProcessor extends StatelessRhinoWebpipeProcessor {
 
-    @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
-        addCommon(context, globalScope);
-        evaluateFromWebjar(context, globalScope, "handlebars.js");
+    public HandlebarsJsProcessor() {
+        super(new HandlebarsJsRunner());
     }
 
-    @Override
-    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
-        String script = buildSimpleRunScript("Handlebars.precompile", content);
-        String result = evaluate(context, scope, script);
-        return "(function() { var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};templates['"
-                + getVarName(webpipe)
-                + "'] = template(" + result + " ); })();";
+    public HandlebarsJsProcessor(HandlebarsJsRunner handlebarsJsRunner) {
+        super(handlebarsJsRunner);
     }
 
 }

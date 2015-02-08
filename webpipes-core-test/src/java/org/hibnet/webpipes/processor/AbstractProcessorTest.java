@@ -29,11 +29,11 @@ public class AbstractProcessorTest {
 
     protected String packageDir = WebpipeUtils.getPackageDir(getClass());
 
-    protected void testFiles(WebpipeProcessor processor, String testExtension, String expectedExtension) throws Exception {
+    protected void testFiles(ProcessingWebpipeFactory processor, String testExtension, String expectedExtension) throws Exception {
         testFiles(packageDir, processor, testExtension, expectedExtension);
     }
 
-    protected void testFiles(String dir, WebpipeProcessor processor, String testExtension, String expectedExtension) throws Exception {
+    protected void testFiles(String dir, ProcessingWebpipeFactory processor, String testExtension, String expectedExtension) throws Exception {
         testFiles(dir + "/test/*" + testExtension, dir + "/expected/*" + expectedExtension, processor);
     }
 
@@ -46,7 +46,7 @@ public class AbstractProcessorTest {
         return name;
     }
 
-    protected void testFiles(String testFilesPattern, String expectedFilesPattern, WebpipeProcessor processor) throws Exception {
+    protected void testFiles(String testFilesPattern, String expectedFilesPattern, ProcessingWebpipeFactory processor) throws Exception {
         List<Resource> testFiles = PatternHelper.getClasspathResources(new AntPathMatcher(), null, testFilesPattern);
         if (testFiles.isEmpty()) {
             throw new RuntimeException("No test files");
@@ -62,7 +62,7 @@ public class AbstractProcessorTest {
             }
             iExpectedFile++;
             System.out.println("Testing " + testFile);
-            String result = processor.process(testFile, testFile.getContent());
+            String result = processor.createProcessingWebpipe(testFile).getContent();
             String expected = expectedFile.getContent();
 
             result = result.replaceAll("\\t", "  ").replaceAll("(\\r|\\n)+", " ").trim();
@@ -72,11 +72,11 @@ public class AbstractProcessorTest {
         }
     }
 
-    protected void testInvalidFiles(String testFilesPattern, WebpipeProcessor processor) throws Exception {
+    protected void testInvalidFiles(String testFilesPattern, ProcessingWebpipeFactory processor) throws Exception {
         List<Resource> testFiles = PatternHelper.getClasspathResources(new AntPathMatcher(), null, testFilesPattern);
         for (Resource testFile : testFiles) {
             try {
-                processor.process(testFile, testFile.getContent());
+                processor.createProcessingWebpipe(testFile).getContent();
                 Assert.fail("Expected error on " + testFile.getId());
             } catch (Exception e) {
                 // OK!

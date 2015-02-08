@@ -15,20 +15,29 @@
  */
 package org.hibnet.webpipes.processor.dustjs;
 
-import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.processor.rhino.SimpleRhinoRunner;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 
 /**
  * A processor for dustJs template framework. Uses <a href="https://github.com/linkedin/dustjs">dustjs</a> library to transform a template into plain
  * javascript.
  */
-public class DustJsProcessor extends StatelessRhinoWebpipeProcessor {
+public class DustJsRunner extends SimpleRhinoRunner {
 
-    public DustJsProcessor() {
-        super(new DustJsRunner());
+    @Override
+    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
+        addCommon(context, globalScope);
+        evaluateFromClasspath(context, globalScope, "/org/hibnet/webpipes/processor/dustjs/dust-full-1.1.1.min.js");
     }
 
-    public DustJsProcessor(DustJsRunner dustJsRunner) {
-        super(dustJsRunner);
+    @Override
+    protected String run(Webpipe webpipe, Context context, Scriptable scope) throws Exception {
+        String content = webpipe.getContent();
+        String script = buildSimpleRunScript("dust.compile", content, "'" + getVarName(webpipe) + "'");
+        return evaluate(context, scope, script);
     }
 
 }

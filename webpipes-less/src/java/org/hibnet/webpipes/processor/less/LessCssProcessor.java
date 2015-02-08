@@ -15,29 +15,19 @@
  */
 package org.hibnet.webpipes.processor.less;
 
-import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
 
 /**
  * A processor using lessCss engine: @see http://www.asual.com/lesscss/
  */
-public class LessCssProcessor extends RhinoBasedProcessor {
+public class LessCssProcessor extends StatelessRhinoWebpipeProcessor {
 
-    @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
-        addCommon(context, globalScope);
-        addClientSideEnvironment(context, globalScope);
-        evaluateFromClasspath(context, globalScope, "/org/hibnet/webpipes/processor/less/init.js");
-        evaluateFromWebjar(context, globalScope, "less.min.js");
+    public LessCssProcessor() {
+        super(new LessCssRunner());
     }
 
-    @Override
-    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
-        String script = buildSimpleRunScript("lessIt", content);
-        return evaluate(context, scope, script);
+    public LessCssProcessor(LessCssRunner lessCssRunner) {
+        super(lessCssRunner);
     }
 
 }

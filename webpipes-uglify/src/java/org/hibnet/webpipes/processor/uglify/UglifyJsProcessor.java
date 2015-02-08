@@ -16,62 +16,53 @@
 package org.hibnet.webpipes.processor.uglify;
 
 import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.hibnet.webpipes.resource.ClasspathResource;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+import org.hibnet.webpipes.processor.ProcessingWebpipe;
+import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
 /**
  * Compress js using uglifyJs utility.
  */
-public class UglifyJsProcessor extends RhinoBasedProcessor {
+public class UglifyJsProcessor {
 
-    private boolean uglify;
+    private UglifyJsRunner uglifyJsRunner;
 
-    private String reservedNames;
-
-    private ClasspathResource invokeResource;
-
-    private ClasspathResource defaultOptionsResource;
-
-    public UglifyJsProcessor(boolean uglify) {
-        this.uglify = uglify;
-        invokeResource = new ClasspathResource("invoke.js", UglifyJsProcessor.class);
-        defaultOptionsResource = new ClasspathResource("options.js", UglifyJsProcessor.class);
+    public UglifyJsProcessor() {
+        this(new UglifyJsRunner());
     }
 
-    /**
-     * some libraries rely on certain names to be used, so this option allow you to exclude such names from the mangler. For example, to keep names
-     * require and $super intact you'd specify –reserved-names "require,$super".
-     * 
-     * @param reservedNames the reservedNames to set
-     */
-    public void setReservedNames(String reservedNames) {
-        this.reservedNames = reservedNames;
+    public UglifyJsProcessor(UglifyJsRunner uglifyJsRunner) {
+        this.uglifyJsRunner = uglifyJsRunner;
     }
 
-    @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
-        evaluateFromClasspath(context, globalScope, "/org/hibnet/webpipes/processor/uglify/init.js");
-        evaluateFromClasspath(context, globalScope, "/org/hibnet/webpipes/processor/uglify/uglifyJs.min.js");
+    private final class UglifyJsWebpipe extends ProcessingWebpipe {
+
+        private boolean uglify;
+
+        private String revervedNames;
+
+        private UglifyJsWebpipe(Webpipe webpipe, boolean uglify, String revervedNames) {
+            super(webpipe);
+            this.uglify = uglify;
+            this.revervedNames = revervedNames;
+        }
+
+        @Override
+        protected String fetchContent() throws Exception {
+            return uglifyJsRunner.run(webpipe, uglify, revervedNames);
+        }
     }
 
-    @Override
-    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
-        String optionsAsJson = createOptionsAsJson();
-        String script = String.format(invokeResource.getContent(), toJSMultiLineString(content), optionsAsJson);
-        return evaluate(context, scope, script);
+    public Webpipe createProcessingWebpipe(Webpipe source, boolean uglify, String revervedNames) {
+        return new UglifyJsWebpipe(source, uglify, revervedNames);
     }
 
-    /**
-     * @return not null value representing reservedNames.
-     */
-    private String getReservedNames() {
-        return this.reservedNames == null ? "" : reservedNames;
+    public ProcessingWebpipeFactory createFactory(final boolean uglify, final String revervedNames) {
+        return new ProcessingWebpipeFactory() {
+            @Override
+            public Webpipe createProcessingWebpipe(Webpipe source) {
+                return new UglifyJsWebpipe(source, uglify, revervedNames);
+            }
+        };
     }
 
-    protected String createOptionsAsJson() throws Exception {
-        return String.format(defaultOptionsResource.getContent(), !uglify, getReservedNames());
-    }
 }

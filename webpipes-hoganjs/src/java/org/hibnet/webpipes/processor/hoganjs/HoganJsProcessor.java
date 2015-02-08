@@ -15,31 +15,20 @@
  */
 package org.hibnet.webpipes.processor.hoganjs;
 
-import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
 
 /**
  * A processor for hogan.js template framework. Uses <a href="http://twitter.github.com/hogan.js/">hogan.js</a> library to transform a template into
  * plain javascript.
  */
-public class HoganJsProcessor extends RhinoBasedProcessor {
+public class HoganJsProcessor extends StatelessRhinoWebpipeProcessor {
 
-    @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
-        addCommon(context, globalScope);
-        evaluateFromClasspath(context, globalScope, "/org/hibnet/webpipes/processor/hoganjs/hogan-2.0.0.min.js");
+    public HoganJsProcessor() {
+        super(new HoganJsRunner());
     }
 
-    @Override
-    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
-        StringBuilder script = new StringBuilder("Hogan.compile(");
-        script.append(toJSMultiLineString(content));
-        script.append(",{asString: true});");
-        String result = evaluate(context, scope, script.toString());
-        return "Hogan.cache['" + getVarName(webpipe) + "'] = " + result + ";";
+    public HoganJsProcessor(HoganJsRunner hoganJsRunner) {
+        super(hoganJsRunner);
     }
 
 }

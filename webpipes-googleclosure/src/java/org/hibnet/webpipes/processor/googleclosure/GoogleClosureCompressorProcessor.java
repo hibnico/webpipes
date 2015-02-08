@@ -15,12 +15,12 @@
  */
 package org.hibnet.webpipes.processor.googleclosure;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 
 import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.WebpipeProcessor;
+import org.hibnet.webpipes.processor.ProcessingWebpipe;
+import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
 import com.google.javascript.jscomp.CheckLevel;
 import com.google.javascript.jscomp.ClosureCodingConvention;
@@ -36,42 +36,43 @@ import com.google.javascript.jscomp.SourceFile;
  *
  * @see http://blog.bolinfest.com/2009/11/calling-closure-compiler-from-java.html
  */
-public class GoogleClosureCompressorProcessor extends WebpipeProcessor {
+public class GoogleClosureCompressorProcessor {
 
-    /**
-     * {@link CompilationLevel} to use for compression.
-     */
-    private CompilationLevel compilationLevel;
+    private final class GoogleClosureCompressorWebpipe extends ProcessingWebpipe {
 
-    /**
-     * Uses google closure compiler with default compilation level: {@link CompilationLevel#SIMPLE_OPTIMIZATIONS}
-     */
-    public GoogleClosureCompressorProcessor() {
-        this(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+        private CompilationLevel compilationLevel;
+
+        private GoogleClosureCompressorWebpipe(Webpipe webpipe, CompilationLevel compilationLevel) {
+            super(webpipe);
+            this.compilationLevel = compilationLevel;
+        }
+
+        @Override
+        protected String fetchContent() throws Exception {
+            return compile(webpipe, compilationLevel);
+        }
     }
 
-    /**
-     * @param compilationLevel
-     *            the compilationLevel to set
-     */
-    public void setCompilationLevel(CompilationLevel compilationLevel) {
-        this.compilationLevel = compilationLevel;
+    public Webpipe createProcessingWebpipe(Webpipe source, CompilationLevel compilationLevel) {
+        return new GoogleClosureCompressorWebpipe(source, compilationLevel);
     }
 
-    /**
-     * Uses google closure compiler with specified compilation level.
-     *
-     * @param compilationLevel
-     *            not null {@link CompilationLevel} enum.
-     */
-    public GoogleClosureCompressorProcessor(CompilationLevel compilationLevel) {
-        this.compilationLevel = compilationLevel;
+    public ProcessingWebpipeFactory createFactory(final CompilationLevel compilationLevel) {
+        return new ProcessingWebpipeFactory() {
+            @Override
+            public Webpipe createProcessingWebpipe(Webpipe source) {
+                return new GoogleClosureCompressorWebpipe(source, compilationLevel);
+            }
+        };
     }
 
-    @Override
-    public String process(Webpipe webpipe, String content) throws IOException {
+    private String compile(Webpipe webpipe, CompilationLevel compilationLevel) throws Exception {
+        if (compilationLevel == null) {
+            compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+        }
+        String content = webpipe.getContent();
         CompilerOptions compilerOptions = newCompilerOptions();
-        Compiler compiler = newCompiler(compilerOptions);
+        Compiler compiler = newCompiler(compilerOptions, compilationLevel);
         SourceFile[] input = new SourceFile[] { SourceFile.fromCode(webpipe.getName(), content) };
         SourceFile[] externs = getExterns(webpipe);
         if (externs == null) {
@@ -88,7 +89,7 @@ public class GoogleClosureCompressorProcessor extends WebpipeProcessor {
         return content;
     }
 
-    private Compiler newCompiler(CompilerOptions compilerOptions) {
+    private Compiler newCompiler(CompilerOptions compilerOptions, CompilationLevel compilationLevel) {
         Compiler.setLoggingLevel(Level.SEVERE);
         Compiler compiler = new Compiler();
         compilationLevel.setOptionsForCompilationLevel(compilerOptions);

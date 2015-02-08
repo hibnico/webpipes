@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014-2015 WebPipes contributors
+ *  Copyright 2015 WebPipes contributors
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13,12 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hibnet.webpipes.processor;
+package org.hibnet.webpipes.processor.rhino;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.processor.StatelessWebpipeProcessor;
 
-public abstract class WebpipeProcessor {
+public class StatelessRhinoWebpipeProcessor extends StatelessWebpipeProcessor {
 
-    public abstract String process(Webpipe webpipe, String content) throws Exception;
+    private SimpleRhinoRunner rhinoRunner;
 
+    public StatelessRhinoWebpipeProcessor(SimpleRhinoRunner rhinoRunner) {
+        this.rhinoRunner = rhinoRunner;
+    }
+
+    @Override
+    public String process(Webpipe webpipe) throws Exception {
+        return rhinoRunner.run(webpipe);
+    }
 }

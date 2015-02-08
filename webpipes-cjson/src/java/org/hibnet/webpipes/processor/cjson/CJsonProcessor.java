@@ -16,40 +16,50 @@
 package org.hibnet.webpipes.processor.cjson;
 
 import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+import org.hibnet.webpipes.processor.ProcessingWebpipe;
+import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
 /**
  * A processor using cjson compression algorithm {@link http://stevehanov.ca/blog/index.php?id=104}.
  */
-public class CJsonProcessor extends RhinoBasedProcessor {
+public class CJsonProcessor {
 
-    private boolean pack;
+    private CJsonRunner cJsonRunner;
 
-    public CJsonProcessor(boolean pack) {
-        this.pack = pack;
+    public CJsonProcessor() {
+        this(new CJsonRunner());
     }
 
-    @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
-        addCommon(context, globalScope);
-        addClientSideEnvironment(context, globalScope);
-        evaluateFromClasspath(context, globalScope, "/org/hibnet/webpipes/processor/cjson/cjson.min.js");
+    public CJsonProcessor(CJsonRunner cJsonRunner) {
+        this.cJsonRunner = cJsonRunner;
     }
 
-    @Override
-    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
-        StringBuilder script = new StringBuilder();
-        if (pack) {
-            script.append("CJSON.stringify(JSON.parse(");
-        } else {
-            script.append("JSON.stringify(CJSON.parse(");
+    private final class CJsonWebpipe extends ProcessingWebpipe {
+
+        private boolean pack;
+
+        private CJsonWebpipe(Webpipe webpipe, boolean pack) {
+            super(webpipe);
+            this.pack = pack;
         }
-        script.append(toJSMultiLineString(content));
-        script.append("));");
-        return evaluate(context, scope, script.toString());
+
+        @Override
+        protected String fetchContent() throws Exception {
+            return cJsonRunner.run(webpipe, pack);
+        }
+    }
+
+    public Webpipe createProcessingWebpipe(Webpipe source, boolean pack) {
+        return new CJsonWebpipe(source, pack);
+    }
+
+    public ProcessingWebpipeFactory createFactory(final boolean pack) {
+        return new ProcessingWebpipeFactory() {
+            @Override
+            public Webpipe createProcessingWebpipe(Webpipe source) {
+                return new CJsonWebpipe(source, pack);
+            }
+        };
     }
 
 }

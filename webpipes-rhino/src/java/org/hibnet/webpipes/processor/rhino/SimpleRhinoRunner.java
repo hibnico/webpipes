@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014-2015 WebPipes contributors
+ *  Copyright 2015 WebPipes contributors
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13,19 +13,24 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hibnet.webpipes.processor.less;
+package org.hibnet.webpipes.processor.rhino;
 
 import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
 
-/**
- * Yet another processor which compiles less to css. This implementation uses open source java library called less4j.
- */
-public class Less4jProcessor extends ProcessingWebpipeFactory {
+public abstract class SimpleRhinoRunner extends RhinoRunner {
 
-    @Override
-    public Webpipe createProcessingWebpipe(Webpipe source) {
-        return new Less4jWebpipe(source);
+    public String run(Webpipe webpipe) throws Exception {
+        Context context = enterContext();
+        try {
+            Scriptable scope = createLocalScope(context);
+            return run(webpipe, context, scope);
+        } finally {
+            Context.exit();
+        }
     }
+
+    abstract protected String run(Webpipe webpipe, Context context, Scriptable scope) throws Exception;
 
 }

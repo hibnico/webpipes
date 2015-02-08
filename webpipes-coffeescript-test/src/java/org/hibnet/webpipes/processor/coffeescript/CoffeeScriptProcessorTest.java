@@ -24,17 +24,17 @@ public class CoffeeScriptProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testExceptions() throws Exception {
-        testInvalidFiles(packageDir + "/exceptions/*.js", processor);
+        testInvalidFiles(packageDir + "/exceptions/*.js", processor.createFactory(null));
     }
 
     @Test
     public void testSimple() throws Exception {
-        testFiles(packageDir + "/simple", processor, ".js", ".js");
+        testFiles(packageDir + "/simple", processor.createFactory(null), ".js", ".js");
     }
 
     @Test
     public void testAdvanced() throws Exception {
-        testFiles(packageDir + "/advanced", processor, ".js", ".js");
+        testFiles(packageDir + "/advanced", processor.createFactory(null), ".js", ".js");
     }
 
 }

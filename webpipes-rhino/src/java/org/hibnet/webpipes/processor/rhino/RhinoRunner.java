@@ -18,7 +18,6 @@ package org.hibnet.webpipes.processor.rhino;
 import java.net.URI;
 
 import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.WebpipeProcessor;
 import org.hibnet.webpipes.resource.ClasspathResource;
 import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.WebJarHelper;
@@ -36,19 +35,19 @@ import org.mozilla.javascript.tools.ToolErrorReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class RhinoBasedProcessor extends WebpipeProcessor {
+public abstract class RhinoRunner {
 
-    protected static Resource commonsScript = new ClasspathResource("commons.js", RhinoBasedProcessor.class);
+    protected static Resource commonsScript = new ClasspathResource("commons.js", RhinoRunner.class);
 
-    protected static Resource envScript = new ClasspathResource("env.rhino.min.js", RhinoBasedProcessor.class);
+    protected static Resource envScript = new ClasspathResource("env.rhino.min.js", RhinoRunner.class);
 
-    protected static Resource cycleScript = new ClasspathResource("cycle.js", RhinoBasedProcessor.class);
+    protected static Resource cycleScript = new ClasspathResource("cycle.js", RhinoRunner.class);
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private ScriptableObject globalScope;
 
-    public RhinoBasedProcessor() {
+    public RhinoRunner() {
         Context context = enterContext();
         try {
             globalScope = context.initStandardObjects();
@@ -61,7 +60,7 @@ public abstract class RhinoBasedProcessor extends WebpipeProcessor {
         }
     }
 
-    private Context enterContext() {
+    protected Context enterContext() {
         Context context = Context.enter();
         context.setOptimizationLevel(-1);
         // TODO redirect errors from System.err to LOG.error()
@@ -85,21 +84,12 @@ public abstract class RhinoBasedProcessor extends WebpipeProcessor {
         evaluate(context, scope, cycleScript);
     }
 
-    @Override
-    public String process(Webpipe webpipe, String content) throws Exception {
-        Context context = enterContext();
-        try {
-            Scriptable scope = context.newObject(globalScope);
-            scope.setPrototype(null);
-            scope.setParentScope(globalScope);
-            content = process(context, scope, webpipe, content);
-        } finally {
-            Context.exit();
-        }
-        return content;
+    protected Scriptable createLocalScope(Context context) {
+        Scriptable scope = context.newObject(globalScope);
+        scope.setPrototype(null);
+        scope.setParentScope(globalScope);
+        return scope;
     }
-
-    abstract protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception;
 
     protected <T> T evaluate(Context context, Scriptable scope, String script, String sourceName) {
         @SuppressWarnings("unchecked")

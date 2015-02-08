@@ -20,17 +20,16 @@ import org.junit.Test;
 
 public class UglifyJsProcessorTest extends AbstractProcessorTest {
 
-    private UglifyJsProcessor processor = new UglifyJsProcessor(true);
+    private UglifyJsProcessor processor = new UglifyJsProcessor();
 
     @Test
     public void testFiles() throws Exception {
-        testFiles(commonTestFilesPattern, packageDir + "/expected/*.js", processor);
+        testFiles(commonTestFilesPattern, packageDir + "/expected/*.js", processor.createFactory(true, null));
     }
 
     @Test
     public void testReservedNames() throws Exception {
-        processor.setReservedNames("name,value");
-        testFiles(packageDir + "/reservednames", processor, ".js", ".js");
+        testFiles(packageDir + "/reservednames", processor.createFactory(true, "name,value"), ".js", ".js");
     }
 
 }

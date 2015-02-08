@@ -22,25 +22,21 @@ import com.google.javascript.jscomp.CompilationLevel;
 
 public class GoogleClosureCompressorProcessorTest extends AbstractProcessorTest {
 
+    private GoogleClosureCompressorProcessor processor = new GoogleClosureCompressorProcessor();
+
     @Test
     public void testWhiteSpaceOnly() throws Exception {
-        GoogleClosureCompressorProcessor processor = new GoogleClosureCompressorProcessor();
-        processor.setCompilationLevel(CompilationLevel.WHITESPACE_ONLY);
-        testFiles(commonTestFilesPattern, packageDir + "/expectedWhitespaceOnly/*.js", processor);
+        testFiles(commonTestFilesPattern, packageDir + "/expectedWhitespaceOnly/*.js", processor.createFactory(CompilationLevel.WHITESPACE_ONLY));
     }
 
     @Test
     public void testSimpleOptimization() throws Exception {
-        GoogleClosureCompressorProcessor processor = new GoogleClosureCompressorProcessor();
-        processor.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
-        testFiles(commonTestFilesPattern, packageDir + "/expectedSimple/*.js", processor);
+        testFiles(commonTestFilesPattern, packageDir + "/expectedSimple/*.js", processor.createFactory(CompilationLevel.SIMPLE_OPTIMIZATIONS));
     }
 
     @Test
     public void testAdvancedOptimization() throws Exception {
-        GoogleClosureCompressorProcessor processor = new GoogleClosureCompressorProcessor();
-        processor.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
-        testFiles(commonTestFilesPattern, packageDir + "/expectedAdvanced/*.js", processor);
+        testFiles(commonTestFilesPattern, packageDir + "/expectedAdvanced/*.js", processor.createFactory(CompilationLevel.ADVANCED_OPTIMIZATIONS));
     }
 
 }

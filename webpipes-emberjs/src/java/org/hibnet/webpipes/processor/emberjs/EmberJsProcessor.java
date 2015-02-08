@@ -15,34 +15,19 @@
  */
 package org.hibnet.webpipes.processor.emberjs;
 
-import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
 
 /**
  * Compiles EmberJS templates to javascript. The processor loads emberJs library and all its dependencies from the webjar.
  */
-public class EmberJsProcessor extends RhinoBasedProcessor {
+public class EmberJsProcessor extends StatelessRhinoWebpipeProcessor {
 
-    @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
-        addCommon(context, globalScope);
-        addClientSideEnvironment(context, globalScope);
-        evaluateFromWebjar(context, globalScope, "jquery.js");
-        evaluateFromWebjar(context, globalScope, "handlebars.js");
-        evaluateFromWebjar(context, globalScope, "ember.js");
-        // The Ember Template Compiler is built for CommonJs environment, but Rhino doesn't comply with CommonJs Standard There is no 'exports' object
-        // in Rhino, so this file creates it, as well as an helper function
-        evaluateFromClasspath(context, globalScope, "/org/hibnet/webpipes/processor/emberjs/headless-rhino.js");
+    public EmberJsProcessor() {
+        super(new EmberJsRunner());
     }
 
-    @Override
-    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
-        String script = buildSimpleRunScript("precompile", content);
-        String result = evaluate(context, scope, script);
-        return "(function() {Ember.TEMPLATES['" + getVarName(webpipe) + "'] = Ember.Handlebars.template(" + result + ")})();";
+    public EmberJsProcessor(EmberJsRunner emberJsRunner) {
+        super(emberJsRunner);
     }
 
 }

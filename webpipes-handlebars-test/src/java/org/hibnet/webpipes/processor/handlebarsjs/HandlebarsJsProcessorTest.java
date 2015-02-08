@@ -18,19 +18,18 @@ package org.hibnet.webpipes.processor.handlebarsjs;
 import static org.junit.Assert.assertTrue;
 
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
-import org.hibnet.webpipes.processor.WebpipeProcessor;
 import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.StringResource;
 import org.junit.Test;
 
 public class HandlebarsJsProcessorTest extends AbstractProcessorTest {
 
-    private WebpipeProcessor processor = new HandlebarsJsProcessor();
+    private HandlebarsJsProcessor processor = new HandlebarsJsProcessor();
 
     @Test
     public void testSimpleString() throws Exception {
         Resource r = new StringResource("test", "Hello {name}!");
-        String result = processor.process(r, r.getContent());
+        String result = processor.process(r);
         assertTrue(result.contains("return \"Hello {name}!\\n\";"));
     }
 

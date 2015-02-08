@@ -20,16 +20,16 @@ import org.junit.Test;
 
 public class JsonHPackProcessorTest extends AbstractProcessorTest {
 
+    private JsonHPackProcessor processor = new JsonHPackProcessor();
+
     @Test
     public void testPackFiles() throws Exception {
-        JsonHPackProcessor processor = new JsonHPackProcessor(true);
-        testFiles(packageDir + "/test/*.js", packageDir + "/pack/*.js", processor);
+        testFiles(packageDir + "/test/*.js", packageDir + "/pack/*.js", processor.createFactory(true));
     }
 
     @Test
     public void testUnpackFiles() throws Exception {
-        JsonHPackProcessor processor = new JsonHPackProcessor(false);
-        testFiles(packageDir + "/pack/*.js", packageDir + "/unpack/*.js", processor);
+        testFiles(packageDir + "/pack/*.js", packageDir + "/unpack/*.js", processor.createFactory(false));
     }
 
 }

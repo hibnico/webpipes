@@ -72,6 +72,9 @@ public abstract class Webpipe {
         return children;
     }
 
+    /**
+     * @throws IOException
+     */
     protected List<Webpipe> buildChildrenList() throws IOException {
         return NO_CHILDREN;
     }
@@ -219,7 +222,7 @@ public abstract class Webpipe {
         return sha1;
     }
 
-    protected abstract void updateDigest(MessageDigest digest) throws Exception;
+    public abstract void updateDigest(MessageDigest digest) throws Exception;
 
     protected void updateChildrenDigest(MessageDigest digest) throws Exception {
         for (Webpipe webpipe : getChildren()) {

@@ -16,42 +16,50 @@
 package org.hibnet.webpipes.processor.coffeescript;
 
 import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.rhino.RhinoBasedProcessor;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+import org.hibnet.webpipes.processor.ProcessingWebpipe;
+import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
 /**
  * Uses coffee script library loaded from the webjar to compile to javascript code.
  */
-public class CoffeeScriptProcessor extends RhinoBasedProcessor {
+public class CoffeeScriptProcessor {
 
-    private String[] options;
+    private CoffeeScriptRunner coffeeScriptRunner;
 
-    public void setOptions(String... options) {
-        this.options = options;
+    public CoffeeScriptProcessor() {
+        this(new CoffeeScriptRunner());
     }
 
-    @Override
-    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
-        evaluateFromWebjar(context, globalScope, "coffee-script.min.js");
+    public CoffeeScriptProcessor(CoffeeScriptRunner coffeeScriptRunner) {
+        this.coffeeScriptRunner = coffeeScriptRunner;
     }
 
-    @Override
-    protected String process(Context context, Scriptable scope, Webpipe webpipe, String content) throws Exception {
-        StringBuilder script = new StringBuilder("CoffeeScript.compile(");
-        script.append(toJSMultiLineString(content));
-        script.append(",{");
-        if (options != null) {
-            for (int i = 0; i < options.length; i++) {
-                script.append(options[i]).append(": true");
-                if (i < options.length - 1) {
-                    script.append(",");
-                }
-            }
+    private final class CoffeeScriptWebpipe extends ProcessingWebpipe {
+
+        private String[] options;
+
+        private CoffeeScriptWebpipe(Webpipe webpipe, String[] options) {
+            super(webpipe);
+            this.options = options;
         }
-        script.append("});");
-        return evaluate(context, scope, script.toString());
+
+        @Override
+        protected String fetchContent() throws Exception {
+            return coffeeScriptRunner.run(webpipe, options);
+        }
+    }
+
+    public Webpipe createProcessingWebpipe(Webpipe source, String[] options) {
+        return new CoffeeScriptWebpipe(source, options);
+    }
+
+    public ProcessingWebpipeFactory createFactory(final String[] options) {
+        return new ProcessingWebpipeFactory() {
+            @Override
+            public Webpipe createProcessingWebpipe(Webpipe source) {
+                return new CoffeeScriptWebpipe(source, options);
+            }
+        };
     }
 
 }

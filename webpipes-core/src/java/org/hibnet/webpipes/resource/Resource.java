@@ -36,7 +36,7 @@ public abstract class Resource extends Webpipe {
     }
 
     @Override
-    protected void updateDigest(MessageDigest digest) throws Exception {
+    public void updateDigest(MessageDigest digest) throws Exception {
         String content = getContent();
         digest.digest(content.getBytes(WebpipeUtils.UTF8));
     }

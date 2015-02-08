@@ -18,19 +18,18 @@ package org.hibnet.webpipes.processor.hoganjs;
 import static org.junit.Assert.assertTrue;
 
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
-import org.hibnet.webpipes.processor.WebpipeProcessor;
 import org.hibnet.webpipes.resource.Resource;
 import org.hibnet.webpipes.resource.StringResource;
 import org.junit.Test;
 
 public class HoganJsProcessorTest extends AbstractProcessorTest {
 
-    private WebpipeProcessor processor = new HoganJsProcessor();
+    private HoganJsProcessor processor = new HoganJsProcessor();
 
     @Test
     public void testSimpleString() throws Exception {
         Resource r = new StringResource("template", "Hello {{name}}!");
-        String result = processor.process(r, r.getContent());
+        String result = processor.process(r);
         assertTrue(result.contains("Hogan.cache['template']"));
     }
 

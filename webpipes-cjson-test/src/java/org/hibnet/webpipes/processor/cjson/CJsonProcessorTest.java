@@ -20,16 +20,16 @@ import org.junit.Test;
 
 public class CJsonProcessorTest extends AbstractProcessorTest {
 
+    CJsonProcessor processor = new CJsonProcessor();
+
     @Test
     public void testPack() throws Exception {
-        CJsonProcessor processor = new CJsonProcessor(true);
-        testFiles(packageDir + "/test/*.js", packageDir + "/pack/*.js", processor);
+        testFiles(packageDir + "/test/*.js", packageDir + "/pack/*.js", processor.createFactory(true));
     }
 
     @Test
     public void testUnpack() throws Exception {
-        CJsonProcessor processor = new CJsonProcessor(false);
-        testFiles(packageDir + "/pack/*.js", packageDir + "/unpack/*.js", processor);
+        testFiles(packageDir + "/pack/*.js", packageDir + "/unpack/*.js", processor.createFactory(false));
     }
 
 }

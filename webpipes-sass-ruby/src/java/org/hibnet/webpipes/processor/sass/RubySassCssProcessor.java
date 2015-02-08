@@ -20,13 +20,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.processor.WebpipeProcessor;
+import org.hibnet.webpipes.processor.StatelessWebpipeProcessor;
 import org.jruby.Ruby;
 import org.jruby.ast.Node;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.jruby.util.ByteList;
 
-public class RubySassCssProcessor extends WebpipeProcessor {
+public class RubySassCssProcessor extends StatelessWebpipeProcessor {
 
     private List<String> requires = new ArrayList<>(Arrays.asList("rubygems", "sass/plugin", "sass/engine"));
 
@@ -37,12 +37,14 @@ public class RubySassCssProcessor extends WebpipeProcessor {
     }
 
     @Override
-    public String process(Webpipe webpipe, String content) throws Exception {
+    public String process(Webpipe webpipe) throws Exception {
         StringBuilder script = new StringBuilder();
         for (String require : requires) {
             script.append("  require '" + require + "'\n");
         }
         script.append("result = Sass::Engine.new(\"");
+
+        String content = webpipe.getContent();
 
         for (int i = 0; i < content.length(); i++) {
             int code = content.codePointAt(i);
