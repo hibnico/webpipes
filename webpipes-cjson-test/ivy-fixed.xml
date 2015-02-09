@@ -4,7 +4,7 @@
 		module="webpipes-cjson-test"
 		revision="0.0.2"
 		status="integration"
-		publication="20150208170710"
+		publication="20150209013235"
 	>
 		<description>
 		This module contains the test for the CJSon compression algorithm.

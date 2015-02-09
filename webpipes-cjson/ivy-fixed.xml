@@ -4,7 +4,7 @@
 		module="webpipes-cjson"
 		revision="0.0.2"
 		status="integration"
-		publication="20150208170709"
+		publication="20150209013235"
 	>
 		<description>
 		This module adds support for the CJSon compression algorithm.

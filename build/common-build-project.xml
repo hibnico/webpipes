@@ -48,41 +48,41 @@ Project ${project.name}
     <target name="update-deps" depends="init,ivy:configure" description="Update dependencies (to be called on ivy-manifest.xml or MANIFEST.MF change)">
         <ivy:resolve file="${basedir}/ivy.xml" conf="*" type="jar" resolveId="update-deps" />
         <ivy:fixdeps tofile="${basedir}/ivy-fixed.xml" resolveId="update-deps">
-        	<keep org="org.hibnet" module="webpipes-bourbon" />
-        	<keep org="org.hibnet" module="webpipes-coffeescript-test" />
-        	<keep org="org.hibnet" module="webpipes-emberjs" />
-        	<keep org="org.hibnet" module="webpipes-handlebars-test" />
-        	<keep org="org.hibnet" module="webpipes-jsx-react" />
-            <keep org="org.hibnet" module="webpipes-less4j-test" />
-            <keep org="org.hibnet" module="webpipes-sass-ruby-test" />
-            <keep org="org.hibnet" module="webpipes-bourbon-test" />
-        	<keep org="org.hibnet" module="webpipes-core" />
-        	<keep org="org.hibnet" module="webpipes-emberjs-test" />
-            <keep org="org.hibnet" module="webpipes-hoganjs" />
-            <keep org="org.hibnet" module="webpipes-jsx-react-test" />
-            <keep org="org.hibnet" module="webpipes-rhino" />
-            <keep org="org.hibnet" module="webpipes-uglify" />
-            <keep org="org.hibnet" module="webpipes-cjson" />
-        	<keep org="org.hibnet" module="webpipes-core-test" />
-            <keep org="org.hibnet" module="webpipes-googleclosure" />
-            <keep org="org.hibnet" module="webpipes-hoganjs-test" />
-            <keep org="org.hibnet" module="webpipes-less" />
-            <keep org="org.hibnet" module="webpipes-sass-js" />
-            <keep org="org.hibnet" module="webpipes-uglify-test" />
-            <keep org="org.hibnet" module="webpipes-cjson-test" />
-            <keep org="org.hibnet" module="webpipes-dustjs" />
-            <keep org="org.hibnet" module="webpipes-googleclosure-test" />
-            <keep org="org.hibnet" module="webpipes-jsonhpack" />
-            <keep org="org.hibnet" module="webpipes-less-test" />
-            <keep org="org.hibnet" module="webpipes-sass-js-test" />
-            <keep org="org.hibnet" module="webpipes-yui" />
             <keep org="org.hibnet" module="webpipes-ant" />
+        	<keep org="org.hibnet" module="webpipes-bourbon" />
+            <keep org="org.hibnet" module="webpipes-bourbon-test" />
+            <keep org="org.hibnet" module="webpipes-cjson" />
+            <keep org="org.hibnet" module="webpipes-cjson-test" />
             <keep org="org.hibnet" module="webpipes-coffeescript" />
+        	<keep org="org.hibnet" module="webpipes-coffeescript-test" />
+            <keep org="org.hibnet" module="webpipes-core" />
+            <keep org="org.hibnet" module="webpipes-core-test" />
+            <keep org="org.hibnet" module="webpipes-dustjs" />
             <keep org="org.hibnet" module="webpipes-dustjs-test" />
+        	<keep org="org.hibnet" module="webpipes-emberjs" />
+            <keep org="org.hibnet" module="webpipes-emberjs-test" />
+            <keep org="org.hibnet" module="webpipes-googleclosure" />
+            <keep org="org.hibnet" module="webpipes-googleclosure-test" />
             <keep org="org.hibnet" module="webpipes-handlebars" />
+        	<keep org="org.hibnet" module="webpipes-handlebars-test" />
+            <keep org="org.hibnet" module="webpipes-hoganjs" />
+            <keep org="org.hibnet" module="webpipes-hoganjs-test" />
+            <keep org="org.hibnet" module="webpipes-jsonhpack" />
             <keep org="org.hibnet" module="webpipes-jsonhpack-test" />
+        	<keep org="org.hibnet" module="webpipes-jsx-react" />
+            <keep org="org.hibnet" module="webpipes-jsx-react-test" />
+            <keep org="org.hibnet" module="webpipes-less" />
+            <keep org="org.hibnet" module="webpipes-less-test" />
             <keep org="org.hibnet" module="webpipes-less4j" />
+            <keep org="org.hibnet" module="webpipes-less4j-test" />
+            <keep org="org.hibnet" module="webpipes-rhino" />
+            <keep org="org.hibnet" module="webpipes-sass-js" />
+            <keep org="org.hibnet" module="webpipes-sass-js-test" />
             <keep org="org.hibnet" module="webpipes-sass-ruby" />
+            <keep org="org.hibnet" module="webpipes-sass-ruby-test" />
+            <keep org="org.hibnet" module="webpipes-uglify" />
+            <keep org="org.hibnet" module="webpipes-uglify-test" />
+            <keep org="org.hibnet" module="webpipes-yui" />
             <keep org="org.hibnet" module="webpipes-yui-test" />
         </ivy:fixdeps>
     </target>

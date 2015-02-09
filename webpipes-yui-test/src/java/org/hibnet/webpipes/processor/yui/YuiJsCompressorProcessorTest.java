@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014-2015 WebPipes contributors
+ *  Copyright 2015 WebPipes contributors
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,22 +16,20 @@
 package org.hibnet.webpipes.processor.yui;
 
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
-import org.hibnet.webpipes.resource.Resource;
-import org.hibnet.webpipes.resource.StringResource;
 import org.junit.Test;
 
-public class YuiCssCompressorProcessorTest extends AbstractProcessorTest {
+public class YuiJsCompressorProcessorTest extends AbstractProcessorTest {
 
-    private YuiCssCompressorProcessor processor = new YuiCssCompressorProcessor();
+    private YuiJsCompressorProcessor processor = new YuiJsCompressorProcessor();
 
     @Test
-    public void testFiles() throws Exception {
-        testFiles(processor.createFactory(-1), ".css", ".css");
+    public void testMunge() throws Exception {
+        testFiles(commonTestFilesPattern, packageDir + "/expectedMunge/*.js", processor.createFactory(-1, true, false, false, false));
     }
 
     @Test
-    public void testInvalidCss() throws Exception {
-        Resource r = new StringResource("test", "invalid CSS!!@#!@#!");
-        processor.createFactory(-1).createProcessingWebpipe(r).getContent();
+    public void testNomunge() throws Exception {
+        testFiles(commonTestFilesPattern, packageDir + "/expectedNomunge/*.js", processor.createFactory(-1, false, false, false, false));
     }
+
 }

@@ -23,15 +23,24 @@ import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
-public class YuiCssCompressorProcessor {
+public class YuiJsCompressorProcessor {
 
-    private final class YuiCssCompressorWebpipe extends ProcessingWebpipe {
+    private final class YuiJsCompressorWebpipe extends ProcessingWebpipe {
 
         private int linebreak;
+        private boolean munge;
+        private boolean verbose;
+        private boolean preserveAllSemiColons;
+        private boolean disableOptimizations;
 
-        private YuiCssCompressorWebpipe(Webpipe webpipe, int linebreak) {
+        private YuiJsCompressorWebpipe(Webpipe webpipe, int linebreak, boolean munge, boolean verbose, boolean preserveAllSemiColons,
+                boolean disableOptimizations) {
             super(webpipe);
             this.linebreak = linebreak;
+            this.munge = munge;
+            this.verbose = verbose;
+            this.preserveAllSemiColons = preserveAllSemiColons;
+            this.disableOptimizations = disableOptimizations;
         }
 
         @Override
@@ -39,7 +48,8 @@ public class YuiCssCompressorProcessor {
             String content = webpipe.getContent();
             Writer writer = new StringWriter();
             try {
-                YuiProxy.Instance.compressCSS(new StringReader(content), writer, linebreak);
+                YuiProxy.Instance.compressJavascript(new StringReader(content), writer, linebreak, munge, verbose, preserveAllSemiColons,
+                        disableOptimizations);
                 content = writer.toString();
             } finally {
                 writer.close();
@@ -48,15 +58,17 @@ public class YuiCssCompressorProcessor {
         }
     }
 
-    public Webpipe createProcessingWebpipe(Webpipe source, int linebreak) {
-        return new YuiCssCompressorWebpipe(source, linebreak);
+    public Webpipe createProcessingWebpipe(Webpipe source, int linebreak, boolean munge, boolean verbose, boolean preserveAllSemiColons,
+            boolean disableOptimizations) {
+        return new YuiJsCompressorWebpipe(source, linebreak, munge, verbose, preserveAllSemiColons, disableOptimizations);
     }
 
-    public ProcessingWebpipeFactory createFactory(final int linebreak) {
+    public ProcessingWebpipeFactory createFactory(final int linebreak, final boolean munge, final boolean verbose,
+            final boolean preserveAllSemiColons, final boolean disableOptimizations) {
         return new ProcessingWebpipeFactory() {
             @Override
             public Webpipe createProcessingWebpipe(Webpipe source) {
-                return new YuiCssCompressorWebpipe(source, linebreak);
+                return new YuiJsCompressorWebpipe(source, linebreak, munge, verbose, preserveAllSemiColons, disableOptimizations);
             }
         };
     }

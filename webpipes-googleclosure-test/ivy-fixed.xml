@@ -4,7 +4,7 @@
 		module="webpipes-googleclosure-test"
 		revision="0.0.2"
 		status="integration"
-		publication="20150208170711"
+		publication="20150209013237"
 	>
 		<description>
 		This module contains the tests for the Closure Compiler by Google.
