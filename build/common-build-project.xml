@@ -55,6 +55,8 @@ Project ${project.name}
             <keep org="org.hibnet" module="webpipes-cjson-test" />
             <keep org="org.hibnet" module="webpipes-coffeescript" />
         	<keep org="org.hibnet" module="webpipes-coffeescript-test" />
+            <keep org="org.hibnet" module="webpipes-coffeescript-sourcemap" />
+            <keep org="org.hibnet" module="webpipes-coffeescript-sourcemap-test" />
             <keep org="org.hibnet" module="webpipes-core" />
             <keep org="org.hibnet" module="webpipes-core-test" />
             <keep org="org.hibnet" module="webpipes-dustjs" />
