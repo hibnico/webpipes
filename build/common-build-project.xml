@@ -82,6 +82,8 @@ Project ${project.name}
             <keep org="org.hibnet" module="webpipes-sass-ruby-test" />
             <keep org="org.hibnet" module="webpipes-uglify" />
             <keep org="org.hibnet" module="webpipes-uglify-test" />
+            <keep org="org.hibnet" module="webpipes-uglify2" />
+            <keep org="org.hibnet" module="webpipes-uglify2-test" />
             <keep org="org.hibnet" module="webpipes-yui" />
             <keep org="org.hibnet" module="webpipes-yui-test" />
         </ivy:fixdeps>
