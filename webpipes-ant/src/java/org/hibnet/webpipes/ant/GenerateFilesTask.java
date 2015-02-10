@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
 
 public class GenerateFilesTask extends Task {
 
@@ -99,7 +100,7 @@ public class GenerateFilesTask extends Task {
                 throw new BuildException("The method 'buildWebpipes' on " + webpipesBuilder + " is not returning a List<Webpipe>", e);
             }
             for (Webpipe webpipe : webpipes) {
-                String content;
+                WebpipeOutput content;
                 try {
                     content = webpipe.getContent();
                 } catch (Exception e) {
@@ -116,7 +117,7 @@ public class GenerateFilesTask extends Task {
                 }
                 try (OutputStream out = new FileOutputStream(dest)) {
                     log("Generating " + dest.getAbsolutePath());
-                    out.write(content.getBytes(encoding));
+                    out.write(content.getMain().getBytes(encoding));
                 } catch (IOException e) {
                     throw new BuildException("IO error while writing the file " + dest.getAbsolutePath(), e);
                 }

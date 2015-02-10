@@ -1,6 +1,7 @@
 package org.hibnet.webpipes.processor;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
 
 public abstract class StatelessWebpipeProcessor extends ProcessingWebpipeFactory {
 
@@ -8,12 +9,12 @@ public abstract class StatelessWebpipeProcessor extends ProcessingWebpipeFactory
     public Webpipe createProcessingWebpipe(Webpipe source) {
         return new ProcessingWebpipe(source) {
             @Override
-            protected String fetchContent() throws Exception {
+            protected WebpipeOutput fetchContent() throws Exception {
                 return process(webpipe);
             }
         };
     }
 
-    public abstract String process(Webpipe webpipe) throws Exception;
+    public abstract WebpipeOutput process(Webpipe webpipe) throws Exception;
 
 }

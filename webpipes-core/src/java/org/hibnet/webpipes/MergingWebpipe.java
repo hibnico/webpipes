@@ -37,7 +37,7 @@ public class MergingWebpipe extends Webpipe {
     }
 
     @Override
-    protected String fetchContent() throws Exception {
+    protected WebpipeOutput fetchContent() throws Exception {
         return fetchChildrenContent();
     }
 

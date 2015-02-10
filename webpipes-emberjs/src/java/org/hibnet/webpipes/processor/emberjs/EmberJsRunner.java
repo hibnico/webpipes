@@ -40,7 +40,7 @@ public class EmberJsRunner extends SimpleRhinoRunner {
 
     @Override
     protected String run(Webpipe webpipe, Context context, Scriptable scope) throws Exception {
-        String content = webpipe.getContent();
+        String content = webpipe.getContent().getMain();
         String script = buildSimpleRunScript("precompile", content);
         String result = evaluate(context, scope, script);
         return "(function() {Ember.TEMPLATES['" + getVarName(webpipe) + "'] = Ember.Handlebars.template(" + result + ")})();";

@@ -16,6 +16,7 @@
 package org.hibnet.webpipes.processor.uglify;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
@@ -47,8 +48,8 @@ public class UglifyJsProcessor {
         }
 
         @Override
-        protected String fetchContent() throws Exception {
-            return uglifyJsRunner.run(webpipe, uglify, revervedNames);
+        protected WebpipeOutput fetchContent() throws Exception {
+            return new WebpipeOutput(uglifyJsRunner.run(webpipe, uglify, revervedNames));
         }
     }
 

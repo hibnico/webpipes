@@ -34,11 +34,11 @@ public abstract class Webpipe {
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    private static final String NOT_INITIALIZED_CONTENT = "";
+    private static final WebpipeOutput NOT_INITIALIZED_CONTENT = new WebpipeOutput("");
 
-    public static final String NO_CONTENT = "";
+    public static final WebpipeOutput NO_CONTENT = new WebpipeOutput("");
 
-    private static final String INVALIDATED_CONTENT = "";
+    private static final WebpipeOutput INVALIDATED_CONTENT = new WebpipeOutput("");
 
     private static final List<Webpipe> NOT_INITIALIZED_CHILDREN = new ArrayList<>();
 
@@ -48,7 +48,7 @@ public abstract class Webpipe {
 
     private File cacheDir;
 
-    private volatile String content = NO_CONTENT;
+    private volatile WebpipeOutput content = NO_CONTENT;
 
     private List<Webpipe> children;
 
@@ -128,7 +128,7 @@ public abstract class Webpipe {
         }
     }
 
-    public final String getContent() throws Exception {
+    public final WebpipeOutput getContent() throws Exception {
         if (content == NOT_INITIALIZED_CONTENT || content == INVALIDATED_CONTENT) {
             synchronized (content) {
                 if (content == NOT_INITIALIZED_CONTENT) {
@@ -146,18 +146,18 @@ public abstract class Webpipe {
         return content;
     }
 
-    abstract protected String fetchContent() throws Exception;
+    abstract protected WebpipeOutput fetchContent() throws Exception;
 
-    protected String fetchChildrenContent() throws Exception {
+    protected WebpipeOutput fetchChildrenContent() throws Exception {
         StringBuilder buffer = new StringBuilder();
         for (Webpipe webpipe : getChildren()) {
             buffer.append(webpipe.getContent());
             buffer.append("\n");
         }
-        return buffer.toString();
+        return new WebpipeOutput(buffer.toString());
     }
 
-    private String readContent() throws Exception {
+    private WebpipeOutput readContent() throws Exception {
         if (cacheDir == null) {
             // no durable cache configured
             return NOT_INITIALIZED_CONTENT;
@@ -182,7 +182,7 @@ public abstract class Webpipe {
 
         // same sha1, get the content out
         byte[] data = readFile(new File(cacheDir, getId() + ".txt"));
-        return new String(data, WebpipeUtils.UTF8);
+        return new WebpipeOutput(new String(data, WebpipeUtils.UTF8));
     }
 
     private byte[] readFile(File file) throws IOException, FileNotFoundException {
@@ -198,7 +198,7 @@ public abstract class Webpipe {
         return data;
     }
 
-    private void storeContent(String content) throws Exception {
+    private void storeContent(WebpipeOutput content) throws Exception {
         if (cacheDir == null) {
             // no durable cache configured
             return;
@@ -211,7 +211,7 @@ public abstract class Webpipe {
         }
 
         try (OutputStream out = new FileOutputStream(new File(cacheDir, getId() + ".txt"))) {
-            out.write(content.getBytes(WebpipeUtils.UTF8));
+            out.write(content.getMain().getBytes(WebpipeUtils.UTF8));
         }
     }
 

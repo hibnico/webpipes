@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.processor.StatelessWebpipeProcessor;
 import org.jruby.Ruby;
 import org.jruby.ast.Node;
@@ -37,14 +38,14 @@ public class RubySassCssProcessor extends StatelessWebpipeProcessor {
     }
 
     @Override
-    public String process(Webpipe webpipe) throws Exception {
+    public WebpipeOutput process(Webpipe webpipe) throws Exception {
         StringBuilder script = new StringBuilder();
         for (String require : requires) {
             script.append("  require '" + require + "'\n");
         }
         script.append("result = Sass::Engine.new(\"");
 
-        String content = webpipe.getContent();
+        String content = webpipe.getContent().getMain();
 
         for (int i = 0; i < content.length(); i++) {
             int code = content.codePointAt(i);
@@ -75,7 +76,7 @@ public class RubySassCssProcessor extends StatelessWebpipeProcessor {
         Ruby runtime = Ruby.newInstance();
         Node node = runtime.parse(ByteList.create(script), webpipe.getName(), runtime.getCurrentContext().getCurrentScope(), 0, false);
         IRubyObject result = runtime.runNormally(node);
-        return result.toString();
+        return new WebpipeOutput(result.toString());
     }
 
 }

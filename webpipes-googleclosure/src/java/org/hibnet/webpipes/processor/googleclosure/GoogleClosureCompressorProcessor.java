@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
@@ -48,8 +49,8 @@ public class GoogleClosureCompressorProcessor {
         }
 
         @Override
-        protected String fetchContent() throws Exception {
-            return compile(webpipe, compilationLevel);
+        protected WebpipeOutput fetchContent() throws Exception {
+            return new WebpipeOutput(compile(webpipe, compilationLevel));
         }
     }
 
@@ -70,7 +71,7 @@ public class GoogleClosureCompressorProcessor {
         if (compilationLevel == null) {
             compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS;
         }
-        String content = webpipe.getContent();
+        String content = webpipe.getContent().getMain();
         CompilerOptions compilerOptions = newCompilerOptions();
         Compiler compiler = newCompiler(compilerOptions, compilationLevel);
         SourceFile[] input = new SourceFile[] { SourceFile.fromCode(webpipe.getName(), content) };

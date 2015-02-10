@@ -22,6 +22,8 @@ import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import org.hibnet.webpipes.WebpipeOutput;
+
 public abstract class StreamResource extends Resource {
 
     private Charset encoding = StandardCharsets.UTF_8;
@@ -31,7 +33,7 @@ public abstract class StreamResource extends Resource {
     }
 
     @Override
-    public String fetchContent() throws IOException {
+    public WebpipeOutput fetchContent() throws IOException {
         try (InputStream is = fetchStream()) {
             InputStreamReader reader = new InputStreamReader(is, encoding);
             StringWriter writer = new StringWriter();
@@ -40,7 +42,7 @@ public abstract class StreamResource extends Resource {
             while (-1 != (n = reader.read(buffer))) {
                 writer.write(buffer, 0, n);
             }
-            return writer.toString();
+            return new WebpipeOutput(writer.toString());
         }
     }
 

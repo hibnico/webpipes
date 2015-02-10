@@ -16,7 +16,7 @@ public class CJsonRunner extends RhinoRunner {
     }
 
     public String run(Webpipe webpipe, boolean pack) throws Exception {
-        String content = webpipe.getContent();
+        String content = webpipe.getContent().getMain();
         Context context = enterContext();
         try {
             Scriptable scope = createLocalScope(context);

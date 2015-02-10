@@ -43,12 +43,12 @@ public class UglifyJsRunner extends RhinoRunner {
     }
 
     public String run(Webpipe webpipe, boolean uglify, String reservedNames) throws Exception {
-        String content = webpipe.getContent();
+        String content = webpipe.getContent().getMain();
         Context context = enterContext();
         try {
             Scriptable scope = createLocalScope(context);
-            String optionsAsJson = String.format(defaultOptionsResource.getContent(), !uglify, reservedNames);
-            String script = String.format(invokeResource.getContent(), toJSMultiLineString(content), optionsAsJson);
+            String optionsAsJson = String.format(defaultOptionsResource.getContent().getMain(), !uglify, reservedNames);
+            String script = String.format(invokeResource.getContent().getMain(), toJSMultiLineString(content), optionsAsJson);
             return evaluate(context, scope, script);
         } finally {
             Context.exit();

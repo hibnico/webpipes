@@ -32,7 +32,7 @@ public class JSXReactRunner extends SimpleRhinoRunner {
 
     @Override
     protected String run(Webpipe webpipe, Context context, Scriptable scope) throws Exception {
-        String content = webpipe.getContent();
+        String content = webpipe.getContent().getMain();
         String script = buildSimpleRunScript("JSXTransformer.transform", content) + ".code";
         String result = evaluate(context, scope, script);
         return result;

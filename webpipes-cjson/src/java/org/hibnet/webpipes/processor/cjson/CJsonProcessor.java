@@ -16,6 +16,7 @@
 package org.hibnet.webpipes.processor.cjson;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
@@ -44,8 +45,8 @@ public class CJsonProcessor {
         }
 
         @Override
-        protected String fetchContent() throws Exception {
-            return cJsonRunner.run(webpipe, pack);
+        protected WebpipeOutput fetchContent() throws Exception {
+            return new WebpipeOutput(cJsonRunner.run(webpipe, pack));
         }
     }
 

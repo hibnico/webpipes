@@ -20,6 +20,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
@@ -35,8 +36,8 @@ public class YuiCssCompressorProcessor {
         }
 
         @Override
-        protected String fetchContent() throws Exception {
-            String content = webpipe.getContent();
+        protected WebpipeOutput fetchContent() throws Exception {
+            String content = webpipe.getContent().getMain();
             Writer writer = new StringWriter();
             try {
                 YuiProxy.Instance.compressCSS(new StringReader(content), writer, linebreak);
@@ -44,7 +45,7 @@ public class YuiCssCompressorProcessor {
             } finally {
                 writer.close();
             }
-            return content;
+            return new WebpipeOutput(content);
         }
     }
 

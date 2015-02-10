@@ -34,7 +34,7 @@ public class RhinoSassCssRunner extends SimpleRhinoRunner {
 
     @Override
     protected String run(Webpipe webpipe, Context context, Scriptable scope) throws Exception {
-        String content = webpipe.getContent();
+        String content = webpipe.getContent().getMain();
         String script = buildSimpleRunScript("exports.render", content);
         return evaluate(context, scope, script);
     }

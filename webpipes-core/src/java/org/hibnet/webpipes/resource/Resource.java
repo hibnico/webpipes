@@ -19,6 +19,7 @@ import java.net.URI;
 import java.security.MessageDigest;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.WebpipeUtils;
 
 /**
@@ -37,8 +38,8 @@ public abstract class Resource extends Webpipe {
 
     @Override
     public void updateDigest(MessageDigest digest) throws Exception {
-        String content = getContent();
-        digest.digest(content.getBytes(WebpipeUtils.UTF8));
+        WebpipeOutput content = getContent();
+        digest.digest(content.getMain().getBytes(WebpipeUtils.UTF8));
     }
 
 }

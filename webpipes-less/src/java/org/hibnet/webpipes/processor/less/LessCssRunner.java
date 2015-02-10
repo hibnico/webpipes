@@ -36,7 +36,7 @@ public class LessCssRunner extends SimpleRhinoRunner {
 
     @Override
     protected String run(Webpipe webpipe, Context context, Scriptable scope) throws Exception {
-        String content = webpipe.getContent();
+        String content = webpipe.getContent().getMain();
         String script = buildSimpleRunScript("lessIt", content);
         return evaluate(context, scope, script);
     }

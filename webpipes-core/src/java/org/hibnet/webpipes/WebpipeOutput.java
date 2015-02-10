@@ -13,22 +13,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hibnet.webpipes.processor.rhino;
+package org.hibnet.webpipes;
 
-import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.WebpipeOutput;
-import org.hibnet.webpipes.processor.StatelessWebpipeProcessor;
+public class WebpipeOutput {
 
-public class StatelessRhinoWebpipeProcessor extends StatelessWebpipeProcessor {
+    private String main;
 
-    private SimpleRhinoRunner rhinoRunner;
+    private String sourceMap;
 
-    public StatelessRhinoWebpipeProcessor(SimpleRhinoRunner rhinoRunner) {
-        this.rhinoRunner = rhinoRunner;
+    public WebpipeOutput(String main) {
+        this.main = main;
     }
 
-    @Override
-    public WebpipeOutput process(Webpipe webpipe) throws Exception {
-        return new WebpipeOutput(rhinoRunner.run(webpipe));
+    public WebpipeOutput(String main, String sourceMap) {
+        this.main = main;
+        this.sourceMap = sourceMap;
+    }
+
+    public String getMain() {
+        return main;
+    }
+
+    public String getSourceMap() {
+        return sourceMap;
     }
 }

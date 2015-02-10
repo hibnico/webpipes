@@ -16,6 +16,7 @@
 package org.hibnet.webpipes.processor.coffeescript;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
@@ -44,8 +45,8 @@ public class CoffeeScriptProcessor {
         }
 
         @Override
-        protected String fetchContent() throws Exception {
-            return coffeeScriptRunner.run(webpipe, options);
+        protected WebpipeOutput fetchContent() throws Exception {
+            return new WebpipeOutput(coffeeScriptRunner.run(webpipe, options));
         }
     }
 

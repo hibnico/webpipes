@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.resource.Resource;
 
 public class FilePatternResource extends Resource {
@@ -62,7 +63,7 @@ public class FilePatternResource extends Resource {
     }
 
     @Override
-    protected String fetchContent() throws Exception {
+    protected WebpipeOutput fetchContent() throws Exception {
         return fetchChildrenContent();
     }
 

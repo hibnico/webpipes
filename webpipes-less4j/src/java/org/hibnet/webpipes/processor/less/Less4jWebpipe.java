@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.resource.Resource;
 import org.slf4j.Logger;
@@ -42,7 +43,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
             try {
                 Resource relativeResource = resource.resolve(relativePath);
                 importedResources.add(relativeResource);
-                return new RelativeAwareLessSource(relativeResource, relativeResource.getContent());
+                return new RelativeAwareLessSource(relativeResource, relativeResource.getContent().getMain());
             } catch (Exception e) {
                 LOG.error("Failed to compute relative resource: {}", resource, e);
                 throw new StringSourceException();
@@ -55,11 +56,11 @@ public class Less4jWebpipe extends ProcessingWebpipe {
     }
 
     @Override
-    protected String fetchContent() throws Exception {
+    protected WebpipeOutput fetchContent() throws Exception {
         synchronized (importedResources) {
             importedResources.clear();
 
-            String content = webpipe.getContent();
+            String content = webpipe.getContent().getMain();
             StringSource lessSource;
             if (webpipe instanceof Resource) {
                 lessSource = new RelativeAwareLessSource((Resource) webpipe, content);
@@ -68,8 +69,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
             }
             CompilationResult result = compiler.compile(lessSource);
             logWarnings(result);
-            content = result.getCss();
-            return content;
+            return new WebpipeOutput(result.getCss(), result.getSourceMap());
         }
     }
 

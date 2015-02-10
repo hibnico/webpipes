@@ -102,7 +102,7 @@ public abstract class RhinoRunner {
     }
 
     protected <T> T evaluate(Context context, Scriptable scope, Resource script) throws Exception {
-        return evaluate(context, scope, script.getContent(), script.getName());
+        return evaluate(context, scope, script.getContent().getMain(), script.getName());
     }
 
     protected <T> T evaluateFromClasspath(Context context, Scriptable scope, String path) throws Exception {
@@ -119,7 +119,7 @@ public abstract class RhinoRunner {
         requireBuilder.setModuleScriptProvider(new ModuleScriptProvider() {
             @Override
             public ModuleScript getModuleScript(Context cx, String moduleId, URI moduleUri, URI baseUri, Scriptable paths) throws Exception {
-                Script script = cx.compileString(moduleResource.getContent(), moduleResource.getName(), 1, null);
+                Script script = cx.compileString(moduleResource.getContent().getMain(), moduleResource.getName(), 1, null);
                 return new ModuleScript(script, URI.create(moduleResource.getName()), URI.create(moduleResource.getName()));
             }
         });

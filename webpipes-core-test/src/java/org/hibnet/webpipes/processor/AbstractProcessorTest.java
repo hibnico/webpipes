@@ -62,8 +62,8 @@ public class AbstractProcessorTest {
             }
             iExpectedFile++;
             System.out.println("Testing " + testFile);
-            String result = processor.createProcessingWebpipe(testFile).getContent();
-            String expected = expectedFile.getContent();
+            String result = processor.createProcessingWebpipe(testFile).getContent().getMain();
+            String expected = expectedFile.getContent().getMain();
 
             result = result.replaceAll("\\t", "  ").replaceAll("(\\r|\\n)+", " ").trim();
             expected = expected.replaceAll("\\t", "  ").replaceAll("(\\r|\\n)+", " ").trim();
