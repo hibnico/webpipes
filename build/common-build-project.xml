@@ -78,6 +78,7 @@ Project ${project.name}
             <keep org="org.hibnet" module="webpipes-less4j" />
             <keep org="org.hibnet" module="webpipes-less4j-test" />
             <keep org="org.hibnet" module="webpipes-rhino" />
+            <keep org="org.hibnet" module="webpipes-rhino-test" />
             <keep org="org.hibnet" module="webpipes-sass-js" />
             <keep org="org.hibnet" module="webpipes-sass-js-test" />
             <keep org="org.hibnet" module="webpipes-sass-ruby" />

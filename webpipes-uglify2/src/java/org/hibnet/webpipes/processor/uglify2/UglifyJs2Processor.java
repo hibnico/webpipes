@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hibnet.webpipes.processor.uglify;
+package org.hibnet.webpipes.processor.uglify2;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
@@ -23,45 +23,42 @@ import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 /**
  * Compress js using uglifyJs utility.
  */
-public class UglifyJsProcessor {
+public class UglifyJs2Processor {
 
-    private UglifyJsRunner uglifyJsRunner;
+    private UglifyJs2Runner uglifyJs2Runner;
 
-    public UglifyJsProcessor() {
-        this(new UglifyJsRunner());
+    public UglifyJs2Processor() {
+        this(new UglifyJs2Runner());
     }
 
-    public UglifyJsProcessor(UglifyJsRunner uglifyJsRunner) {
-        this.uglifyJsRunner = uglifyJsRunner;
+    public UglifyJs2Processor(UglifyJs2Runner uglifyJs2Runner) {
+        this.uglifyJs2Runner = uglifyJs2Runner;
     }
 
-    private final class UglifyJsWebpipe extends ProcessingWebpipe {
+    private final class UglifyJs2Webpipe extends ProcessingWebpipe {
 
         private boolean uglify;
 
-        private String revervedNames;
-
-        private UglifyJsWebpipe(Webpipe webpipe, boolean uglify, String revervedNames) {
+        private UglifyJs2Webpipe(Webpipe webpipe, boolean uglify) {
             super(webpipe);
             this.uglify = uglify;
-            this.revervedNames = revervedNames;
         }
 
         @Override
         protected WebpipeOutput fetchContent() throws Exception {
-            return new WebpipeOutput(uglifyJsRunner.run(webpipe, uglify, revervedNames));
+            return new WebpipeOutput(uglifyJs2Runner.run(webpipe, uglify));
         }
     }
 
-    public Webpipe createProcessingWebpipe(Webpipe source, boolean uglify, String revervedNames) {
-        return new UglifyJsWebpipe(source, uglify, revervedNames);
+    public Webpipe createProcessingWebpipe(Webpipe source, boolean uglify) {
+        return new UglifyJs2Webpipe(source, uglify);
     }
 
-    public ProcessingWebpipeFactory createFactory(final boolean uglify, final String revervedNames) {
+    public ProcessingWebpipeFactory createFactory(final boolean uglify) {
         return new ProcessingWebpipeFactory() {
             @Override
             public Webpipe createProcessingWebpipe(Webpipe source) {
-                return new UglifyJsWebpipe(source, uglify, revervedNames);
+                return new UglifyJs2Webpipe(source, uglify);
             }
         };
     }

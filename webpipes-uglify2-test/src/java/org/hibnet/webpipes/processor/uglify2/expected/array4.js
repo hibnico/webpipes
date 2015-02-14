@@ -1,0 +1,1 @@
+(function(){function e(){}(function(){return new e(1,2,3)})()})()

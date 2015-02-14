@@ -4,7 +4,7 @@
 		module="webpipes-sass-ruby"
 		revision="0.0.2"
 		status="integration"
-		publication="20150209013233"
+		publication="20150213235242"
 	>
 		<description>
 		This module adds support for SASS with a Ruby library.

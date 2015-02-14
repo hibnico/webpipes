@@ -18,7 +18,6 @@ package org.hibnet.webpipes.processor.less;
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.rhino.SimpleRhinoRunner;
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
 /**
@@ -35,7 +34,7 @@ public class LessCssRunner extends SimpleRhinoRunner {
     }
 
     @Override
-    protected String run(Webpipe webpipe, Context context, Scriptable scope) throws Exception {
+    protected String run(Webpipe webpipe, Context context, ScriptableObject scope) throws Exception {
         String content = webpipe.getContent().getMain();
         String script = buildSimpleRunScript("lessIt", content);
         return evaluate(context, scope, script);

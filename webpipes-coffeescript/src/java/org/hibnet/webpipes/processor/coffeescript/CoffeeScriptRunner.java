@@ -18,7 +18,6 @@ package org.hibnet.webpipes.processor.coffeescript;
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.rhino.RhinoRunner;
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
 /**
@@ -35,7 +34,7 @@ public class CoffeeScriptRunner extends RhinoRunner {
         String content = webpipe.getContent().getMain();
         Context context = enterContext();
         try {
-            Scriptable scope = createLocalScope(context);
+            ScriptableObject scope = createLocalScope(context);
             StringBuilder script = new StringBuilder("CoffeeScript.compile(");
             script.append(toJSMultiLineString(content));
             script.append(",{");

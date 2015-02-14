@@ -4,7 +4,7 @@
 		module="webpipes-emberjs-test"
 		revision="0.0.2"
 		status="integration"
-		publication="20150209013237"
+		publication="20150213235246"
 	>
 		<description>
 		This module contains the tests for Ember.js.
@@ -29,6 +29,8 @@
 		<dependency org="org.webjars" name="emberjs" rev="1.7.0" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="rjs" rev="2.1.15" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="source-map" rev="0.1.31-2" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="jquery" rev="1.10.2-1" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
 		<dependency org="org.webjars" name="handlebars" rev="1.3.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
 	</dependencies>

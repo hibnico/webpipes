@@ -18,7 +18,6 @@ package org.hibnet.webpipes.processor.sass;
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.processor.rhino.SimpleRhinoRunner;
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
 /**
@@ -33,7 +32,7 @@ public class RhinoSassCssRunner extends SimpleRhinoRunner {
     }
 
     @Override
-    protected String run(Webpipe webpipe, Context context, Scriptable scope) throws Exception {
+    protected String run(Webpipe webpipe, Context context, ScriptableObject scope) throws Exception {
         String content = webpipe.getContent().getMain();
         String script = buildSimpleRunScript("exports.render", content);
         return evaluate(context, scope, script);

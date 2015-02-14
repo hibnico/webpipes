@@ -4,7 +4,7 @@
 		module="webpipes-coffeescript-test"
 		revision="0.0.2"
 		status="integration"
-		publication="20150209013236"
+		publication="20150213235246"
 	>
 		<description>
 		This module contains the tests for CoffeeScript.
@@ -29,5 +29,7 @@
 		<dependency org="org.webjars" name="coffee-script" rev="1.8.0" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="rjs" rev="2.1.15" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="source-map" rev="0.1.31-2" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 	</dependencies>
 </ivy-module>

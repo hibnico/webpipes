@@ -35,13 +35,24 @@ import org.mozilla.javascript.tools.ToolErrorReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class RhinoRunner {
+public class RhinoRunner {
 
     protected static Resource commonsScript = new ClasspathResource("commons.js", RhinoRunner.class);
 
     protected static Resource envScript = new ClasspathResource("env.rhino.min.js", RhinoRunner.class);
 
     protected static Resource cycleScript = new ClasspathResource("cycle.js", RhinoRunner.class);
+
+    private static String rjsScript;
+    static {
+        try {
+            rjsScript = WebJarHelper.getResource("r.js").getContent().getMain();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        // script out the f**** non js header
+        rjsScript = rjsScript.substring(rjsScript.indexOf('\n'));
+    }
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -69,51 +80,91 @@ public abstract class RhinoRunner {
         return context;
     }
 
-    abstract protected void initScope(Context context, ScriptableObject globalScope) throws Exception;
+    protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
+        // nothing to init by default
+    }
 
-    protected void addCommon(Context context, Scriptable scope) throws Exception {
+    protected void addCommon(Context context, ScriptableObject scope) throws Exception {
         evaluate(context, scope, commonsScript);
     }
 
-    protected void addClientSideEnvironment(Context context, Scriptable scope) throws Exception {
+    protected void addClientSideEnvironment(Context context, ScriptableObject scope) throws Exception {
         evaluate(context, scope, envScript);
     }
 
-    public void addJSON(Context context, Scriptable scope) throws Exception {
+    protected void addRequireJS(Context context, ScriptableObject scope) throws Exception {
+        addRequire(context, scope, new JsRequireHelper(RhinoRunner.class));
+    }
+
+    protected void addRequireJS(Context context, ScriptableObject scope, Class<?> clazz) throws Exception {
+        addRequire(context, scope, new JsRequireHelper(clazz));
+    }
+
+    protected void addRequire(Context context, ScriptableObject scope, ClassLoader cl) throws Exception {
+        addRequire(context, scope, new JsRequireHelper(cl));
+    }
+
+    private void addRequire(Context context, ScriptableObject scope, JsRequireHelper jsRequireHelper) throws Exception {
+        scope.defineProperty(JsRequireHelper.VAR_NAME, jsRequireHelper, ScriptableObject.CONST);
+        scope.defineFunctionProperties(new String[] { "load", "print" }, JsRequireHelper.class, ScriptableObject.DONTENUM);
+        Scriptable argsObj = context.newArray(scope, new Object[] {});
+        scope.defineProperty("arguments", argsObj, ScriptableObject.DONTENUM);
+        evaluate(context, scope, rjsScript, "r.js");
+    }
+
+    protected void runRequire(Context context, ScriptableObject scope, String... libs) {
+        StringBuilder script = new StringBuilder();
+        script.append("require([");
+        boolean first = true;
+        for (String lib : libs) {
+            if (first) {
+                first = false;
+            } else {
+                script.append(",");
+            }
+            script.append("'");
+            script.append(lib);
+            script.append("'");
+        }
+        script.append("])\n");
+        evaluate(context, scope, script.toString());
+    }
+
+    public void addJSON(Context context, ScriptableObject scope) throws Exception {
         evaluateFromWebjar(context, scope, "20110223/json2.js");
         evaluate(context, scope, cycleScript);
     }
 
-    protected Scriptable createLocalScope(Context context) {
-        Scriptable scope = context.newObject(globalScope);
+    protected ScriptableObject createLocalScope(Context context) {
+        ScriptableObject scope = (ScriptableObject) context.newObject(globalScope);
         scope.setPrototype(null);
         scope.setParentScope(globalScope);
         return scope;
     }
 
-    protected <T> T evaluate(Context context, Scriptable scope, String script, String sourceName) {
+    protected <T> T evaluate(Context context, ScriptableObject scope, String script, String sourceName) {
         @SuppressWarnings("unchecked")
         T result = (T) context.evaluateString(scope, script, sourceName, 1, null);
         return result;
     }
 
-    protected <T> T evaluate(Context context, Scriptable scope, String script) {
+    protected <T> T evaluate(Context context, ScriptableObject scope, String script) {
         return evaluate(context, scope, script, this.getClass().getSimpleName());
     }
 
-    protected <T> T evaluate(Context context, Scriptable scope, Resource script) throws Exception {
+    protected <T> T evaluate(Context context, ScriptableObject scope, Resource script) throws Exception {
         return evaluate(context, scope, script.getContent().getMain(), script.getName());
     }
 
-    protected <T> T evaluateFromClasspath(Context context, Scriptable scope, String path) throws Exception {
+    protected <T> T evaluateFromClasspath(Context context, ScriptableObject scope, String path) throws Exception {
         return evaluate(context, scope, new ClasspathResource(path));
     }
 
-    protected <T> T evaluateFromWebjar(Context context, Scriptable scope, String path) throws Exception {
+    protected <T> T evaluateFromWebjar(Context context, ScriptableObject scope, String path) throws Exception {
         return evaluate(context, scope, WebJarHelper.getResource(path));
     }
 
-    protected Scriptable setupModule(Context context, Scriptable scope, final Resource moduleResource, String moduleId) {
+    protected Scriptable setupModule(Context context, ScriptableObject scope, final Resource moduleResource, String moduleId) {
         RequireBuilder requireBuilder = new RequireBuilder();
         requireBuilder.setSandboxed(false);
         requireBuilder.setModuleScriptProvider(new ModuleScriptProvider() {
@@ -127,7 +178,7 @@ public abstract class RhinoRunner {
         return require.requireMain(context, moduleId);
     }
 
-    protected NativeObject callModuleFunction(Context context, Scriptable scope, Scriptable module, String functionName, String[] args) {
+    protected NativeObject callModuleFunction(Context context, ScriptableObject scope, Scriptable module, String functionName, String[] args) {
         Function function = (Function) module.get(functionName, scope);
         return (NativeObject) function.call(context, scope, module, args);
     }

@@ -17,20 +17,20 @@ package org.hibnet.webpipes.processor.rhino;
 
 import org.hibnet.webpipes.Webpipe;
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 
 public abstract class SimpleRhinoRunner extends RhinoRunner {
 
     public String run(Webpipe webpipe) throws Exception {
         Context context = enterContext();
         try {
-            Scriptable scope = createLocalScope(context);
+            ScriptableObject scope = createLocalScope(context);
             return run(webpipe, context, scope);
         } finally {
             Context.exit();
         }
     }
 
-    abstract protected String run(Webpipe webpipe, Context context, Scriptable scope) throws Exception;
+    abstract protected String run(Webpipe webpipe, Context context, ScriptableObject scope) throws Exception;
 
 }

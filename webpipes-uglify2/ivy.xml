@@ -20,6 +20,6 @@
     </info>
     <dependencies defaultconf="default->default">
         <dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.2,0.0.3)" />
-        <dependency org="org.webjars" name="uglifyjs" rev="2.4.13" />
+        <dependency org="org.webjars" name="uglifyjs" rev="2.4.13" transitive="false" />
     </dependencies>
 </ivy-module>

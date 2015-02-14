@@ -4,7 +4,7 @@
 		module="webpipes-uglify"
 		revision="0.0.2"
 		status="integration"
-		publication="20150209013239"
+		publication="20150213235249"
 	>
 		<description>
 		This module adds support for UglifyJS.
@@ -21,6 +21,8 @@
 		<dependency org="org.hibnet" name="webpipes-core" rev="[0.0.2,0.0.3)" transitive="false" conf="default->default"/>
 		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="rjs" rev="2.1.15" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="source-map" rev="0.1.31-2" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 	</dependencies>
