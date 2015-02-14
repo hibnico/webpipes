@@ -48,9 +48,9 @@ public abstract class Webpipe {
 
     private File cacheDir;
 
-    private volatile WebpipeOutput content = NO_CONTENT;
+    private volatile WebpipeOutput content = NOT_INITIALIZED_CONTENT;
 
-    private List<Webpipe> children;
+    private List<Webpipe> children = NOT_INITIALIZED_CHILDREN;
 
     public abstract String getId();
 
