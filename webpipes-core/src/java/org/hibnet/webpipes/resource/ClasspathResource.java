@@ -41,7 +41,7 @@ public class ClasspathResource extends StreamResource {
 
     public ClasspathResource(String location) {
         this.location = location.startsWith("/") ? location : ("/" + location);
-        this.name = location.substring(this.location.lastIndexOf('/'));
+        this.name = location.substring(this.location.lastIndexOf('/') + 1);
         this.uri = URI.create("classpath:" + this.location);
     }
 
