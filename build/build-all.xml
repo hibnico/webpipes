@@ -44,19 +44,19 @@
         </sequential>
     </macrodef>
 
-    <target name="clean" depends="-build-list">
+    <target name="clean" depends="-build-list" description="Clean build artifacts">
         <buildall target="clean" />
     </target>
 
-    <target name="build" depends="-build-list">
+    <target name="build" depends="-build-list" description="Build the main artifacts" >
         <buildall target="build" />
     </target>
 
-    <target name="dist" depends="-build-list">
+    <target name="dist" depends="-build-list" description="Build all artifacts">
         <buildall target="dist" />
     </target>
 
-    <target name="update-deps" depends="-build-list">
+    <target name="update-deps" depends="-build-list" description="Update dependencies (to be called on ivy.xml change)">
         <buildall target="update-deps" />
     </target>
 
@@ -132,7 +132,7 @@
         </buildall>
     </target>
 
-    <target name="publish-snapshot" depends="-publish-all">
+    <target name="publish-snapshot" depends="-publish-all" description="Publish the snapshots artifacts">
     </target>
 
     <target name="-pre-release" depends="init:props-release">

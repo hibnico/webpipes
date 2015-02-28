@@ -32,6 +32,10 @@ Project ${project.name}
 ===========================
 	</echo>
 
+    <target name="clean" description="Clean build artifacts">
+        <delete dir="${target.dir}" />
+    </target>
+
 	<target name="ivy:resolve" depends="init,ivy:configure" unless="ivy.resolved">
         <ivy:resolve file="${basedir}/ivy-fixed.xml" conf="*" type="jar,bundle" />
 
@@ -45,7 +49,7 @@ Project ${project.name}
         <property name="ivy.resolved" value="true" />
     </target>
 
-    <target name="update-deps" depends="init,ivy:configure" description="Update dependencies (to be called on ivy-manifest.xml or MANIFEST.MF change)">
+    <target name="update-deps" depends="init,ivy:configure" description="Update dependencies (to be called on ivy.xml change)">
         <ivy:resolve file="${basedir}/ivy.xml" conf="*" type="jar" resolveId="update-deps" />
         <ivy:fixdeps tofile="${basedir}/ivy-fixed.xml" resolveId="update-deps">
             <keep org="org.hibnet" module="webpipes-ant" />

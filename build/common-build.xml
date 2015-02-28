@@ -27,10 +27,6 @@
     <property file="${basedir}/build.properties" />
     <property file="${webpipes-build.dir}/build.properties" />
 
-    <target name="clean" description="Clean build artifacts">
-        <delete dir="${target.dir}" />
-    </target>
-
     <property name="ivy.version" value="2.5.0-alpha-dev" />
     <property name="bouncycastle.version" value="1.50" />
     <property name="commons-openpgp.version" value="1.0-20080726.092946-4" />
