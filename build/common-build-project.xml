@@ -108,7 +108,9 @@ Project ${project.name}
     		</else>
     	</ac:if>
         <property name="ivy.pom.version" value="${webpipes.version}" />
-        <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/${project.name}.pom" templatefile="${webpipes-build.dir}/pom.template" description="${ivy.info.description}" />
+        <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${target.dir}/dist/${project.name}.pom" templatefile="${webpipes-build.dir}/pom.template" description="${ivy.info.description}">
+            <mapping conf="default" scope="compile" />
+        </ivy:makepom>
     </target>
 
     <extension-point name="build" description="Build the main artifact" />
