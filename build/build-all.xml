@@ -98,6 +98,7 @@
         <echo message="${build.properties.content.new}" file="${webpipes-build.dir}/build.properties" />
         <ac:for param="ivyfile">
             <fileset dir="${basedir}" includes="*/ivy.xml" />
+            <fileset dir="${basedir}" includes="*/ivy-fixed.xml" />
             <sequential>
                 <loadresource property="@{ivyfile}.content.new">
                     <file file="@{ivyfile}" />
@@ -121,8 +122,7 @@
 
     <target name="bump-version" depends="-set-next-version,set-version">
         <!-- commit -->
-        <git command="add build.properties" />
-        <git command="commit -m 'v++'" />
+        <git command="commit -a -m 'v++'" />
     </target>
 
     <target name="-publish-all" depends="init:publish-properties,-build-list">
