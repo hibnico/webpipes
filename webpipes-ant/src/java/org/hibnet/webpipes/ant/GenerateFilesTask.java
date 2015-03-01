@@ -22,7 +22,8 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -79,10 +80,10 @@ public class GenerateFilesTask extends Task {
             }
             Method m;
             try {
-                m = cl.getMethod("buildWebpipes");
+                m = cl.getMethod("getWebpipes");
             } catch (NoSuchMethodException | SecurityException e) {
                 throw new BuildException("Could not get webpipes out of " + webpipesBuilder
-                        + ". Make sure it has a method 'buildWebpipes' with no arguments", e);
+                        + ". Make sure it has a method 'getWebpipes' with no arguments", e);
             }
             Object res;
             try {
@@ -91,22 +92,22 @@ public class GenerateFilesTask extends Task {
                 throw new BuildException("Error calling 'buildWebpipes' on " + webpipesBuilder
                         + " (switch to verbose to see a full stack trace with -v)", e);
             }
-            List<Webpipe> webpipes;
+            Map<String, Webpipe> webpipes;
             try {
                 @SuppressWarnings("unchecked")
-                List<Webpipe> casted = (List<Webpipe>) res;
+                Map<String, Webpipe> casted = (Map<String, Webpipe>) res;
                 webpipes = casted;
             } catch (ClassCastException e) {
                 throw new BuildException("The method 'buildWebpipes' on " + webpipesBuilder + " is not returning a List<Webpipe>", e);
             }
-            for (Webpipe webpipe : webpipes) {
+            for (Entry<String, Webpipe> webpipe : webpipes.entrySet()) {
                 WebpipeOutput content;
                 try {
-                    content = webpipe.getContent();
+                    content = webpipe.getValue().getContent();
                 } catch (Exception e) {
-                    throw new BuildException("IO error while getting contents from webpipe " + webpipe.getName() + ": " + e.getMessage(), e);
+                    throw new BuildException("IO error while getting contents from webpipe " + webpipe.getKey() + ": " + e.getMessage(), e);
                 }
-                String path = webpipe.getName();
+                String path = webpipe.getKey();
                 path = path.replaceAll("/", File.separator).replaceAll("\\", File.separator);
                 File dest = new File(dir, path);
                 if (!dest.getParentFile().exists()) {
