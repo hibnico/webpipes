@@ -125,13 +125,14 @@ Project ${project.name}
                      module="${project.name}"
                      revision="${webpipes.version}"
                      publishivy="false"
+                     artifactspattern="${target.dir}/dist/[artifact](-[classifier]).[ext]"
                      conf="default"
                      resolver="${publish.resolver}"
                      overwrite="true">
-            <artifact type="ivy"     ext="pom" />
-            <artifact type="jar"     ext="jar" />
-            <artifact type="sources" ext="jar" classifier="sources" />
-            <artifact type="javadoc" ext="jar" classifier="javadoc" />
+            <artifact name="${project.name}" type="ivy"     ext="pom" />
+            <artifact name="${project.name}" type="jar"     ext="jar" />
+            <artifact name="${project.name}" type="sources" ext="jar" classifier="sources" />
+            <artifact name="${project.name}" type="javadoc" ext="jar" classifier="javadoc" />
         </ivy:publish>
     </target>
 
