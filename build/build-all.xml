@@ -104,10 +104,11 @@
                     <file file="@{ivyfile}" />
                     <filterchain>
                         <tokenfilter>
-                            <replaceregex pattern="&lt;info\s+organisation\s*=\s*&quot;org.hibnet&quot;\s+module\s*=\s*&quot;webpipes-([^&quot;]*)&quot;\s+revision\s*=\s*&quot;[^&quot;]*&quot;"
-                                replace="&lt;info organisation=&quot;org.hibnet&quot; module=&quot;webpipes-\1&quot; revision=&quot;${newversion}&quot;" flags="gi" />
-                            <replaceregex pattern="&lt;dependency\s+org\s*=\s*&quot;org.hibnet&quot;\s+name\s*=\s*&quot;webpipes-([^&quot;]*)&quot;\s+rev\s*=\s*&quot;[^&quot;]*&quot;"
-                                replace="&lt;dependency org=&quot;org.hibnet&quot; name=&quot;webpipes-\1&quot; rev=&quot;[${newversion},${newversion.next})&quot;" flags="gi" />
+                            <filetokenizer />
+                            <replaceregex pattern="(&lt;info\s+organisation\s*=\s*&quot;org.hibnet&quot;\s+module\s*=\s*&quot;webpipes-[^&quot;]*&quot;\s+revision\s*=\s*&quot;)[^&quot;]*(&quot;)"
+                                replace="\1${newversion}\2" flags="gi" />
+                            <replaceregex pattern="(&lt;dependency\s+org\s*=\s*&quot;org.hibnet&quot;\s+name\s*=\s*&quot;webpipes-[^&quot;]*&quot;\s+rev\s*=\s*&quot;)[^&quot;]*(&quot;)"
+                                replace="\1[${newversion},${newversion.next})\2" flags="gi" />
                         </tokenfilter>
                     </filterchain>
                 </loadresource>
