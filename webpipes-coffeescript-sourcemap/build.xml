@@ -16,6 +16,6 @@
 -->
 <project>
 
-    <import file="${basedir}/../build/common-build-test.xml" />
+    <import file="${basedir}/../build/common-build-java.xml" />
 
 </project>
