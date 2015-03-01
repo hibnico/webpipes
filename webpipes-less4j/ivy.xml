@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-less4j" revision="0.0.2">
+    <info organisation="org.hibnet" module="webpipes-less4j" revision="0.0.3">
         <description>This module adds support for lesscss with less4j.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-core" rev="[0.0.2,0.0.3)" />
+        <dependency org="org.hibnet" name="webpipes-core" rev="[0.0.3,0.0.4)" />
 
 	    <dependency org="com.github.sommeri" name="less4j" rev="1.8.0" />
     </dependencies>

@@ -17,9 +17,9 @@
 		<artifact name="webpipes-less4j-test" type="jar" ext="jar" conf="default"/>
 	</publications>
 	<dependencies>
-		<dependency org="org.hibnet" name="webpipes-core-test" rev="[0.0.2,0.0.3)" transitive="false" conf="default->default"/>
-		<dependency org="org.hibnet" name="webpipes-less4j" rev="[0.0.2,0.0.3)" transitive="false" conf="default->default"/>
-		<dependency org="org.hibnet" name="webpipes-core" rev="[0.0.2,0.0.3)" transitive="false" conf="default->default"/>
+		<dependency org="org.hibnet" name="webpipes-core-test" rev="[0.0.3,0.0.4)" transitive="false" conf="default->default"/>
+		<dependency org="org.hibnet" name="webpipes-less4j" rev="[0.0.3,0.0.4)" transitive="false" conf="default->default"/>
+		<dependency org="org.hibnet" name="webpipes-core" rev="[0.0.3,0.0.4)" transitive="false" conf="default->default"/>
 		<dependency org="junit" name="junit" rev="4.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>

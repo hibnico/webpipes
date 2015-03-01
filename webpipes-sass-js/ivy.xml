@@ -15,10 +15,10 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-sass-js" revision="0.0.2">
+    <info organisation="org.hibnet" module="webpipes-sass-js" revision="0.0.3">
         <description>This module adds support for SASS.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.2,0.0.3)" />
+        <dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.3,0.0.4)" />
     </dependencies>
 </ivy-module>

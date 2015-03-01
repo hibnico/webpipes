@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-uglify2" revision="0.0.2">
+    <info organisation="org.hibnet" module="webpipes-uglify2" revision="0.0.3">
         <description>This module adds support for UglifyJS2.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.2,0.0.3)" />
+        <dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.3,0.0.4)" />
         <dependency org="org.webjars" name="uglifyjs" rev="2.4.13" transitive="false" />
     </dependencies>
 </ivy-module>

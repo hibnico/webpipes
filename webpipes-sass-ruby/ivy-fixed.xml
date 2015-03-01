@@ -17,7 +17,7 @@
 		<artifact name="webpipes-sass-ruby" type="jar" ext="jar" conf="default"/>
 	</publications>
 	<dependencies>
-		<dependency org="org.hibnet" name="webpipes-core" rev="[0.0.2,0.0.3)" transitive="false" conf="default->default"/>
+		<dependency org="org.hibnet" name="webpipes-core" rev="[0.0.3,0.0.4)" transitive="false" conf="default->default"/>
 		<dependency org="org.jruby" name="jruby-core" rev="1.7.18" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.jruby" name="jruby-stdlib" rev="1.7.18" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="me.n4u.sass" name="sass-gems" rev="3.2.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>

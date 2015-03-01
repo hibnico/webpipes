@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-googleclosure-test" revision="0.0.2">
+    <info organisation="org.hibnet" module="webpipes-googleclosure-test" revision="0.0.3">
         <description>This module contains the tests for the Closure Compiler by Google.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-core-test" rev="[0.0.2,0.0.3)" />
-        <dependency org="org.hibnet" name="webpipes-googleclosure" rev="[0.0.2,0.0.3)" />
+        <dependency org="org.hibnet" name="webpipes-core-test" rev="[0.0.3,0.0.4)" />
+        <dependency org="org.hibnet" name="webpipes-googleclosure" rev="[0.0.3,0.0.4)" />
     </dependencies>
 </ivy-module>
