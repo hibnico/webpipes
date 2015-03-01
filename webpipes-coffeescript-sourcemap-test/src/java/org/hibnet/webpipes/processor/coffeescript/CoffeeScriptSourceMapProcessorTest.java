@@ -16,9 +16,14 @@
 package org.hibnet.webpipes.processor.coffeescript;
 
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
+import org.junit.Test;
 
 public class CoffeeScriptSourceMapProcessorTest extends AbstractProcessorTest {
 
     CoffeeScriptSourceMapProcessor processor = new CoffeeScriptSourceMapProcessor();
 
+    @Test
+    public void noTest() throws Exception {
+
+    }
 }
