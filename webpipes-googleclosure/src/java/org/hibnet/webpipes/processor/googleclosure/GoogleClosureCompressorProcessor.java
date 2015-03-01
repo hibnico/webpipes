@@ -35,7 +35,8 @@ import com.google.javascript.jscomp.SourceFile;
 /**
  * Uses Google closure compiler for js minimization.
  *
- * @see http://blog.bolinfest.com/2009/11/calling-closure-compiler-from-java.html
+ * See <a href="http://blog.bolinfest.com/2009/11/calling-closure-compiler-from-java.html">
+ * http://blog.bolinfest.com/2009/11/calling-closure-compiler-from-java.html</a>
  */
 public class GoogleClosureCompressorProcessor {
 

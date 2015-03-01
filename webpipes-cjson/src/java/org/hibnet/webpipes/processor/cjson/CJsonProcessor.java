@@ -21,7 +21,7 @@ import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
 /**
- * A processor using cjson compression algorithm {@link http://stevehanov.ca/blog/index.php?id=104}.
+ * A processor using <a href="http://stevehanov.ca/blog/index.php?id=104">cjson compression algorithm</a>
  */
 public class CJsonProcessor {
 
