@@ -18,5 +18,6 @@ Webpipes is a library to manage web resources like javascript and css files whic
 ## release:
 
 - run `ant release`
-- go to https://oss.sonatype.org/
-- select the orghibnet-XXXX repo and click 'Release'
+- go to https://oss.sonatype.org/#stagingRepositories
+- select the orghibnet-XXXX repo and click 'Close'
+- wait for validation, refresh, and then click 'Release'
