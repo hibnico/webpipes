@@ -101,11 +101,6 @@ public class GoogleClosureCompressorProcessor {
         return compiler;
     }
 
-    /**
-     * @param resource
-     *            Currently processed resource. The resource can be null, when the closure compiler is used as a post processor.
-     * @return An Array of externs files for the resource to process.
-     */
     protected SourceFile[] getExterns(Webpipe webpipe) {
         return new SourceFile[] {};
     }

@@ -198,8 +198,9 @@ public class RhinoRunner {
     }
 
     /**
-     * Transforms a java multi-line string into javascript multi-line string. This technique was found at {@link http
-     * ://stackoverflow.com/questions/805107/multiline-strings-in-javascript/}
+     * Transforms a java multi-line string into javascript multi-line string. This technique was found at <a
+     * href="http://stackoverflow.com/questions/805107/multiline-strings-in-javascript/">
+     * http://stackoverflow.com/questions/805107/multiline-strings-in-javascript/</a>
      *
      * @param data
      *            a string containing new lines.
