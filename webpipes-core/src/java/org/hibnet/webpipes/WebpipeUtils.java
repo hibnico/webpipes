@@ -65,7 +65,7 @@ public class WebpipeUtils {
      * Tokenize the given String into a String array via a StringTokenizer.
      * <p>
      * The given delimiters string is supposed to consist of any number of delimiter characters. Each of those characters can be used to separate
-     * tokens. A delimiter is always a single character; for multi-character delimiters, consider using {@code delimitedListToStringArray}
+     * tokens. A delimiter is always a single character.
      * 
      * @param str
      *            the String to tokenize
@@ -79,7 +79,6 @@ public class WebpipeUtils {
      * @return an array of the tokens ({@code null} if the input String was {@code null})
      * @see java.util.StringTokenizer
      * @see String#trim()
-     * @see #delimitedListToStringArray
      */
     public static String[] tokenizeToStringArray(String str, String delimiters, boolean trimTokens, boolean ignoreEmptyTokens) {
 
@@ -160,7 +159,7 @@ public class WebpipeUtils {
      * @param str
      *            the CharSequence to check (may be {@code null})
      * @return {@code true} if the CharSequence is not null and has length
-     * @see #hasText(String)
+     * @see #hasText(CharSequence)
      */
     public static boolean hasLength(CharSequence str) {
         return (str != null && str.length() > 0);
