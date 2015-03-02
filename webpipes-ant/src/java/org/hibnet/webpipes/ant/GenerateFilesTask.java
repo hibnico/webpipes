@@ -108,7 +108,7 @@ public class GenerateFilesTask extends Task {
                     throw new BuildException("IO error while getting contents from webpipe " + webpipe.getKey() + ": " + e.getMessage(), e);
                 }
                 String path = webpipe.getKey();
-                path = path.replaceAll("/", File.separator).replaceAll("\\", File.separator);
+                path = path.replaceAll("/", File.separator).replaceAll("\\\\", File.separator);
                 File dest = new File(dir, path);
                 if (!dest.getParentFile().exists()) {
                     dest.getParentFile().mkdirs();
