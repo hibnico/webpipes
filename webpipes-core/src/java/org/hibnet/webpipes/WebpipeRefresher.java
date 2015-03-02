@@ -115,7 +115,7 @@ public class WebpipeRefresher {
                 return false;
             }
         });
-        thread.setName("WRO Resource Refresher");
+        thread.setName("Webpipes Refresher");
         thread.setDaemon(true);
         thread.start();
     }
