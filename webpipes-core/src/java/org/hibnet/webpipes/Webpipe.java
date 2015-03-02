@@ -151,7 +151,7 @@ public abstract class Webpipe {
     protected WebpipeOutput fetchChildrenContent() throws Exception {
         StringBuilder buffer = new StringBuilder();
         for (Webpipe webpipe : getChildren()) {
-            buffer.append(webpipe.getContent());
+            buffer.append(webpipe.getContent().getMain());
             buffer.append("\n");
         }
         return new WebpipeOutput(buffer.toString());
