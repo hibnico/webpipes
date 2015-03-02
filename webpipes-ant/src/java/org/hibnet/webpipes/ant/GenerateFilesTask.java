@@ -89,7 +89,7 @@ public class GenerateFilesTask extends Task {
             try {
                 res = m.invoke(o);
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                throw new BuildException("Error calling 'buildWebpipes' on " + webpipesBuilder
+                throw new BuildException("Error calling 'getWebpipes' on " + webpipesBuilder
                         + " (switch to verbose to see a full stack trace with -v)", e);
             }
             Map<String, Webpipe> webpipes;
