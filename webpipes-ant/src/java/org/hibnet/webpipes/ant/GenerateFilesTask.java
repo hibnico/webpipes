@@ -122,7 +122,15 @@ public class GenerateFilesTask extends Task {
                 } catch (IOException e) {
                     throw new BuildException("IO error while writing the file " + dest.getAbsolutePath(), e);
                 }
-
+                if (content.getSourceMap() != null) {
+                    File destSourceMap = new File(dir, path + ".map");
+                    try (OutputStream out = new FileOutputStream(destSourceMap)) {
+                        log("Generating " + destSourceMap.getAbsolutePath());
+                        out.write(content.getSourceMap().getBytes(encoding));
+                    } catch (IOException e) {
+                        throw new BuildException("IO error while writing the file " + destSourceMap.getAbsolutePath(), e);
+                    }
+                }
             }
             log(webpipes.size() + " webpipes to processed");
         } finally {
