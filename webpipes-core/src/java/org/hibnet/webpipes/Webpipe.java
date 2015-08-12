@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibnet.webpipes.merger.SimpleWebpipeMerger;
+import org.hibnet.webpipes.merger.WebpipeMerger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,9 +54,15 @@ public abstract class Webpipe {
 
     private List<Webpipe> children = NOT_INITIALIZED_CHILDREN;
 
+    private WebpipeMerger merger = new SimpleWebpipeMerger();
+
     public abstract String getId();
 
     public abstract String getName();
+
+    public void setMerger(WebpipeMerger merger) {
+        this.merger = merger;
+    }
 
     @Override
     public String toString() {
@@ -149,12 +157,7 @@ public abstract class Webpipe {
     abstract protected WebpipeOutput fetchContent() throws Exception;
 
     protected WebpipeOutput fetchChildrenContent() throws Exception {
-        StringBuilder buffer = new StringBuilder();
-        for (Webpipe webpipe : getChildren()) {
-            buffer.append(webpipe.getContent().getMain());
-            buffer.append("\n");
-        }
-        return new WebpipeOutput(buffer.toString());
+        return merger.merge(getChildren());
     }
 
     private WebpipeOutput readContent() throws Exception {
