@@ -13,30 +13,24 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hibnet.webpipes;
+package org.hibnet.webpipes.sourcemap;
 
-import org.hibnet.webpipes.sourcemap.SourceMap;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 
-public class WebpipeOutput {
+public class SourceMap {
 
-    private String main;
+    private static final Charset UTF8 = Charset.forName("UTF8");
 
-    private SourceMap sourceMap;
+    private String raw;
 
-    public WebpipeOutput(String main) {
-        this.main = main;
+    public SourceMap(String raw) {
+        this.raw = raw;
     }
 
-    public WebpipeOutput(String main, SourceMap sourceMap) {
-        this.main = main;
-        this.sourceMap = sourceMap;
+    public void write(OutputStream out) throws IOException {
+        out.write(raw.getBytes(UTF8));
     }
 
-    public String getMain() {
-        return main;
-    }
-
-    public SourceMap getSourceMap() {
-        return sourceMap;
-    }
 }

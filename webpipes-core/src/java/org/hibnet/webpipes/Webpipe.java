@@ -36,11 +36,11 @@ public abstract class Webpipe {
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    private static final WebpipeOutput NOT_INITIALIZED_CONTENT = new WebpipeOutput("");
+    private static final WebpipeOutput NOT_INITIALIZED_CONTENT = new WebpipeOutput("", null);
 
-    public static final WebpipeOutput NO_CONTENT = new WebpipeOutput("");
+    public static final WebpipeOutput NO_CONTENT = new WebpipeOutput("", null);
 
-    private static final WebpipeOutput INVALIDATED_CONTENT = new WebpipeOutput("");
+    private static final WebpipeOutput INVALIDATED_CONTENT = new WebpipeOutput("", null);
 
     private static final List<Webpipe> NOT_INITIALIZED_CHILDREN = new ArrayList<>();
 
@@ -185,7 +185,7 @@ public abstract class Webpipe {
 
         // same sha1, get the content out
         byte[] data = readFile(new File(cacheDir, getId() + ".txt"));
-        return new WebpipeOutput(new String(data, WebpipeUtils.UTF8));
+        return new WebpipeOutput(new String(data, WebpipeUtils.UTF8), null);
     }
 
     private byte[] readFile(File file) throws IOException, FileNotFoundException {

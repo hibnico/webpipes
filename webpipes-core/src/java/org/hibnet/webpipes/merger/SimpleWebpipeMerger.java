@@ -41,6 +41,6 @@ public class SimpleWebpipeMerger implements WebpipeMerger {
                 buffer.append("\n");
             }
         }
-        return new WebpipeOutput(buffer.toString());
+        return new WebpipeOutput(buffer.toString(), null);
     }
 }

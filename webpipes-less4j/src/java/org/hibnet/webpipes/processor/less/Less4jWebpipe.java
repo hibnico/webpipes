@@ -8,6 +8,7 @@ import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.resource.Resource;
+import org.hibnet.webpipes.sourcemap.SourceMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +70,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
             }
             CompilationResult result = compiler.compile(lessSource);
             logWarnings(result);
-            return new WebpipeOutput(result.getCss(), result.getSourceMap());
+            return new WebpipeOutput(result.getCss(), new SourceMap(result.getSourceMap()));
         }
     }
 

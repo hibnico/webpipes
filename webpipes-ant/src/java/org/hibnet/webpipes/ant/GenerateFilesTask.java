@@ -126,7 +126,7 @@ public class GenerateFilesTask extends Task {
                     File destSourceMap = new File(dir, path + ".map");
                     try (OutputStream out = new FileOutputStream(destSourceMap)) {
                         log("Generating " + destSourceMap.getAbsolutePath());
-                        out.write(content.getSourceMap().getBytes(encoding));
+                        content.getSourceMap().write(out);
                     } catch (IOException e) {
                         throw new BuildException("IO error while writing the file " + destSourceMap.getAbsolutePath(), e);
                     }
