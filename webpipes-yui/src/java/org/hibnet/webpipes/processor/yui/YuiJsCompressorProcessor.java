@@ -46,7 +46,7 @@ public class YuiJsCompressorProcessor {
 
         @Override
         protected WebpipeOutput fetchContent() throws Exception {
-            String content = webpipe.getContent().getMain();
+            String content = webpipe.getOutput().getContent();
             Writer writer = new StringWriter();
             try {
                 YuiProxy.Instance.compressJavascript(new StringReader(content), writer, linebreak, munge, verbose, preserveAllSemiColons,

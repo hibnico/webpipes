@@ -38,8 +38,8 @@ public abstract class Resource extends Webpipe {
 
     @Override
     public void updateDigest(MessageDigest digest) throws Exception {
-        WebpipeOutput content = getContent();
-        digest.digest(content.getMain().getBytes(WebpipeUtils.UTF8));
+        WebpipeOutput content = getOutput();
+        digest.digest(content.getContent().getBytes(WebpipeUtils.UTF8));
     }
 
 }

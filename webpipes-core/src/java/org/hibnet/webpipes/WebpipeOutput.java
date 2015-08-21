@@ -15,25 +15,25 @@
  */
 package org.hibnet.webpipes;
 
-import org.hibnet.webpipes.sourcemap.SourceMap;
+import org.hibnet.jsourcemap.SourceMap;
 
 public class WebpipeOutput {
 
-    private String main;
+    private String content;
 
     private SourceMap sourceMap;
 
-    public WebpipeOutput(String main) {
-        this.main = main;
+    public WebpipeOutput(String content) {
+        this.content = content;
     }
 
-    public WebpipeOutput(String main, SourceMap sourceMap) {
-        this.main = main;
+    public WebpipeOutput(String content, SourceMap sourceMap) {
+        this.content = content;
         this.sourceMap = sourceMap;
     }
 
-    public String getMain() {
-        return main;
+    public String getContent() {
+        return content;
     }
 
     public SourceMap getSourceMap() {

@@ -33,7 +33,7 @@ public class HandlebarsJsRunner extends SimpleRhinoRunner {
 
     @Override
     protected String run(Webpipe webpipe, Context context, ScriptableObject scope) throws Exception {
-        String content = webpipe.getContent().getMain();
+        String content = webpipe.getOutput().getContent();
         String script = buildSimpleRunScript("Handlebars.precompile", content);
         String result = evaluate(context, scope, script);
         return "(function() { var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};templates['"

@@ -15,8 +15,12 @@
  */
 package org.hibnet.webpipes.merger;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibnet.jsourcemap.Position;
+import org.hibnet.jsourcemap.Section;
+import org.hibnet.jsourcemap.SourceMap;
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
 
@@ -35,12 +39,46 @@ public class SimpleWebpipeMerger implements WebpipeMerger {
     @Override
     public WebpipeOutput merge(List<Webpipe> webpipes) throws Exception {
         StringBuilder buffer = new StringBuilder();
+        SourceMap sourceMap = new SourceMap();
+        sourceMap.version = 3;
+        sourceMap.file = "merged";
+        sourceMap.sections = new ArrayList<>();
+        Position pos = new Position(0, 0);
         for (Webpipe webpipe : webpipes) {
-            buffer.append(webpipe.getContent().getMain());
+            WebpipeOutput output = webpipe.getOutput();
+
+            String content = output.getContent();
+            buffer.append(content);
+
+            SourceMap subSourceMap = output.getSourceMap();
+            if (subSourceMap != null) {
+                Section section = new Section();
+                section.map = output.getSourceMap();
+                section.offset = new Position(pos.line, pos.column);
+                sourceMap.sections.add(section);
+            }
+
+            for (int i = 0; i < content.length(); i++) {
+                char c = content.charAt(i);
+                if (c == '\n') {
+                    pos.line++;
+                    pos.column = 0;
+                } else {
+                    pos.column++;
+                }
+            }
+
             if (addNewLineOnMerge) {
                 buffer.append("\n");
+                pos.line++;
+                pos.column = 0;
             }
         }
-        return new WebpipeOutput(buffer.toString(), null);
+
+        if (sourceMap.sections.isEmpty()) {
+            sourceMap = null;
+        }
+
+        return new WebpipeOutput(buffer.toString(), sourceMap);
     }
 }

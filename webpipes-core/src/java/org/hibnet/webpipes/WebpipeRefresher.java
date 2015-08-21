@@ -139,7 +139,7 @@ public class WebpipeRefresher {
             }
         }
         for (Webpipe webpipe : webpipesRefreshed) {
-            webpipe.getContent();
+            webpipe.getOutput();
         }
     }
 

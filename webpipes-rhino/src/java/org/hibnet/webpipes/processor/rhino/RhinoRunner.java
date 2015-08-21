@@ -46,7 +46,7 @@ public class RhinoRunner {
     private static String rjsScript;
     static {
         try {
-            rjsScript = WebJarHelper.getResource("r.js").getContent().getMain();
+            rjsScript = WebJarHelper.getResource("r.js").getOutput().getContent();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -153,7 +153,7 @@ public class RhinoRunner {
     }
 
     protected <T> T evaluate(Context context, ScriptableObject scope, Resource script) throws Exception {
-        return evaluate(context, scope, script.getContent().getMain(), script.getName());
+        return evaluate(context, scope, script.getOutput().getContent(), script.getName());
     }
 
     protected <T> T evaluateFromClasspath(Context context, ScriptableObject scope, String path) throws Exception {
@@ -170,7 +170,7 @@ public class RhinoRunner {
         requireBuilder.setModuleScriptProvider(new ModuleScriptProvider() {
             @Override
             public ModuleScript getModuleScript(Context cx, String moduleId, URI moduleUri, URI baseUri, Scriptable paths) throws Exception {
-                Script script = cx.compileString(moduleResource.getContent().getMain(), moduleResource.getName(), 1, null);
+                Script script = cx.compileString(moduleResource.getOutput().getContent(), moduleResource.getName(), 1, null);
                 return new ModuleScript(script, URI.create(moduleResource.getName()), URI.create(moduleResource.getName()));
             }
         });

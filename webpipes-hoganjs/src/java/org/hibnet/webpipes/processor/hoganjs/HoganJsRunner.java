@@ -34,7 +34,7 @@ public class HoganJsRunner extends SimpleRhinoRunner {
 
     @Override
     protected String run(Webpipe webpipe, Context context, ScriptableObject scope) throws Exception {
-        String content = webpipe.getContent().getMain();
+        String content = webpipe.getOutput().getContent();
         StringBuilder script = new StringBuilder("Hogan.compile(");
         script.append(toJSMultiLineString(content));
         script.append(",{asString: true});");

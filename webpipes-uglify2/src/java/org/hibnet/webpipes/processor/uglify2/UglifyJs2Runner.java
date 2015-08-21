@@ -46,7 +46,7 @@ public class UglifyJs2Runner extends RhinoRunner {
     }
 
     public String run(Webpipe webpipe, boolean uglify) throws Exception {
-        String content = webpipe.getContent().getMain();
+        String content = webpipe.getOutput().getContent();
         Context context = enterContext();
         try {
             ScriptableObject scope = createLocalScope(context);

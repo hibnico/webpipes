@@ -27,41 +27,41 @@ public class AbsoluteUrlCssWebpipeTest {
     public void testEmpty() throws Exception {
         StringResource data = new StringResource("test", "");
         AbsoluteUrlCssWebpipe pipe = new AbsoluteUrlCssWebpipe(data, "/absolute/");
-        assertEquals("", pipe.fetchContent().getMain());
+        assertEquals("", pipe.fetchContent().getContent());
     }
 
     @Test
     public void testNoUrl() throws Exception {
         StringResource data = new StringResource("test", ".item { color: white; }");
         AbsoluteUrlCssWebpipe pipe = new AbsoluteUrlCssWebpipe(data, "/absolute/");
-        assertEquals(".item { color: white; }", pipe.fetchContent().getMain());
+        assertEquals(".item { color: white; }", pipe.fetchContent().getContent());
     }
 
     @Test
     public void testUrl() throws Exception {
         StringResource data = new StringResource("test", ".item { background-image: url(image/test.png); }");
         AbsoluteUrlCssWebpipe pipe = new AbsoluteUrlCssWebpipe(data, "/absolute/");
-        assertEquals(".item { background-image: url(/absolute/image/test.png); }", pipe.fetchContent().getMain());
+        assertEquals(".item { background-image: url(/absolute/image/test.png); }", pipe.fetchContent().getContent());
     }
 
     @Test
     public void testSpaces() throws Exception {
         StringResource data = new StringResource("test", ".item { background-image: url( image/test.png  ); }");
         AbsoluteUrlCssWebpipe pipe = new AbsoluteUrlCssWebpipe(data, "/absolute/");
-        assertEquals(".item { background-image: url( /absolute/image/test.png  ); }", pipe.fetchContent().getMain());
+        assertEquals(".item { background-image: url( /absolute/image/test.png  ); }", pipe.fetchContent().getContent());
         data = new StringResource("test", ".item { background-image: url  (image/test.png); }");
         pipe = new AbsoluteUrlCssWebpipe(data, "/absolute/");
-        assertEquals(".item { background-image: url  (/absolute/image/test.png); }", pipe.fetchContent().getMain());
+        assertEquals(".item { background-image: url  (/absolute/image/test.png); }", pipe.fetchContent().getContent());
     }
 
     @Test
     public void testQuotedUrl() throws Exception {
         StringResource data = new StringResource("test", ".item { background-image: url('image/test.png'); }");
         AbsoluteUrlCssWebpipe pipe = new AbsoluteUrlCssWebpipe(data, "/absolute/");
-        assertEquals(".item { background-image: url('/absolute/image/test.png'); }", pipe.fetchContent().getMain());
+        assertEquals(".item { background-image: url('/absolute/image/test.png'); }", pipe.fetchContent().getContent());
 
         data = new StringResource("test", ".item { background-image: url(\"image/test.png\"); }");
         pipe = new AbsoluteUrlCssWebpipe(data, "/absolute/");
-        assertEquals(".item { background-image: url(\"/absolute/image/test.png\"); }", pipe.fetchContent().getMain());
+        assertEquals(".item { background-image: url(\"/absolute/image/test.png\"); }", pipe.fetchContent().getContent());
     }
 }

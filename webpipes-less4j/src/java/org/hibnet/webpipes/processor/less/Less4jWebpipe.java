@@ -1,3 +1,18 @@
+/*
+ *  Copyright 2014-2015 WebPipes contributors
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package org.hibnet.webpipes.processor.less;
 
 import java.io.IOException;
@@ -6,9 +21,9 @@ import java.util.List;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.resource.Resource;
-import org.hibnet.webpipes.sourcemap.SourceMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +59,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
             try {
                 Resource relativeResource = resource.resolve(relativePath);
                 importedResources.add(relativeResource);
-                return new RelativeAwareLessSource(relativeResource, relativeResource.getContent().getMain());
+                return new RelativeAwareLessSource(relativeResource, relativeResource.getOutput().getContent());
             } catch (Exception e) {
                 LOG.error("Failed to compute relative resource: {}", resource, e);
                 throw new StringSourceException();
@@ -61,7 +76,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
         synchronized (importedResources) {
             importedResources.clear();
 
-            String content = webpipe.getContent().getMain();
+            String content = webpipe.getOutput().getContent();
             StringSource lessSource;
             if (webpipe instanceof Resource) {
                 lessSource = new RelativeAwareLessSource((Resource) webpipe, content);
@@ -70,7 +85,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
             }
             CompilationResult result = compiler.compile(lessSource);
             logWarnings(result);
-            return new WebpipeOutput(result.getCss(), new SourceMap(result.getSourceMap()));
+            return new WebpipeOutput(result.getCss(), WebpipeUtils.parseSourceMap(result.getSourceMap()));
         }
     }
 

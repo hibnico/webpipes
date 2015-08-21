@@ -29,6 +29,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 
 public class GenerateFilesTask extends Task {
 
@@ -103,7 +104,7 @@ public class GenerateFilesTask extends Task {
             for (Entry<String, Webpipe> webpipe : webpipes.entrySet()) {
                 WebpipeOutput content;
                 try {
-                    content = webpipe.getValue().getContent();
+                    content = webpipe.getValue().getOutput();
                 } catch (Exception e) {
                     throw new BuildException("IO error while getting contents from webpipe " + webpipe.getKey() + ": " + e.getMessage(), e);
                 }
@@ -118,7 +119,7 @@ public class GenerateFilesTask extends Task {
                 }
                 try (OutputStream out = new FileOutputStream(dest)) {
                     log("Generating " + dest.getAbsolutePath());
-                    out.write(content.getMain().getBytes(encoding));
+                    out.write(content.getContent().getBytes(encoding));
                 } catch (IOException e) {
                     throw new BuildException("IO error while writing the file " + dest.getAbsolutePath(), e);
                 }
@@ -126,7 +127,7 @@ public class GenerateFilesTask extends Task {
                     File destSourceMap = new File(dir, path + ".map");
                     try (OutputStream out = new FileOutputStream(destSourceMap)) {
                         log("Generating " + destSourceMap.getAbsolutePath());
-                        content.getSourceMap().write(out);
+                        WebpipeUtils.serializeSourceMap(content.getSourceMap(), out);
                     } catch (IOException e) {
                         throw new BuildException("IO error while writing the file " + destSourceMap.getAbsolutePath(), e);
                     }

@@ -4,7 +4,7 @@
 		module="webpipes-jsx-react"
 		revision="0.0.3"
 		status="integration"
-		publication="20150213235248"
+		publication="20150821112230"
 	>
 		<description>
 		This module adds support for JSX transformer from React.
@@ -26,6 +26,10 @@
 		<dependency org="org.webjars" name="rjs" rev="2.1.15" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="source-map" rev="0.1.31-2" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.hibnet" name="jsourcemap" rev="0.0.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.6.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.6.0" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.6.1" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
 	</dependencies>
 </ivy-module>

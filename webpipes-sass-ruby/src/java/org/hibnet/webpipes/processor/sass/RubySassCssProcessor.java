@@ -45,7 +45,7 @@ public class RubySassCssProcessor extends StatelessWebpipeProcessor {
         }
         script.append("result = Sass::Engine.new(\"");
 
-        String content = webpipe.getContent().getMain();
+        String content = webpipe.getOutput().getContent();
 
         for (int i = 0; i < content.length(); i++) {
             int code = content.codePointAt(i);

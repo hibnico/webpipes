@@ -72,7 +72,7 @@ public class GoogleClosureCompressorProcessor {
         if (compilationLevel == null) {
             compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS;
         }
-        String content = webpipe.getContent().getMain();
+        String content = webpipe.getOutput().getContent();
         CompilerOptions compilerOptions = newCompilerOptions();
         Compiler compiler = newCompiler(compilerOptions, compilationLevel);
         SourceFile[] input = new SourceFile[] { SourceFile.fromCode(webpipe.getName(), content) };

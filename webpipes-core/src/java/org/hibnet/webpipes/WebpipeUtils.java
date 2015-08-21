@@ -16,6 +16,8 @@
 package org.hibnet.webpipes;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -26,9 +28,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.hibnet.jsourcemap.SourceMap;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class WebpipeUtils {
 
-    public static Charset UTF8 = Charset.forName("UTF-8");
+    public static final Charset UTF8 = Charset.forName("UTF-8");
+
+    public static final ObjectMapper DEFAULT_JSON_MAPPER = new ObjectMapper();
 
     public static MessageDigest buildSHA1Digest() {
         MessageDigest digest;
@@ -231,5 +242,13 @@ public class WebpipeUtils {
         packageDir = packageDir.substring(0, packageDir.lastIndexOf("."));
         packageDir = "/" + packageDir.replaceAll("\\.", "/");
         return packageDir;
+    }
+
+    public static SourceMap parseSourceMap(String json) throws JsonParseException, JsonMappingException, IOException {
+        return DEFAULT_JSON_MAPPER.readValue(json, SourceMap.class);
+    }
+
+    public static void serializeSourceMap(SourceMap sourceMap, OutputStream out) throws JsonGenerationException, JsonMappingException, IOException {
+        DEFAULT_JSON_MAPPER.writeValue(out, sourceMap);
     }
 }

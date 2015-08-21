@@ -48,6 +48,6 @@ public class JsRequireHelper extends ScriptableObject {
         } else {
             ressource = new ClasspathResource(filename, cl);
         }
-        context.evaluateString(scope, ressource.getContent().getMain(), filename, 1, null);
+        context.evaluateString(scope, ressource.getOutput().getContent(), filename, 1, null);
     }
 }

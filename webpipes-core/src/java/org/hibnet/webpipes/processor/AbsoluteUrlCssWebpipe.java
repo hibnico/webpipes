@@ -34,8 +34,8 @@ public class AbsoluteUrlCssWebpipe extends ProcessingWebpipe {
 
     @Override
     protected WebpipeOutput fetchContent() throws Exception {
-        WebpipeOutput out = webpipe.getContent();
-        String main = out.getMain();
+        WebpipeOutput out = webpipe.getOutput();
+        String main = out.getContent();
         StringBuilder buffer = new StringBuilder();
         Matcher matcher = URL_PATTERN.matcher(main);
         int pos = 0;

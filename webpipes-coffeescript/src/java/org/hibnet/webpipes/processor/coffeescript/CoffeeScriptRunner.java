@@ -31,7 +31,7 @@ public class CoffeeScriptRunner extends RhinoRunner {
     }
 
     public String run(Webpipe webpipe, String[] options) throws Exception {
-        String content = webpipe.getContent().getMain();
+        String content = webpipe.getOutput().getContent();
         Context context = enterContext();
         try {
             ScriptableObject scope = createLocalScope(context);

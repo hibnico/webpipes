@@ -4,7 +4,7 @@
 		module="webpipes-googleclosure-test"
 		revision="0.0.3"
 		status="integration"
-		publication="20150213235247"
+		publication="20150821112229"
 	>
 		<description>
 		This module contains the tests for the Closure Compiler by Google.
@@ -23,14 +23,18 @@
 		<dependency org="junit" name="junit" rev="4.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.10" force="true" transitive="false" conf="default->default,compile,master(*),compile(*),runtime,runtime(*),master"/>
-		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.1" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.hibnet" name="jsourcemap" rev="0.0.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.6.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.10" force="true" transitive="false" conf="default->default,master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.6.0" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.6.1" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.1" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
 		<dependency org="com.google.javascript" name="closure-compiler" rev="v20140730" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="com.google.javascript" name="closure-compiler-externs" rev="v20140730" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="args4j" name="args4j" rev="2.0.26" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.google.guava" name="guava" rev="17.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.google.code.findbugs" name="jsr305" rev="1.3.9" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="com.google.javascript" name="closure-compiler-externs" rev="v20140730" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="args4j" name="args4j" rev="2.0.26" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="com.google.guava" name="guava" rev="17.0" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="com.google.code.findbugs" name="jsr305" rev="1.3.9" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
 	</dependencies>
 </ivy-module>

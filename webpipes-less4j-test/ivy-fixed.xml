@@ -4,7 +4,7 @@
 		module="webpipes-less4j-test"
 		revision="0.0.3"
 		status="integration"
-		publication="20150213235248"
+		publication="20150821112230"
 	>
 		<description>
 		This module contains the tests for lesscss with less4j.
@@ -23,15 +23,19 @@
 		<dependency org="junit" name="junit" rev="4.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.10" force="true" transitive="false" conf="default->default,compile,master(*),compile(*),runtime,runtime(*),master"/>
-		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.1" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.hibnet" name="jsourcemap" rev="0.0.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.6.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.10" force="true" transitive="false" conf="default->default,master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.6.0" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.6.1" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.1" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
 		<dependency org="com.github.sommeri" name="less4j" rev="1.8.0" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.antlr" name="antlr-runtime" rev="3.4" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="commons-io" name="commons-io" rev="2.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="antlr" name="antlr" rev="2.7.7" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
-		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" transitive="false" conf="default->compile,master(*),runtime,compile(*),runtime(*),master"/>
+		<dependency org="org.antlr" name="antlr-runtime" rev="3.4" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="commons-io" name="commons-io" rev="2.3" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="org.json" name="json" rev="20090211" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="com.google.protobuf" name="protobuf-java" rev="2.5.0" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="antlr" name="antlr" rev="2.7.7" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
 	</dependencies>
 </ivy-module>
