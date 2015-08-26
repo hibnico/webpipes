@@ -26,7 +26,7 @@
 
     <target name="compile" depends="ivy:resolve" description="Compile the sources">
         <mkdir dir="${target.dir}/classes/" />
-        <javac srcdir="${basedir}/src/java" destdir="${target.dir}/classes" debug="on" includeantruntime="false" source="1.7" target="1.7" classpathref="ivy.default.classpath" />
+        <javac srcdir="${basedir}/src/java" destdir="${target.dir}/classes" debug="on" includeantruntime="false" source="1.8" target="1.8" classpathref="ivy.default.classpath" />
         <copy todir="${target.dir}/classes">
             <fileset dir="${basedir}/src/java">
                 <exclude name="**/*.java" />
