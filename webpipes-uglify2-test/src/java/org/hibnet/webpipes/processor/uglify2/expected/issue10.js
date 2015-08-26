@@ -1,1 +1,1 @@
-function f(){var e;return(e="a")?e:e}f()
+function f(){var a;return(a="a")?a:a}f();

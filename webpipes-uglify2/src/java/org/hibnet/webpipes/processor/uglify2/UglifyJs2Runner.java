@@ -41,19 +41,17 @@ public class UglifyJs2Runner extends RhinoRunner {
                     uglifyjsDir + "/lib/output.js",
                     uglifyjsDir + "/lib/compress.js",
                     uglifyjsDir + "/lib/sourcemap.js",
-                    uglifyjsDir + "/lib/mozilla-ast.js"
+                    uglifyjsDir + "/lib/mozilla-ast.js",
+                    uglifyjsDir + "/lib/propmangle.js"
                    };
         // @formatter:on
     }
 
     @Override
     protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
-        // addRequireJS(context, globalScope);
-        // runRequire(context, globalScope, libs);
         for (String lib : libs) {
             evaluateFromClasspath(context, globalScope, lib);
         }
-        // evaluate(context, globalScope, new FileResource("/Users/nlalevee/dev/js/uglify-js2/git/uglifyjs-self.js"));
     }
 
     public String run(Webpipe webpipe, boolean uglify) throws Exception {
@@ -65,10 +63,11 @@ public class UglifyJs2Runner extends RhinoRunner {
             StringBuilder script = new StringBuilder();
             script.append("var a = parse(");
             appendJSMultiLineString(script, content);
-            script.append(");");
-            script.append("var c = Compressor({});");
-            script.append("a = a.transform(c);");
-            script.append("a.print_to_string();");
+            script.append(", { filename : \"?\" });\n");
+            script.append("a.figure_out_scope();\n");
+            script.append("var c = Compressor();\n");
+            script.append("a = a.transform(c);\n");
+            script.append("a.print_to_string();\n");
 
             return evaluate(context, scope, script.toString());
         } finally {
