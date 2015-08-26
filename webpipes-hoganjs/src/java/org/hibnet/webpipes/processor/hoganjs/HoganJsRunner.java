@@ -36,7 +36,7 @@ public class HoganJsRunner extends SimpleRhinoRunner {
     protected String run(Webpipe webpipe, Context context, ScriptableObject scope) throws Exception {
         String content = webpipe.getOutput().getContent();
         StringBuilder script = new StringBuilder("Hogan.compile(");
-        script.append(toJSMultiLineString(content));
+        appendJSMultiLineString(script, content);
         script.append(",{asString: true});");
         String result = evaluate(context, scope, script.toString());
         return "Hogan.cache['" + getVarName(webpipe) + "'] = " + result + ";";

@@ -36,7 +36,7 @@ public class CoffeeScriptSourceMapRunner extends RhinoRunner {
         try {
             ScriptableObject scope = createLocalScope(context);
             StringBuilder script = new StringBuilder("CoffeeScript.compile(");
-            script.append(toJSMultiLineString(content));
+            appendJSMultiLineString(script, content);
             script.append(",{");
             if (options != null) {
                 for (int i = 0; i < options.length; i++) {

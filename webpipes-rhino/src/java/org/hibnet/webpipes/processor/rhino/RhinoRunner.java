@@ -186,7 +186,7 @@ public class RhinoRunner {
     protected String buildSimpleRunScript(String jsFunction, String content, String... extraArgs) {
         StringBuilder command = new StringBuilder(jsFunction);
         command.append("(");
-        command.append(toJSMultiLineString(content));
+        appendJSMultiLineString(command, content);
         if (extraArgs != null) {
             for (String extraArg : extraArgs) {
                 command.append(",");
@@ -207,28 +207,33 @@ public class RhinoRunner {
      * @return a string which being evaluated on the client-side will be treated as a correct multi-line string.
      */
     protected String toJSMultiLineString(String data) {
-        StringBuffer result = new StringBuffer("[");
+        StringBuilder buffer = new StringBuilder();
+        appendJSMultiLineString(buffer, data);
+        return buffer.toString();
+    }
+
+    protected void appendJSMultiLineString(StringBuilder buffer, String data) {
+        buffer.append("[");
         if (data != null) {
             String[] lines = data.split("\n");
             if (lines.length == 0) {
-                result.append("\"\"");
+                buffer.append("\"\"");
             }
             for (int i = 0; i < lines.length; i++) {
                 String line = lines[i];
-                result.append("\"");
-                result.append(line.replace("\\", "\\\\").replace("\"", "\\\"").replaceAll("\\r|\\n", ""));
+                buffer.append("\"");
+                buffer.append(line.replace("\\", "\\\\").replace("\"", "\\\"").replaceAll("\\r|\\n", ""));
                 // this is used to force a single line to have at least one new line (otherwise cssLint fails).
                 if (lines.length == 1) {
-                    result.append("\\n");
+                    buffer.append("\\n");
                 }
-                result.append("\"");
+                buffer.append("\"");
                 if (i < lines.length - 1) {
-                    result.append(",");
+                    buffer.append(",");
                 }
             }
         }
-        result.append("].join(\"\\n\")");
-        return result.toString();
+        buffer.append("].join(\"\\n\")");
     }
 
     protected String getVarName(Webpipe webpipe) {

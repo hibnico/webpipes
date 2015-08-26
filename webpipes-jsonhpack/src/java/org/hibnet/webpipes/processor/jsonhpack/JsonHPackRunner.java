@@ -55,7 +55,7 @@ public class JsonHPackRunner extends RhinoRunner {
             } else {
                 script.append("JSON.stringify(JSON.hunpack(eval(");
             }
-            script.append(toJSMultiLineString(content));
+            appendJSMultiLineString(script, content);
             if (pack) {
                 script.append("), 4));");
             } else {

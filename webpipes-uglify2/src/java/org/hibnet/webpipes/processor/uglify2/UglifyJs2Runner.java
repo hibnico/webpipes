@@ -53,7 +53,7 @@ public class UglifyJs2Runner extends RhinoRunner {
 
             StringBuilder script = new StringBuilder();
             script.append("var a = parse(");
-            script.append(toJSMultiLineString(content));
+            appendJSMultiLineString(script, content);
             script.append(");");
             script.append("var c = Compressor({});");
             script.append("a = a.transform(c);");
