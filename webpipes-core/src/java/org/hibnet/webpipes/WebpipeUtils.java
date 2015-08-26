@@ -32,6 +32,7 @@ import org.hibnet.jsourcemap.SourceMap;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -40,6 +41,10 @@ public class WebpipeUtils {
     public static final Charset UTF8 = Charset.forName("UTF-8");
 
     public static final ObjectMapper DEFAULT_JSON_MAPPER = new ObjectMapper();
+
+    static {
+        DEFAULT_JSON_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     public static MessageDigest buildSHA1Digest() {
         MessageDigest digest;
