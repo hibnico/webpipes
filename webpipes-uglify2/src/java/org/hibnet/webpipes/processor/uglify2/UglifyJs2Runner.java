@@ -27,12 +27,23 @@ import org.mozilla.javascript.ScriptableObject;
 public class UglifyJs2Runner extends RhinoRunner {
 
     private static String[] libs;
+
     static {
         String uglifyjsPath = WebJarHelper.getWebJarAssetLocator().getFullPath("uglifyjs");
         String uglifyjsDir = "/" + uglifyjsPath.substring(0, uglifyjsPath.length() - 13);
-        libs = new String[] { uglifyjsDir + "/lib/utils.js", uglifyjsDir + "/lib/ast.js", uglifyjsDir + "/lib/parse.js",
-                uglifyjsDir + "/lib/transform.js", uglifyjsDir + "/lib/scope.js", uglifyjsDir + "/lib/output.js", uglifyjsDir + "/lib/compress.js",
-                uglifyjsDir + "/lib/sourcemap.js", uglifyjsDir + "/lib/mozilla-ast.js" };
+        // @formatter:off
+        libs = new String[] {
+                    uglifyjsDir + "/lib/utils.js",
+                    uglifyjsDir + "/lib/ast.js",
+                    uglifyjsDir + "/lib/parse.js",
+                    uglifyjsDir + "/lib/transform.js",
+                    uglifyjsDir + "/lib/scope.js",
+                    uglifyjsDir + "/lib/output.js",
+                    uglifyjsDir + "/lib/compress.js",
+                    uglifyjsDir + "/lib/sourcemap.js",
+                    uglifyjsDir + "/lib/mozilla-ast.js"
+                   };
+        // @formatter:on
     }
 
     @Override
