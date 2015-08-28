@@ -18,6 +18,7 @@ package org.hibnet.webpipes;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -255,5 +256,52 @@ public class WebpipeUtils {
 
     public static void serializeSourceMap(SourceMap sourceMap, OutputStream out) throws JsonGenerationException, JsonMappingException, IOException {
         DEFAULT_JSON_MAPPER.writeValue(out, sourceMap);
+    }
+
+    public static void appendSourceMap(SourceMap sourceMap, final StringBuilder builder)
+            throws JsonGenerationException, JsonMappingException, IOException {
+        DEFAULT_JSON_MAPPER.writeValue(new Writer() {
+
+            @Override
+            public Writer append(char value) {
+                builder.append(value);
+                return this;
+            }
+
+            @Override
+            public Writer append(CharSequence value) {
+                builder.append(value);
+                return this;
+            }
+
+            @Override
+            public Writer append(CharSequence value, int start, int end) {
+                builder.append(value, start, end);
+                return this;
+            }
+
+            @Override
+            public void close() {
+            }
+
+            @Override
+            public void flush() {
+            }
+
+            @Override
+            public void write(String value) {
+                if (value != null) {
+                    builder.append(value);
+                }
+            }
+
+            @Override
+            public void write(char[] value, int offset, int length) {
+                if (value != null) {
+                    builder.append(value, offset, length);
+                }
+            }
+
+        }, sourceMap);
     }
 }

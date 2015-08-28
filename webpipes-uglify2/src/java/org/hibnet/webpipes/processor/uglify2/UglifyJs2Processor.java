@@ -46,7 +46,7 @@ public class UglifyJs2Processor {
 
         @Override
         protected WebpipeOutput fetchContent() throws Exception {
-            return new WebpipeOutput(uglifyJs2Runner.run(webpipe, uglify));
+            return uglifyJs2Runner.run(webpipe, uglify);
         }
     }
 

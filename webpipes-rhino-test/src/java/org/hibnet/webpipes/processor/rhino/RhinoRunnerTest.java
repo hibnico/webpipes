@@ -12,7 +12,7 @@ public class RhinoRunnerTest {
         RhinoRunner runner = new RhinoRunner() {
             @Override
             protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
-                addRequireJS(context, globalScope, RhinoRunnerTest.class);
+                addRequire(context, globalScope, new JsRequireHelper(RhinoRunnerTest.class, null));
                 runRequire(context, globalScope, "lib.js");
             }
         };
@@ -29,7 +29,7 @@ public class RhinoRunnerTest {
         runner = new RhinoRunner() {
             @Override
             protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
-                addRequireJS(context, globalScope, RhinoRunnerTest.class);
+                addRequire(context, globalScope, new JsRequireHelper(RhinoRunnerTest.class, null));
                 runRequire(context, globalScope, "lib/lib2.js");
             }
         };

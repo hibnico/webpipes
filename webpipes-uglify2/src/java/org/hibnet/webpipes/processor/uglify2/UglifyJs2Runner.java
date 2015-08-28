@@ -15,7 +15,10 @@
  */
 package org.hibnet.webpipes.processor.uglify2;
 
+import org.hibnet.jsourcemap.SourceMap;
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.processor.rhino.RhinoRunner;
 import org.hibnet.webpipes.resource.WebJarHelper;
 import org.mozilla.javascript.Context;
@@ -49,12 +52,14 @@ public class UglifyJs2Runner extends RhinoRunner {
 
     @Override
     protected void initScope(Context context, ScriptableObject globalScope) throws Exception {
+        addSourceMap(context, globalScope);
+        evaluate(context, globalScope, "MOZ_SourceMap = sourceMap;");
         for (String lib : libs) {
             evaluateFromClasspath(context, globalScope, lib);
         }
     }
 
-    public String run(Webpipe webpipe, boolean uglify) throws Exception {
+    public WebpipeOutput run(Webpipe webpipe, boolean uglify) throws Exception {
         String content = webpipe.getOutput().getContent();
         Context context = enterContext();
         try {
@@ -67,9 +72,21 @@ public class UglifyJs2Runner extends RhinoRunner {
             script.append("a.figure_out_scope();\n");
             script.append("var c = Compressor();\n");
             script.append("a = a.transform(c);\n");
-            script.append("a.print_to_string();\n");
+            SourceMap inMap = webpipe.getOutput().getSourceMap();
+            if (inMap == null) {
+                script.append("var sm = SourceMap();\n");
+            } else {
+                script.append("var sm = SourceMap({orig: ");
+                WebpipeUtils.appendSourceMap(inMap, script);
+                script.append("});\n");
+            }
+            script.append("var o = OutputStream({source_map : sm});\n");
+            script.append("a.print(o);\n");
+            script.append("o.get();\n");
 
-            return evaluate(context, scope, script.toString());
+            String res = evaluate(context, scope, script.toString());
+            String sourcemap = evaluate(context, scope, "sm.toString()");
+            return new WebpipeOutput(res, WebpipeUtils.parseSourceMap(sourcemap));
         } finally {
             Context.exit();
         }

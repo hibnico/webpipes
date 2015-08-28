@@ -4,7 +4,7 @@
 		module="webpipes-dustjs-test"
 		revision="0.0.3"
 		status="integration"
-		publication="20150821112228"
+		publication="20150828181722"
 	>
 		<description>
 		This module contains the tests for Dust.js.
@@ -31,8 +31,6 @@
 		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.1" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
 		<dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.3,0.0.4)" transitive="false" conf="default->default"/>
 		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="json2" rev="20110223" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="rjs" rev="2.1.15" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="source-map" rev="0.1.31-2" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 	</dependencies>
 </ivy-module>

@@ -24,6 +24,7 @@ import org.hibnet.webpipes.resource.WebJarHelper;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeObject;
+import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -37,13 +38,16 @@ import org.slf4j.LoggerFactory;
 
 public class RhinoRunner {
 
+    private static final Logger logger = LoggerFactory.getLogger(RhinoRunner.class);
+
     protected static Resource commonsScript = new ClasspathResource("commons.js", RhinoRunner.class);
 
     protected static Resource envScript = new ClasspathResource("env.rhino.min.js", RhinoRunner.class);
 
-    protected static Resource cycleScript = new ClasspathResource("cycle.js", RhinoRunner.class);
+    protected static Resource sourceMapScript = new ClasspathResource("source-map.min.js", RhinoRunner.class);
 
     private static String rjsScript;
+
     static {
         try {
             rjsScript = WebJarHelper.getResource("r.js").getOutput().getContent();
@@ -51,7 +55,9 @@ public class RhinoRunner {
             throw new RuntimeException(e);
         }
         // script out the f**** non js header
-        rjsScript = rjsScript.substring(rjsScript.indexOf('\n'));
+        if (rjsScript.startsWith("#!")) {
+            rjsScript = rjsScript.substring(rjsScript.indexOf('\n'));
+        }
     }
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
@@ -92,21 +98,13 @@ public class RhinoRunner {
         evaluate(context, scope, envScript);
     }
 
-    protected void addRequireJS(Context context, ScriptableObject scope) throws Exception {
-        addRequire(context, scope, new JsRequireHelper(RhinoRunner.class));
+    protected void addSourceMap(Context context, ScriptableObject scope) throws Exception {
+        evaluate(context, scope, sourceMapScript);
     }
 
-    protected void addRequireJS(Context context, ScriptableObject scope, Class<?> clazz) throws Exception {
-        addRequire(context, scope, new JsRequireHelper(clazz));
-    }
-
-    protected void addRequire(Context context, ScriptableObject scope, ClassLoader cl) throws Exception {
-        addRequire(context, scope, new JsRequireHelper(cl));
-    }
-
-    private void addRequire(Context context, ScriptableObject scope, JsRequireHelper jsRequireHelper) throws Exception {
+    protected void addRequire(Context context, ScriptableObject scope, AbstractJsRequireHelper jsRequireHelper) throws Exception {
         scope.defineProperty(JsRequireHelper.VAR_NAME, jsRequireHelper, ScriptableObject.CONST);
-        scope.defineFunctionProperties(new String[] { "load", "print" }, JsRequireHelper.class, ScriptableObject.DONTENUM);
+        scope.defineFunctionProperties(new String[] { "load", "print" }, AbstractJsRequireHelper.class, ScriptableObject.DONTENUM);
         Scriptable argsObj = context.newArray(scope, new Object[] {});
         scope.defineProperty("arguments", argsObj, ScriptableObject.DONTENUM);
         evaluate(context, scope, rjsScript, "r.js");
@@ -130,11 +128,6 @@ public class RhinoRunner {
         evaluate(context, scope, script.toString());
     }
 
-    public void addJSON(Context context, ScriptableObject scope) throws Exception {
-        evaluateFromWebjar(context, scope, "20110223/json2.js");
-        evaluate(context, scope, cycleScript);
-    }
-
     protected ScriptableObject createLocalScope(Context context) {
         ScriptableObject scope = (ScriptableObject) context.newObject(globalScope);
         scope.setPrototype(null);
@@ -143,9 +136,14 @@ public class RhinoRunner {
     }
 
     protected <T> T evaluate(Context context, ScriptableObject scope, String script, String sourceName) {
-        @SuppressWarnings("unchecked")
-        T result = (T) context.evaluateString(scope, script, sourceName, 1, null);
-        return result;
+        try {
+            @SuppressWarnings("unchecked")
+            T result = (T) context.evaluateString(scope, script, sourceName, 1, null);
+            return result;
+        } catch (RhinoException e) {
+            logger.error("Error executing the js '" + sourceName + "': '" + e.getMessage() + "'\n" + e.getScriptStackTrace());
+            throw e;
+        }
     }
 
     protected <T> T evaluate(Context context, ScriptableObject scope, String script) {
@@ -198,9 +196,9 @@ public class RhinoRunner {
     }
 
     /**
-     * Transforms a java multi-line string into javascript multi-line string. This technique was found at <a
-     * href="http://stackoverflow.com/questions/805107/multiline-strings-in-javascript/">
-     * http://stackoverflow.com/questions/805107/multiline-strings-in-javascript/</a>
+     * Transforms a java multi-line string into javascript multi-line string. This technique was found at
+     * <a href="http://stackoverflow.com/questions/805107/multiline-strings-in-javascript/"> http://stackoverflow.com/questions/805107/multiline-
+     * strings-in-javascript/</a>
      *
      * @param data
      *            a string containing new lines.
