@@ -1,7 +1,8 @@
+sudo: false
 language: java
 script: ant ci-build
 jdk:
-  - openjdk7
+  - oraclejdk8
 notifications:
   email:
     - nicolas.lalevee@hibnet.org
