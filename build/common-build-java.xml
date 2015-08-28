@@ -27,6 +27,11 @@
     <target name="compile" depends="ivy:resolve" description="Compile the sources">
         <mkdir dir="${target.dir}/classes/" />
         <javac srcdir="${basedir}/src/java" destdir="${target.dir}/classes" debug="on" includeantruntime="false" source="1.8" target="1.8" classpathref="ivy.default.classpath" />
+    </target>
+
+    <extension-point name="jar:resources" />
+
+    <target name="copy-resources" depends="jar:resources" description="Compile the sources">
         <copy todir="${target.dir}/classes">
             <fileset dir="${basedir}/src/java">
                 <exclude name="**/*.java" />
@@ -34,9 +39,7 @@
         </copy>
     </target>
 
-    <extension-point name="jar:resources" />
-
-    <target name="jar" depends="compile,jar:resources" description="Build the jar" extensionOf="build">
+    <target name="jar" depends="compile,copy-resources" description="Build the jar" extensionOf="build">
         <jar destfile="${target.dir}/dist/${project.name}.jar" basedir="${target.dir}/classes" />
     </target>
 

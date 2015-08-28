@@ -19,7 +19,7 @@
     <import file="${basedir}/../build/common-build-java.xml" />
 
     <target name="get-yui-jar" depends="ivy:configure" extensionOf="jar:resources">
-        <ivy:retrieve pattern="${basedir}/src/java/org/hibnet/webpipes/processor/yui/jar/[artifact]-[revision].[ext]" sync="true" type="jar">
+        <ivy:retrieve resolveId="get-yui-jar" pattern="${basedir}/src/java/org/hibnet/webpipes/processor/yui/jar/[artifact]-[revision].[ext]" sync="true" type="jar">
             <dependency org="com.yahoo.platform.yui" name="yuicompressor" rev="2.4.8" transitive="false" />
         </ivy:retrieve>
     </target>
