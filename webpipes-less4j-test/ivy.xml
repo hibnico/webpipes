@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-less4j-test" revision="0.0.3">
+    <info organisation="org.hibnet" module="webpipes-less4j-test" revision="0.0.4">
         <description>This module contains the tests for lesscss with less4j.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-core-test" rev="[0.0.3,0.0.4)" />
-        <dependency org="org.hibnet" name="webpipes-less4j" rev="[0.0.3,0.0.4)" />
+        <dependency org="org.hibnet" name="webpipes-core-test" rev="[0.0.4,0.0.5)" />
+        <dependency org="org.hibnet" name="webpipes-less4j" rev="[0.0.4,0.0.5)" />
     </dependencies>
 </ivy-module>

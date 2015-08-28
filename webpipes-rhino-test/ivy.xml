@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-rhino-test" revision="0.0.3">
+    <info organisation="org.hibnet" module="webpipes-rhino-test" revision="0.0.4">
         <description>This module contains the test for the Rhino utilities.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.3,0.0.4)" />
+        <dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.4,0.0.5)" />
 
         <dependency org="junit" name="junit" rev="4.10" />
         <dependency org="org.slf4j" name="slf4j-simple" rev="1.7.10" />

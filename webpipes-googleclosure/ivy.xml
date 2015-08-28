@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-googleclosure" revision="0.0.3">
+    <info organisation="org.hibnet" module="webpipes-googleclosure" revision="0.0.4">
         <description>This module adds support for the Closure Compiler by Google.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-core" rev="[0.0.3,0.0.4)" />
+        <dependency org="org.hibnet" name="webpipes-core" rev="[0.0.4,0.0.5)" />
 
         <dependency org="com.google.javascript" name="closure-compiler" rev="v20140730" />
     </dependencies>

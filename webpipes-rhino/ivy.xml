@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-rhino" revision="0.0.3">
+    <info organisation="org.hibnet" module="webpipes-rhino" revision="0.0.4">
         <description>This module offers the base classes to run javascript on Rhino.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-core" rev="[0.0.3,0.0.4)" />
+        <dependency org="org.hibnet" name="webpipes-core" rev="[0.0.4,0.0.5)" />
 
 	    <dependency org="org.mozilla" name="rhino" rev="1.7R4" />
         <dependency org="org.webjars" name="rjs" rev="2.1.15" />
