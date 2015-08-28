@@ -24,7 +24,6 @@
     <target name="test" depends="compile" description="Run the unit tests" extensionOf="ci-build">
         <mkdir dir="${target.dir}/test-reports" />
         <junit fork="true" haltonerror="true" haltonfailure="true" failureproperty="junit.failed">
-            <jvmarg value="-XX:-UseSplitVerifier"/>
             <classpath>
                 <pathelement location="${target.dir}/classes"/>
                 <path refid="ivy.default.classpath"/> 
