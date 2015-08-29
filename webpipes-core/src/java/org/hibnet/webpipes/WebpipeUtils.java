@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 
 import org.hibnet.jsourcemap.SourceMap;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -41,10 +42,11 @@ public class WebpipeUtils {
 
     public static final Charset UTF8 = Charset.forName("UTF-8");
 
-    public static final ObjectMapper DEFAULT_JSON_MAPPER = new ObjectMapper();
+    private static final ObjectMapper SOURCEMAP_JSON_MAPPER = new ObjectMapper();
 
     static {
-        DEFAULT_JSON_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        SOURCEMAP_JSON_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        SOURCEMAP_JSON_MAPPER.getSerializationConfig().withSerializationInclusion(Include.NON_NULL);
     }
 
     public static MessageDigest buildSHA1Digest() {
@@ -251,16 +253,16 @@ public class WebpipeUtils {
     }
 
     public static SourceMap parseSourceMap(String json) throws JsonParseException, JsonMappingException, IOException {
-        return DEFAULT_JSON_MAPPER.readValue(json, SourceMap.class);
+        return SOURCEMAP_JSON_MAPPER.readValue(json, SourceMap.class);
     }
 
     public static void serializeSourceMap(SourceMap sourceMap, OutputStream out) throws JsonGenerationException, JsonMappingException, IOException {
-        DEFAULT_JSON_MAPPER.writeValue(out, sourceMap);
+        SOURCEMAP_JSON_MAPPER.writeValue(out, sourceMap);
     }
 
     public static void appendSourceMap(SourceMap sourceMap, final StringBuilder builder)
             throws JsonGenerationException, JsonMappingException, IOException {
-        DEFAULT_JSON_MAPPER.writeValue(new Writer() {
+        SOURCEMAP_JSON_MAPPER.writeValue(new Writer() {
 
             @Override
             public Writer append(char value) {
