@@ -33,22 +33,22 @@ public class AbsoluteUrlCssWebpipe extends ProcessingWebpipe {
     }
 
     @Override
-    protected WebpipeOutput fetchContent() throws Exception {
-        WebpipeOutput out = webpipe.getOutput();
-        String main = out.getContent();
+    protected WebpipeOutput fetchOutput() throws Exception {
+        WebpipeOutput output = webpipe.getOutput();
+        String content = output.getContent();
         StringBuilder buffer = new StringBuilder();
-        Matcher matcher = URL_PATTERN.matcher(main);
+        Matcher matcher = URL_PATTERN.matcher(content);
         int pos = 0;
-        while (pos < main.length()) {
+        while (pos < content.length()) {
             if (!matcher.find(pos)) {
                 break;
             }
-            buffer.append(main.substring(pos, matcher.end()));
+            buffer.append(content.substring(pos, matcher.end()));
             buffer.append(absolutePath);
             pos = matcher.end();
         }
-        buffer.append(main.substring(pos));
-        return new WebpipeOutput(buffer.toString(), out.getSourceMap());
+        buffer.append(content.substring(pos));
+        return new WebpipeOutput(buffer.toString(), output.getSourceMap());
     }
 
 }

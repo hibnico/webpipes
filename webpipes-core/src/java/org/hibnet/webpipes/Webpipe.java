@@ -36,11 +36,11 @@ public abstract class Webpipe {
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    private static final WebpipeOutput NOT_INITIALIZED_CONTENT = new WebpipeOutput("", null);
+    private static final WebpipeOutput NOT_INITIALIZED_OUTPUT = new WebpipeOutput("", null);
 
-    public static final WebpipeOutput NO_CONTENT = new WebpipeOutput("", null);
+    public static final WebpipeOutput NO_OUTPUT = new WebpipeOutput("", null);
 
-    private static final WebpipeOutput INVALIDATED_CONTENT = new WebpipeOutput("", null);
+    private static final WebpipeOutput INVALIDATED_OUTPUT = new WebpipeOutput("", null);
 
     private static final List<Webpipe> NOT_INITIALIZED_CHILDREN = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public abstract class Webpipe {
 
     private File cacheDir;
 
-    private volatile WebpipeOutput content = NOT_INITIALIZED_CONTENT;
+    private volatile WebpipeOutput output = NOT_INITIALIZED_OUTPUT;
 
     private List<Webpipe> children = NOT_INITIALIZED_CHILDREN;
 
@@ -95,7 +95,7 @@ public abstract class Webpipe {
             refresh = refresh || webpipe.refresh();
         }
         if (refresh) {
-            invalidateContentCache();
+            invalidateOutputCache();
         }
         return refresh;
     }
@@ -124,9 +124,9 @@ public abstract class Webpipe {
         this.cacheDir = cacheDir;
     }
 
-    protected void invalidateContentCache() {
-        synchronized (content) {
-            content = INVALIDATED_CONTENT;
+    protected void invalidateOutputCache() {
+        synchronized (output) {
+            output = INVALIDATED_OUTPUT;
         }
     }
 
@@ -137,50 +137,50 @@ public abstract class Webpipe {
     }
 
     public final WebpipeOutput getOutput() throws Exception {
-        if (content == NOT_INITIALIZED_CONTENT || content == INVALIDATED_CONTENT) {
-            synchronized (content) {
-                if (content == NOT_INITIALIZED_CONTENT) {
-                    content = readContent();
-                    if (content == NOT_INITIALIZED_CONTENT) {
-                        content = fetchContent();
-                        storeContent(content);
+        if (output == NOT_INITIALIZED_OUTPUT || output == INVALIDATED_OUTPUT) {
+            synchronized (output) {
+                if (output == NOT_INITIALIZED_OUTPUT) {
+                    output = readOutput();
+                    if (output == NOT_INITIALIZED_OUTPUT) {
+                        output = fetchOutput();
+                        storeOutput(output);
                     }
-                } else if (content == INVALIDATED_CONTENT) {
-                    content = fetchContent();
-                    storeContent(content);
+                } else if (output == INVALIDATED_OUTPUT) {
+                    output = fetchOutput();
+                    storeOutput(output);
                 }
             }
         }
-        return content;
+        return output;
     }
 
-    abstract protected WebpipeOutput fetchContent() throws Exception;
+    abstract protected WebpipeOutput fetchOutput() throws Exception;
 
-    protected WebpipeOutput fetchChildrenContent() throws Exception {
+    protected WebpipeOutput fetchChildrenOutput() throws Exception {
         return merger.merge(getChildren());
     }
 
-    private WebpipeOutput readContent() throws Exception {
+    private WebpipeOutput readOutput() throws Exception {
         if (cacheDir == null) {
             // no durable cache configured
-            return NOT_INITIALIZED_CONTENT;
+            return NOT_INITIALIZED_OUTPUT;
         }
 
         File sha1File = new File(cacheDir, getId() + ".sha1");
         if (!sha1File.exists()) {
-            return NOT_INITIALIZED_CONTENT;
+            return NOT_INITIALIZED_OUTPUT;
         }
 
         byte[] expectedSha1 = computeSHA1();
 
         if (sha1File.length() != expectedSha1.length) {
             // wrong size : don't even bother to read it
-            return NOT_INITIALIZED_CONTENT;
+            return NOT_INITIALIZED_OUTPUT;
         }
         byte[] actualSha1 = readFile(sha1File);
 
         if (!Arrays.equals(expectedSha1, actualSha1)) {
-            return NOT_INITIALIZED_CONTENT;
+            return NOT_INITIALIZED_OUTPUT;
         }
 
         // same sha1, get the content out
@@ -201,7 +201,7 @@ public abstract class Webpipe {
         return data;
     }
 
-    private void storeContent(WebpipeOutput content) throws Exception {
+    private void storeOutput(WebpipeOutput content) throws Exception {
         if (cacheDir == null) {
             // no durable cache configured
             return;

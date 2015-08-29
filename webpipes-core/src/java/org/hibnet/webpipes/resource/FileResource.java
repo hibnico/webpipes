@@ -61,7 +61,7 @@ public class FileResource extends StreamResource {
         long newJarTimestamp = file.lastModified();
         boolean update = newJarTimestamp != timestamp;
         if (update) {
-            invalidateContentCache();
+            invalidateOutputCache();
         }
         return update;
     }

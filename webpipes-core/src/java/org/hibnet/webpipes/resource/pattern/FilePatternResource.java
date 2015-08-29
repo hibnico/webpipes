@@ -63,8 +63,8 @@ public class FilePatternResource extends Resource {
     }
 
     @Override
-    protected WebpipeOutput fetchContent() throws Exception {
-        return fetchChildrenContent();
+    protected WebpipeOutput fetchOutput() throws Exception {
+        return fetchChildrenOutput();
     }
 
     @Override

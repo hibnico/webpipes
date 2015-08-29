@@ -45,7 +45,7 @@ public class CJsonProcessor {
         }
 
         @Override
-        protected WebpipeOutput fetchContent() throws Exception {
+        protected WebpipeOutput fetchOutput() throws Exception {
             return new WebpipeOutput(cJsonRunner.run(webpipe, pack));
         }
     }

@@ -72,7 +72,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
     }
 
     @Override
-    protected WebpipeOutput fetchContent() throws Exception {
+    protected WebpipeOutput fetchOutput() throws Exception {
         synchronized (importedResources) {
             importedResources.clear();
 
@@ -94,7 +94,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
         boolean needUpdate = refreshChildren();
         needUpdate = needUpdate || webpipe.refresh();
         if (needUpdate) {
-            invalidateContentCache();
+            invalidateOutputCache();
         }
         return needUpdate;
     }

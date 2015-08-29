@@ -36,7 +36,7 @@ public class YuiCssCompressorProcessor {
         }
 
         @Override
-        protected WebpipeOutput fetchContent() throws Exception {
+        protected WebpipeOutput fetchOutput() throws Exception {
             String content = webpipe.getOutput().getContent();
             Writer writer = new StringWriter();
             try {

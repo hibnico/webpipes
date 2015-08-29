@@ -45,7 +45,7 @@ public class JsonHPackProcessor {
         }
 
         @Override
-        protected WebpipeOutput fetchContent() throws Exception {
+        protected WebpipeOutput fetchOutput() throws Exception {
             return new WebpipeOutput(jsonHPackRunner.run(webpipe, pack));
         }
     }

@@ -23,7 +23,7 @@ import org.hibnet.webpipes.WebpipeUtils;
 
 public class StringResource extends Resource {
 
-    private WebpipeOutput content;
+    private WebpipeOutput output;
 
     private String name;
 
@@ -31,7 +31,7 @@ public class StringResource extends Resource {
 
     public StringResource(String name, String content) {
         this.name = name;
-        this.content = new WebpipeOutput(content);
+        this.output = new WebpipeOutput(content);
         this.uri = URI.create("string:" + WebpipeUtils.sha1HexEncoded(content));
     }
 
@@ -51,8 +51,8 @@ public class StringResource extends Resource {
     }
 
     @Override
-    public WebpipeOutput fetchContent() throws IOException {
-        return content;
+    public WebpipeOutput fetchOutput() throws IOException {
+        return output;
     }
 
     @Override

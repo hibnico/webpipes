@@ -97,7 +97,7 @@ public class ClasspathResource extends StreamResource {
         String newProtocol = url.getProtocol();
         boolean update = newProtocol != protocol;
         if (update) {
-            invalidateContentCache();
+            invalidateOutputCache();
             return true;
         }
         File file = null;
@@ -112,7 +112,7 @@ public class ClasspathResource extends StreamResource {
         long newJarTimestamp = file.lastModified();
         update = newJarTimestamp != timestamp;
         if (update) {
-            invalidateContentCache();
+            invalidateOutputCache();
         }
         return update;
     }

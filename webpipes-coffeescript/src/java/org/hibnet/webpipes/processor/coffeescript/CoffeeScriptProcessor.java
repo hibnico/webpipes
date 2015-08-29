@@ -45,7 +45,7 @@ public class CoffeeScriptProcessor {
         }
 
         @Override
-        protected WebpipeOutput fetchContent() throws Exception {
+        protected WebpipeOutput fetchOutput() throws Exception {
             return new WebpipeOutput(coffeeScriptRunner.run(webpipe, options));
         }
     }

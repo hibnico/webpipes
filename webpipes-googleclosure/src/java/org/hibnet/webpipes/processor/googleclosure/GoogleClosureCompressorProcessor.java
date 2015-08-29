@@ -50,7 +50,7 @@ public class GoogleClosureCompressorProcessor {
         }
 
         @Override
-        protected WebpipeOutput fetchContent() throws Exception {
+        protected WebpipeOutput fetchOutput() throws Exception {
             return new WebpipeOutput(compile(webpipe, compilationLevel));
         }
     }

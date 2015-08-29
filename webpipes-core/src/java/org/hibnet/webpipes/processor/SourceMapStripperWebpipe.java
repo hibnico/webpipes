@@ -30,7 +30,7 @@ public class SourceMapStripperWebpipe extends ProcessingWebpipe {
     }
 
     @Override
-    protected WebpipeOutput fetchContent() throws Exception {
+    protected WebpipeOutput fetchOutput() throws Exception {
         WebpipeOutput out = webpipe.getOutput();
         String main = out.getContent();
         StringBuilder buffer = new StringBuilder();

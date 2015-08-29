@@ -35,7 +35,7 @@ public abstract class ProcessingWebpipe extends Webpipe {
     public boolean refresh() throws IOException {
         boolean needUpdate = webpipe.refresh();
         if (needUpdate) {
-            invalidateContentCache();
+            invalidateOutputCache();
         }
         return needUpdate;
     }

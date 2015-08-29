@@ -9,7 +9,7 @@ public abstract class StatelessWebpipeProcessor extends ProcessingWebpipeFactory
     public Webpipe createProcessingWebpipe(Webpipe source) {
         return new ProcessingWebpipe(source) {
             @Override
-            protected WebpipeOutput fetchContent() throws Exception {
+            protected WebpipeOutput fetchOutput() throws Exception {
                 return process(webpipe);
             }
         };

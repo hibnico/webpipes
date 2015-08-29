@@ -33,7 +33,7 @@ public abstract class StreamResource extends Resource {
     }
 
     @Override
-    public WebpipeOutput fetchContent() throws IOException {
+    public WebpipeOutput fetchOutput() throws IOException {
         try (InputStream is = fetchStream()) {
             InputStreamReader reader = new InputStreamReader(is, encoding);
             StringWriter writer = new StringWriter();
