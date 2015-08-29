@@ -46,7 +46,7 @@ public class WebpipeUtils {
 
     static {
         SOURCEMAP_JSON_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        SOURCEMAP_JSON_MAPPER.getSerializationConfig().withSerializationInclusion(Include.NON_NULL);
+        SOURCEMAP_JSON_MAPPER.setSerializationInclusion(Include.NON_NULL);
     }
 
     public static MessageDigest buildSHA1Digest() {
