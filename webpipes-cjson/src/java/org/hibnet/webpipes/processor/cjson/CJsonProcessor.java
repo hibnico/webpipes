@@ -17,22 +17,24 @@ package org.hibnet.webpipes.processor.cjson;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.js.JsProcessor;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
 /**
  * A processor using <a href="http://stevehanov.ca/blog/index.php?id=104">cjson compression algorithm</a>
  */
-public class CJsonProcessor {
+public class CJsonProcessor extends JsProcessor {
 
-    private CJsonRunner cJsonRunner;
-
-    public CJsonProcessor() {
-        this(new CJsonRunner());
+    @Override
+    protected void initEngine() throws Exception {
+        addClientSideEnvironment();
+        evalFromClasspath("/org/hibnet/webpipes/processor/cjson/cjson.min.js");
+        evalFromClasspath("/org/hibnet/webpipes/processor/cjson/webpipes_runner.js");
     }
 
-    public CJsonProcessor(CJsonRunner cJsonRunner) {
-        this.cJsonRunner = cJsonRunner;
+    private WebpipeOutput process(Webpipe webpipe, boolean pack) throws Exception {
+        return callRunner(webpipe.getOutput().getContent(), pack);
     }
 
     private final class CJsonWebpipe extends ProcessingWebpipe {
@@ -46,7 +48,7 @@ public class CJsonProcessor {
 
         @Override
         protected WebpipeOutput fetchOutput() throws Exception {
-            return new WebpipeOutput(cJsonRunner.run(webpipe, pack));
+            return process(webpipe, pack);
         }
     }
 

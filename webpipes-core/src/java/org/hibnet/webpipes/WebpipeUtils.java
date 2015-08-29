@@ -253,10 +253,16 @@ public class WebpipeUtils {
     }
 
     public static SourceMap parseSourceMap(String json) throws JsonParseException, JsonMappingException, IOException {
+        if (json == null) {
+            return null;
+        }
         return SOURCEMAP_JSON_MAPPER.readValue(json, SourceMap.class);
     }
 
     public static SourceMap parseSourceMap(byte[] json) throws JsonParseException, JsonMappingException, IOException {
+        if (json == null) {
+            return null;
+        }
         return SOURCEMAP_JSON_MAPPER.readValue(json, SourceMap.class);
     }
 

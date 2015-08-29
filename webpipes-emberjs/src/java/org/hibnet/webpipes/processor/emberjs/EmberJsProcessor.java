@@ -15,19 +15,26 @@
  */
 package org.hibnet.webpipes.processor.emberjs;
 
-import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.js.StatelessJsProcessor;
 
 /**
  * Compiles EmberJS templates to javascript. The processor loads emberJs library and all its dependencies from the webjar.
  */
-public class EmberJsProcessor extends StatelessRhinoWebpipeProcessor {
+public class EmberJsProcessor extends StatelessJsProcessor {
 
-    public EmberJsProcessor() {
-        super(new EmberJsRunner());
+    @Override
+    protected void initEngine() throws Exception {
+        addClientSideEnvironment();
+        evalFromWebjar("jquery.js");
+        evalFromWebjar("handlebars.js");
+        evalFromWebjar("ember.js");
+        evalFromClasspath("/org/hibnet/webpipes/processor/emberjs/webpipes_runner.js");
     }
 
-    public EmberJsProcessor(EmberJsRunner emberJsRunner) {
-        super(emberJsRunner);
+    @Override
+    public WebpipeOutput process(Webpipe webpipe) throws Exception {
+        return callRunner(getVarName(webpipe), webpipe.getOutput().getContent());
     }
-
 }

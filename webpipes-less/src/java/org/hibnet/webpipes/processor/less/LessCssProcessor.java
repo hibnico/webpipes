@@ -15,19 +15,25 @@
  */
 package org.hibnet.webpipes.processor.less;
 
-import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.js.StatelessJsProcessor;
 
 /**
  * A processor using lessCss engine: @see http://www.asual.com/lesscss/
  */
-public class LessCssProcessor extends StatelessRhinoWebpipeProcessor {
+public class LessCssProcessor extends StatelessJsProcessor {
 
-    public LessCssProcessor() {
-        super(new LessCssRunner());
+    @Override
+    protected void initEngine() throws Exception {
+        addClientSideEnvironment();
+        evalFromClasspath("/org/hibnet/webpipes/processor/less/webpipes_runner.js");
+        evalFromWebjar("less.min.js");
     }
 
-    public LessCssProcessor(LessCssRunner lessCssRunner) {
-        super(lessCssRunner);
+    @Override
+    public WebpipeOutput process(Webpipe webpipe) throws Exception {
+        return callRunner(webpipe.getOutput().getContent());
     }
 
 }

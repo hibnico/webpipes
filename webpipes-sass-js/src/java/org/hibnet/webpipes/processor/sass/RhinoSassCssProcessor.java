@@ -15,19 +15,25 @@
  */
 package org.hibnet.webpipes.processor.sass;
 
-import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.js.StatelessJsProcessor;
 
 /**
  * A processor using sass engine:
  */
-public class RhinoSassCssProcessor extends StatelessRhinoWebpipeProcessor {
+public class RhinoSassCssProcessor extends StatelessJsProcessor {
 
-    public RhinoSassCssProcessor() {
-        super(new RhinoSassCssRunner());
+    @Override
+    protected void initEngine() throws Exception {
+        eval("var exports = {};");
+        evalFromClasspath("/org/hibnet/webpipes/processor/sass/sass-0.5.0.min.js");
     }
 
-    public RhinoSassCssProcessor(RhinoSassCssRunner rhinoSassCssRunner) {
-        super(rhinoSassCssRunner);
+    @Override
+    public WebpipeOutput process(Webpipe webpipe) throws Exception {
+        String content = invokeMethod("exports", "render", webpipe.getOutput().getContent());
+        return new WebpipeOutput(content);
     }
 
 }

@@ -4,7 +4,7 @@
 		module="webpipes-ant"
 		revision="0.0.4"
 		status="integration"
-		publication="20150821112221"
+		publication="20150829172521"
 	>
 		<description>
 		This module contains the ant tasks to generate the web contents statically.

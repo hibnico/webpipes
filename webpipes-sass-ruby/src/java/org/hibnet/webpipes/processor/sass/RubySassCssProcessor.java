@@ -21,13 +21,13 @@ import java.util.List;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
-import org.hibnet.webpipes.processor.StatelessWebpipeProcessor;
+import org.hibnet.webpipes.processor.StatelessProcessingWebpipeFactory;
 import org.jruby.Ruby;
 import org.jruby.ast.Node;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.jruby.util.ByteList;
 
-public class RubySassCssProcessor extends StatelessWebpipeProcessor {
+public class RubySassCssProcessor implements StatelessProcessingWebpipeFactory {
 
     private List<String> requires = new ArrayList<>(Arrays.asList("rubygems", "sass/plugin", "sass/engine"));
 

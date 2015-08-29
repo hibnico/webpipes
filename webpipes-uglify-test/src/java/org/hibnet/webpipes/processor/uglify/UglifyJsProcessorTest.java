@@ -15,6 +15,8 @@
  */
 package org.hibnet.webpipes.processor.uglify;
 
+import java.util.Arrays;
+
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
 import org.junit.Test;
 
@@ -29,7 +31,7 @@ public class UglifyJsProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testReservedNames() throws Exception {
-        testFiles(packageDir + "/reservednames", processor.createFactory(true, "name,value"), ".js", ".js");
+        testFiles(packageDir + "/reservednames", processor.createFactory(true, Arrays.asList("name", "value")), ".js", ".js");
     }
 
 }

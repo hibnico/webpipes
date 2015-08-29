@@ -59,8 +59,6 @@ Project ${project.name}
             <keep org="org.hibnet" module="webpipes-cjson-test" />
             <keep org="org.hibnet" module="webpipes-coffeescript" />
         	<keep org="org.hibnet" module="webpipes-coffeescript-test" />
-            <keep org="org.hibnet" module="webpipes-coffeescript-sourcemap" />
-            <keep org="org.hibnet" module="webpipes-coffeescript-sourcemap-test" />
             <keep org="org.hibnet" module="webpipes-core" />
             <keep org="org.hibnet" module="webpipes-core-test" />
             <keep org="org.hibnet" module="webpipes-dustjs" />
@@ -81,8 +79,6 @@ Project ${project.name}
             <keep org="org.hibnet" module="webpipes-less-test" />
             <keep org="org.hibnet" module="webpipes-less4j" />
             <keep org="org.hibnet" module="webpipes-less4j-test" />
-            <keep org="org.hibnet" module="webpipes-rhino" />
-            <keep org="org.hibnet" module="webpipes-rhino-test" />
             <keep org="org.hibnet" module="webpipes-sass-js" />
             <keep org="org.hibnet" module="webpipes-sass-js-test" />
             <keep org="org.hibnet" module="webpipes-sass-ruby" />

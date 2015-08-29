@@ -15,16 +15,25 @@
  */
 package org.hibnet.webpipes.processor.jsx;
 
-import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
+import java.util.Map;
 
-public class JSXReactProcessor extends StatelessRhinoWebpipeProcessor {
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.js.StatelessJsProcessor;
 
-    public JSXReactProcessor() {
-        super(new JSXReactRunner());
+public class JSXReactProcessor extends StatelessJsProcessor {
+
+    @Override
+    protected void initEngine() throws Exception {
+        addClientSideEnvironment();
+        evalFromWebjar("JSXTransformer.js");
     }
 
-    public JSXReactProcessor(JSXReactRunner jsxReactRunner) {
-        super(jsxReactRunner);
+    @Override
+    public WebpipeOutput process(Webpipe webpipe) throws Exception {
+        Map<String, Object> res = invokeMethod("JSXTransformer", "transform", webpipe.getOutput().getContent());
+        String content = (String) res.get("code");
+        return new WebpipeOutput(content);
     }
 
 }

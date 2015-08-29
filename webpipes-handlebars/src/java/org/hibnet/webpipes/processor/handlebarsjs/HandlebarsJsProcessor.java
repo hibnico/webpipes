@@ -15,19 +15,25 @@
  */
 package org.hibnet.webpipes.processor.handlebarsjs;
 
-import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.js.StatelessJsProcessor;
 
 /**
  * Compiles HandlebarsJS templates to javascript.
  */
-public class HandlebarsJsProcessor extends StatelessRhinoWebpipeProcessor {
+public class HandlebarsJsProcessor extends StatelessJsProcessor {
 
-    public HandlebarsJsProcessor() {
-        super(new HandlebarsJsRunner());
+    @Override
+    protected void initEngine() throws Exception {
+        evalFromWebjar("handlebars.js");
     }
 
-    public HandlebarsJsProcessor(HandlebarsJsRunner handlebarsJsRunner) {
-        super(handlebarsJsRunner);
+    @Override
+    public WebpipeOutput process(Webpipe webpipe) throws Exception {
+        String precompiled = invokeMethod("Handlebars", "precompile", webpipe.getOutput().getContent());
+        String content = "(function() { var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};templates['"
+                + getVarName(webpipe) + "'] = template(" + precompiled + " ); })();";
+        return new WebpipeOutput(content);
     }
-
 }

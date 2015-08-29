@@ -30,7 +30,7 @@ public class HandlebarsJsProcessorTest extends AbstractProcessorTest {
     public void testSimpleString() throws Exception {
         Resource r = new StringResource("test", "Hello {name}!");
         String result = processor.process(r).getContent();
-        assertTrue(result.contains("return \"Hello {name}!\\n\";"));
+        assertTrue(result.contains("return \"Hello {name}!\";"));
     }
 
     @Test

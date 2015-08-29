@@ -19,6 +19,6 @@
         <description>This module adds support for UglifyJS.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.4,0.0.5)" />
+        <dependency org="org.hibnet" name="webpipes-core" rev="[0.0.4,0.0.5)" />
     </dependencies>
 </ivy-module>

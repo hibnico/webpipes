@@ -15,20 +15,26 @@
  */
 package org.hibnet.webpipes.processor.hoganjs;
 
-import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.js.StatelessJsProcessor;
 
 /**
  * A processor for hogan.js template framework. Uses <a href="http://twitter.github.com/hogan.js/">hogan.js</a> library to transform a template into
  * plain javascript.
  */
-public class HoganJsProcessor extends StatelessRhinoWebpipeProcessor {
+public class HoganJsProcessor extends StatelessJsProcessor {
 
-    public HoganJsProcessor() {
-        super(new HoganJsRunner());
+    @Override
+    protected void initEngine() throws Exception {
+        evalFromClasspath("/org/hibnet/webpipes/processor/hoganjs/hogan-2.0.0.min.js");
     }
 
-    public HoganJsProcessor(HoganJsRunner hoganJsRunner) {
-        super(hoganJsRunner);
+    @Override
+    public WebpipeOutput process(Webpipe webpipe) throws Exception {
+        String result = invokeMethod("Hogan", "compile", webpipe.getOutput().getContent(), jsMap("asString", true));
+        String content = "Hogan.cache['" + getVarName(webpipe) + "'] = " + result + ";";
+        return new WebpipeOutput(content);
     }
 
 }

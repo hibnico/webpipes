@@ -4,7 +4,7 @@
 		module="webpipes-jsx-react"
 		revision="0.0.4"
 		status="integration"
-		publication="20150828181724"
+		publication="20150829172526"
 	>
 		<description>
 		This module adds support for JSX transformer from React.
@@ -17,12 +17,8 @@
 		<artifact name="webpipes-jsx-react" type="jar" ext="jar" conf="default"/>
 	</publications>
 	<dependencies>
-		<dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.4,0.0.5)" transitive="false" conf="default->default"/>
-		<dependency org="org.webjars" name="requirejs" rev="2.1.14-1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="react" rev="0.12.2" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.hibnet" name="webpipes-core" rev="[0.0.4,0.0.5)" transitive="false" conf="default->default"/>
-		<dependency org="org.mozilla" name="rhino" rev="1.7R4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.webjars" name="rjs" rev="2.1.15" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.webjars" name="react" rev="0.12.2" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.hibnet" name="jsourcemap" rev="0.0.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.6.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>

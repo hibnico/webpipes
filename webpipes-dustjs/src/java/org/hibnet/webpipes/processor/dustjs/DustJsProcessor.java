@@ -15,20 +15,25 @@
  */
 package org.hibnet.webpipes.processor.dustjs;
 
-import org.hibnet.webpipes.processor.rhino.StatelessRhinoWebpipeProcessor;
+import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.js.StatelessJsProcessor;
 
 /**
  * A processor for dustJs template framework. Uses <a href="https://github.com/linkedin/dustjs">dustjs</a> library to transform a template into plain
  * javascript.
  */
-public class DustJsProcessor extends StatelessRhinoWebpipeProcessor {
+public class DustJsProcessor extends StatelessJsProcessor {
 
-    public DustJsProcessor() {
-        super(new DustJsRunner());
+    @Override
+    protected void initEngine() throws Exception {
+        evalFromClasspath("/org/hibnet/webpipes/processor/dustjs/dust-full-1.1.1.min.js");
     }
 
-    public DustJsProcessor(DustJsRunner dustJsRunner) {
-        super(dustJsRunner);
+    @Override
+    public WebpipeOutput process(Webpipe webpipe) throws Exception {
+        String content = invokeMethod("dust", "compile", webpipe.getOutput().getContent(), getVarName(webpipe));
+        return new WebpipeOutput(content);
     }
 
 }

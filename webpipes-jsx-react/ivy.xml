@@ -19,9 +19,8 @@
         <description>This module adds support for JSX transformer from React.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-rhino" rev="[0.0.4,0.0.5)" />
+        <dependency org="org.hibnet" name="webpipes-core" rev="[0.0.4,0.0.5)" />
 
-	    <dependency org="org.webjars" name="requirejs" rev="2.1.14-1" />
         <dependency org="org.webjars" name="react" rev="0.12.2" />
     </dependencies>
 </ivy-module>

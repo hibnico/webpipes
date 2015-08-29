@@ -17,22 +17,49 @@ package org.hibnet.webpipes.processor.uglify2;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.js.JsProcessor;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
+import org.hibnet.webpipes.resource.WebJarHelper;
 
 /**
  * Compress js using uglifyJs utility.
  */
-public class UglifyJs2Processor {
+public class UglifyJs2Processor extends JsProcessor {
 
-    private UglifyJs2Runner uglifyJs2Runner;
+    private static String[] libs;
 
-    public UglifyJs2Processor() {
-        this(new UglifyJs2Runner());
+    static {
+        String uglifyjsPath = WebJarHelper.getWebJarAssetLocator().getFullPath("uglifyjs");
+        String uglifyjsDir = "/" + uglifyjsPath.substring(0, uglifyjsPath.length() - 13);
+        // @formatter:off
+        libs = new String[] {
+                    uglifyjsDir + "/lib/utils.js",
+                    uglifyjsDir + "/lib/ast.js",
+                    uglifyjsDir + "/lib/parse.js",
+                    uglifyjsDir + "/lib/transform.js",
+                    uglifyjsDir + "/lib/scope.js",
+                    uglifyjsDir + "/lib/output.js",
+                    uglifyjsDir + "/lib/compress.js",
+                    uglifyjsDir + "/lib/sourcemap.js",
+                    uglifyjsDir + "/lib/mozilla-ast.js",
+                    uglifyjsDir + "/lib/propmangle.js"
+                   };
+        // @formatter:on
     }
 
-    public UglifyJs2Processor(UglifyJs2Runner uglifyJs2Runner) {
-        this.uglifyJs2Runner = uglifyJs2Runner;
+    @Override
+    protected void initEngine() throws Exception {
+        addSourceMap();
+        eval("MOZ_SourceMap = sourceMap;");
+        for (String lib : libs) {
+            evalFromClasspath(lib);
+        }
+        evalFromClasspath("/org/hibnet/webpipes/processor/uglify2/webpipes_runner.js");
+    }
+
+    private WebpipeOutput process(Webpipe webpipe, boolean uglify) throws Exception {
+        return callRunner(uglify, webpipe.getName(), webpipe.getOutput().getContent(), webpipe.getOutput().getSourceMap());
     }
 
     private final class UglifyJs2Webpipe extends ProcessingWebpipe {
@@ -46,7 +73,7 @@ public class UglifyJs2Processor {
 
         @Override
         protected WebpipeOutput fetchOutput() throws Exception {
-            return uglifyJs2Runner.run(webpipe, uglify);
+            return process(webpipe, uglify);
         }
     }
 

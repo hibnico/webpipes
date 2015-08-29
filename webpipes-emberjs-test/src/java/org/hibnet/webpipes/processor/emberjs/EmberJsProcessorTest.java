@@ -31,7 +31,7 @@ public class EmberJsProcessorTest extends AbstractProcessorTest {
         Resource r = new StringResource("test", "Hello {name}!");
         String result = processor.process(r).getContent();
         assertTrue(result.startsWith("(function() {Ember.TEMPLATES["));
-        assertTrue(result.contains("data.buffer.push(\"Hello {name}!\\n\");"));
+        assertTrue(result.contains("data.buffer.push(\"Hello {name}!\");"));
     }
 
     @Test

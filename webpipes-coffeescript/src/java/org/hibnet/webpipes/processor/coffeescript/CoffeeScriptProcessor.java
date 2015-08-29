@@ -15,24 +15,35 @@
  */
 package org.hibnet.webpipes.processor.coffeescript;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.js.JsProcessor;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
 /**
  * Uses coffee script library loaded from the webjar to compile to javascript code.
  */
-public class CoffeeScriptProcessor {
+public class CoffeeScriptProcessor extends JsProcessor {
 
-    private CoffeeScriptRunner coffeeScriptRunner;
-
-    public CoffeeScriptProcessor() {
-        this(new CoffeeScriptRunner());
+    @Override
+    protected void initEngine() throws Exception {
+        evalFromWebjar("coffee-script.min.js");
     }
 
-    public CoffeeScriptProcessor(CoffeeScriptRunner coffeeScriptRunner) {
-        this.coffeeScriptRunner = coffeeScriptRunner;
+    private WebpipeOutput process(Webpipe webpipe, String[] options) throws Exception {
+        Map<String, Object> optionMap = new HashMap<>();
+        if (options != null) {
+            for (int i = 0; i < options.length; i++) {
+                optionMap.put(options[i], true);
+            }
+        }
+
+        String content = invokeMethod("CoffeeScript", "compile", webpipe.getOutput().getContent(), optionMap);
+        return new WebpipeOutput(content);
     }
 
     private final class CoffeeScriptWebpipe extends ProcessingWebpipe {
@@ -46,7 +57,7 @@ public class CoffeeScriptProcessor {
 
         @Override
         protected WebpipeOutput fetchOutput() throws Exception {
-            return new WebpipeOutput(coffeeScriptRunner.run(webpipe, options));
+            return process(webpipe, options);
         }
     }
 

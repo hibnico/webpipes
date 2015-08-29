@@ -21,7 +21,7 @@ import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 /**
  * Yet another processor which compiles less to css. This implementation uses open source java library called less4j.
  */
-public class Less4jProcessor extends ProcessingWebpipeFactory {
+public class Less4jProcessor implements ProcessingWebpipeFactory {
 
     @Override
     public Webpipe createProcessingWebpipe(Webpipe source) {
