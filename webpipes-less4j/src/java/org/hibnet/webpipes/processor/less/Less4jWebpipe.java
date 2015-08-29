@@ -36,7 +36,7 @@ import com.github.sommeri.less4j.core.DefaultLessCompiler;
 
 public class Less4jWebpipe extends ProcessingWebpipe {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Less4jProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Less4jWebpipe.class);
 
     private static final LessCompiler compiler = new DefaultLessCompiler();
 
