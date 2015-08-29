@@ -23,6 +23,7 @@ import org.hibnet.jsourcemap.Section;
 import org.hibnet.jsourcemap.SourceMap;
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 
 public class SimpleWebpipeMerger implements WebpipeMerger {
 
@@ -41,7 +42,6 @@ public class SimpleWebpipeMerger implements WebpipeMerger {
         StringBuilder buffer = new StringBuilder();
         SourceMap sourceMap = new SourceMap();
         sourceMap.version = 3;
-        sourceMap.file = "merged";
         sourceMap.sections = new ArrayList<>();
         Position pos = new Position(0, 0);
         for (Webpipe webpipe : webpipes) {
@@ -75,10 +75,13 @@ public class SimpleWebpipeMerger implements WebpipeMerger {
             }
         }
 
+        String name = null;
         if (sourceMap.sections.isEmpty()) {
             sourceMap = null;
+        } else {
+            name = "merged" + WebpipeUtils.getDotExtension(webpipes.get(0).getName());
         }
 
-        return new WebpipeOutput(buffer.toString(), sourceMap);
+        return new WebpipeOutput(buffer.toString(), name, sourceMap);
     }
 }

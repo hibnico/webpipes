@@ -68,7 +68,9 @@ public class UglifyJs2Runner extends RhinoRunner {
             StringBuilder script = new StringBuilder();
             script.append("var a = parse(");
             appendJSMultiLineString(script, content);
-            script.append(", { filename : \"?\" });\n");
+            script.append(", { filename : \"");
+            script.append(webpipe.getName());
+            script.append("\" });\n");
             script.append("a.figure_out_scope();\n");
             script.append("var c = Compressor();\n");
             script.append("a = a.transform(c);\n");
@@ -86,7 +88,7 @@ public class UglifyJs2Runner extends RhinoRunner {
 
             String res = evaluate(context, scope, script.toString());
             String sourcemap = evaluate(context, scope, "sm.toString()");
-            return new WebpipeOutput(res, WebpipeUtils.parseSourceMap(sourcemap));
+            return new WebpipeOutput(res, WebpipeUtils.addSuffix(webpipe.getName(), "-uglified"), WebpipeUtils.parseSourceMap(sourcemap));
         } finally {
             Context.exit();
         }

@@ -256,6 +256,10 @@ public class WebpipeUtils {
         return SOURCEMAP_JSON_MAPPER.readValue(json, SourceMap.class);
     }
 
+    public static SourceMap parseSourceMap(byte[] json) throws JsonParseException, JsonMappingException, IOException {
+        return SOURCEMAP_JSON_MAPPER.readValue(json, SourceMap.class);
+    }
+
     public static void serializeSourceMap(SourceMap sourceMap, OutputStream out) throws JsonGenerationException, JsonMappingException, IOException {
         SOURCEMAP_JSON_MAPPER.writeValue(out, sourceMap);
     }
@@ -305,5 +309,23 @@ public class WebpipeUtils {
             }
 
         }, sourceMap);
+    }
+
+    public static String addSuffix(String name, String suffix) {
+        int i = name.lastIndexOf(".");
+        if (i == -1) {
+            return name + suffix;
+        } else {
+            return name.substring(0, i) + suffix + name.substring(i);
+        }
+    }
+
+    public static String getDotExtension(String name) {
+        int i = name.lastIndexOf(".");
+        if (i == -1) {
+            return "";
+        } else {
+            return name.substring(i);
+        }
     }
 }

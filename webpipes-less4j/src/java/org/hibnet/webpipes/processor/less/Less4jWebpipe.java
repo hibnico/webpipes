@@ -85,7 +85,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
             }
             CompilationResult result = compiler.compile(lessSource);
             logWarnings(result);
-            return new WebpipeOutput(result.getCss(), WebpipeUtils.parseSourceMap(result.getSourceMap()));
+            return new WebpipeOutput(result.getCss(), this.getName(), WebpipeUtils.parseSourceMap(result.getSourceMap()));
         }
     }
 

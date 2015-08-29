@@ -32,6 +32,14 @@ public class WebpipeOutput {
         this.sourceMap = sourceMap;
     }
 
+    public WebpipeOutput(String content, String name, SourceMap sourceMap) {
+        this.content = content;
+        this.sourceMap = sourceMap;
+        if (sourceMap != null) {
+            sourceMap.file = name;
+        }
+    }
+
     public String getContent() {
         return content;
     }
