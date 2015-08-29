@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibnet.jsourcemap.SourceMap;
 import org.hibnet.webpipes.merger.SimpleWebpipeMerger;
 import org.hibnet.webpipes.merger.WebpipeMerger;
 import org.slf4j.Logger;
@@ -185,7 +186,15 @@ public abstract class Webpipe {
 
         // same sha1, get the content out
         byte[] data = readFile(new File(cacheDir, getId() + ".txt"));
-        return new WebpipeOutput(new String(data, WebpipeUtils.UTF8), null);
+        String content = new String(data, WebpipeUtils.UTF8);
+
+        SourceMap sourceMap = null;
+        File sourceMapFile = new File(cacheDir, getId() + ".map");
+        if (sourceMapFile.exists()) {
+            sourceMap = WebpipeUtils.parseSourceMap(readFile(sourceMapFile));
+        }
+
+        return new WebpipeOutput(content, sourceMap);
     }
 
     private byte[] readFile(File file) throws IOException, FileNotFoundException {
@@ -201,7 +210,7 @@ public abstract class Webpipe {
         return data;
     }
 
-    private void storeOutput(WebpipeOutput content) throws Exception {
+    private void storeOutput(WebpipeOutput output) throws Exception {
         if (cacheDir == null) {
             // no durable cache configured
             return;
@@ -214,7 +223,14 @@ public abstract class Webpipe {
         }
 
         try (OutputStream out = new FileOutputStream(new File(cacheDir, getId() + ".txt"))) {
-            out.write(content.getContent().getBytes(WebpipeUtils.UTF8));
+            out.write(output.getContent().getBytes(WebpipeUtils.UTF8));
+        }
+
+        SourceMap sourceMap = output.getSourceMap();
+        if (sourceMap != null) {
+            try (OutputStream out = new FileOutputStream(new File(cacheDir, getId() + ".map"))) {
+                WebpipeUtils.serializeSourceMap(sourceMap, out);
+            }
         }
     }
 
