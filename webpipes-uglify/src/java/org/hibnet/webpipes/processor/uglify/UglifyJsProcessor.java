@@ -46,7 +46,7 @@ public class UglifyJsProcessor extends JsProcessor {
         private List<String> revervedNames;
 
         private UglifyJsWebpipe(Webpipe webpipe, boolean uglify, List<String> revervedNames) {
-            super(webpipe);
+            super("uglify", webpipe);
             this.uglify = uglify;
             this.revervedNames = revervedNames;
         }

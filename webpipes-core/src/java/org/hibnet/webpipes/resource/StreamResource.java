@@ -28,6 +28,10 @@ public abstract class StreamResource extends Resource {
 
     private Charset encoding = StandardCharsets.UTF_8;
 
+    public StreamResource(String path) {
+        super(path);
+    }
+
     public void setEncoding(Charset encoding) {
         this.encoding = encoding;
     }

@@ -25,7 +25,7 @@ public interface StatelessProcessingWebpipeFactory extends ProcessingWebpipeFact
 
     @Override
     default public Webpipe createProcessingWebpipe(Webpipe source) {
-        return new ProcessingWebpipe(source) {
+        return new ProcessingWebpipe(getName(), source) {
             @Override
             protected WebpipeOutput fetchOutput() throws Exception {
                 return process(getChildWebpipe());
@@ -33,6 +33,8 @@ public interface StatelessProcessingWebpipeFactory extends ProcessingWebpipeFact
         };
     }
 
-    public abstract WebpipeOutput process(Webpipe webpipe) throws Exception;
+    public String getName();
+
+    public WebpipeOutput process(Webpipe webpipe) throws Exception;
 
 }

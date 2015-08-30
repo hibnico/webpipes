@@ -31,7 +31,7 @@ public class YuiCssCompressorProcessor {
         private int linebreak;
 
         private YuiCssCompressorWebpipe(Webpipe webpipe, int linebreak) {
-            super(webpipe);
+            super("yuicss", webpipe);
             this.linebreak = linebreak;
         }
 

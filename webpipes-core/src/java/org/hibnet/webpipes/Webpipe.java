@@ -57,9 +57,15 @@ public abstract class Webpipe {
 
     private WebpipeMerger merger = new SimpleWebpipeMerger();
 
-    public abstract String getId();
+    private String path;
 
-    public abstract String getName();
+    public Webpipe(String path) {
+        this.path = path;
+    }
+
+    public String getPath() {
+        return path;
+    }
 
     public void setMerger(WebpipeMerger merger) {
         this.merger = merger;
@@ -67,7 +73,7 @@ public abstract class Webpipe {
 
     @Override
     public String toString() {
-        return getName();
+        return getPath();
     }
 
     protected List<Webpipe> getChildren() throws IOException {
@@ -107,7 +113,7 @@ public abstract class Webpipe {
         boolean refresh = cachedChildren.size() != newChildren.size();
         if (!refresh) {
             for (int i = 0; i < cachedChildren.size(); i++) {
-                refresh = !newChildren.get(i).getId().equals(cachedChildren.get(i).getId());
+                refresh = !newChildren.get(i).getPath().equals(cachedChildren.get(i).getPath());
                 if (refresh) {
                     break;
                 }
@@ -144,15 +150,24 @@ public abstract class Webpipe {
                     output = readOutput();
                     if (output == NOT_INITIALIZED_OUTPUT) {
                         output = fetchOutput();
+                        setPath(output);
                         storeOutput(output);
                     }
                 } else if (output == INVALIDATED_OUTPUT) {
                     output = fetchOutput();
+                    setPath(output);
                     storeOutput(output);
                 }
             }
         }
         return output;
+    }
+
+    private void setPath(WebpipeOutput output) {
+        SourceMap sourceMap = output.getSourceMap();
+        if (sourceMap != null) {
+            sourceMap.file = path;
+        }
     }
 
     abstract protected WebpipeOutput fetchOutput() throws Exception;
@@ -167,7 +182,7 @@ public abstract class Webpipe {
             return NOT_INITIALIZED_OUTPUT;
         }
 
-        File sha1File = new File(cacheDir, getId() + ".sha1");
+        File sha1File = new File(cacheDir, getPath() + ".sha1");
         if (!sha1File.exists()) {
             return NOT_INITIALIZED_OUTPUT;
         }
@@ -185,11 +200,11 @@ public abstract class Webpipe {
         }
 
         // same sha1, get the content out
-        byte[] data = readFile(new File(cacheDir, getId() + ".txt"));
+        byte[] data = readFile(new File(cacheDir, getPath() + ".txt"));
         String content = new String(data, WebpipeUtils.UTF8);
 
         SourceMap sourceMap = null;
-        File sourceMapFile = new File(cacheDir, getId() + ".map");
+        File sourceMapFile = new File(cacheDir, getPath() + ".map");
         if (sourceMapFile.exists()) {
             sourceMap = WebpipeUtils.parseSourceMap(readFile(sourceMapFile));
         }
@@ -218,17 +233,17 @@ public abstract class Webpipe {
 
         byte[] sha1 = computeSHA1();
 
-        try (OutputStream out = new FileOutputStream(new File(cacheDir, getId() + ".sha1"))) {
+        try (OutputStream out = new FileOutputStream(new File(cacheDir, getPath() + ".sha1"))) {
             out.write(sha1);
         }
 
-        try (OutputStream out = new FileOutputStream(new File(cacheDir, getId() + ".txt"))) {
+        try (OutputStream out = new FileOutputStream(new File(cacheDir, getPath() + ".txt"))) {
             out.write(output.getContent().getBytes(WebpipeUtils.UTF8));
         }
 
         SourceMap sourceMap = output.getSourceMap();
         if (sourceMap != null) {
-            try (OutputStream out = new FileOutputStream(new File(cacheDir, getId() + ".map"))) {
+            try (OutputStream out = new FileOutputStream(new File(cacheDir, getPath() + ".map"))) {
                 WebpipeUtils.serializeSourceMap(sourceMap, out);
             }
         }

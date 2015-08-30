@@ -147,7 +147,7 @@ public class WebpipeRefresher {
             try {
                 webpipe.getOutput();
             } catch (Exception e) {
-                logger.error("Unable to get the content of the webpipe '" + webpipe.getName() + "'", e);
+                logger.error("Unable to get the content of the webpipe '" + webpipe.getPath() + "'", e);
             }
         }
     }

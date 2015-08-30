@@ -51,7 +51,7 @@ public class CoffeeScriptProcessor extends JsProcessor {
         private String[] options;
 
         private CoffeeScriptWebpipe(Webpipe webpipe, String[] options) {
-            super(webpipe);
+            super("coffeescript", webpipe);
             this.options = options;
         }
 

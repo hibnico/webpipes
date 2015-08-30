@@ -19,4 +19,14 @@ import org.hibnet.webpipes.processor.StatelessProcessingWebpipeFactory;
 
 public abstract class StatelessJsProcessor extends JsProcessor implements StatelessProcessingWebpipeFactory {
 
+    private String name;
+
+    public StatelessJsProcessor(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

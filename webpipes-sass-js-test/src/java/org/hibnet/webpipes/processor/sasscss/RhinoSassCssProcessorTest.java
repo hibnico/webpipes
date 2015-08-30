@@ -16,12 +16,12 @@
 package org.hibnet.webpipes.processor.sasscss;
 
 import org.hibnet.webpipes.processor.AbstractProcessorTest;
-import org.hibnet.webpipes.processor.sass.RhinoSassCssProcessor;
+import org.hibnet.webpipes.processor.sass.SassCssJsProcessor;
 import org.junit.Test;
 
 public class RhinoSassCssProcessorTest extends AbstractProcessorTest {
 
-    private RhinoSassCssProcessor processor = new RhinoSassCssProcessor();
+    private SassCssJsProcessor processor = new SassCssJsProcessor();
 
     @Test
     public void testFiles() throws Exception {

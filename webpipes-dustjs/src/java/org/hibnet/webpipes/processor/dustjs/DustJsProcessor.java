@@ -25,6 +25,10 @@ import org.hibnet.webpipes.js.StatelessJsProcessor;
  */
 public class DustJsProcessor extends StatelessJsProcessor {
 
+    public DustJsProcessor() {
+        super("dustjs");
+    }
+
     @Override
     protected void initEngine() throws Exception {
         evalFromClasspath("/org/hibnet/webpipes/processor/dustjs/dust-full-1.1.1.min.js");

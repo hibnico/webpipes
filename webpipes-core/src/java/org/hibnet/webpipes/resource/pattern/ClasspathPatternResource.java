@@ -16,7 +16,6 @@
 package org.hibnet.webpipes.resource.pattern;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,25 +29,13 @@ public class ClasspathPatternResource extends Resource {
 
     private String pattern;
 
-    private URI uri;
-
     public ClasspathPatternResource(String pattern) {
+        super("cps/" + pattern);
         this.pattern = pattern;
-        this.uri = URI.create("classpaths:" + pattern);
     }
 
     public void setPathMatcher(PathMatcher pathMatcher) {
         this.pathMatcher = pathMatcher;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public URI getURI() {
-        return uri;
     }
 
     @Override

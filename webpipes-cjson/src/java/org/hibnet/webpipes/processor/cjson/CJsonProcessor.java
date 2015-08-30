@@ -42,7 +42,7 @@ public class CJsonProcessor extends JsProcessor {
         private boolean pack;
 
         private CJsonWebpipe(Webpipe webpipe, boolean pack) {
-            super(webpipe);
+            super("cjson", webpipe);
             this.pack = pack;
         }
 

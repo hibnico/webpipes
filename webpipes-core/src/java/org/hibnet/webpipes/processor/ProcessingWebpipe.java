@@ -9,25 +9,13 @@ public abstract class ProcessingWebpipe extends Webpipe {
 
     private Webpipe childWebpipe;
 
-    private String id;
-
-    public ProcessingWebpipe(Webpipe childWebpipe) {
+    public ProcessingWebpipe(String name, Webpipe childWebpipe) {
+        super(name + "/" + childWebpipe.getPath());
         this.childWebpipe = childWebpipe;
-        this.id = this.getClass().getSimpleName() + "-" + childWebpipe.getId();
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 
     protected Webpipe getChildWebpipe() {
         return childWebpipe;
-    }
-
-    @Override
-    public String getName() {
-        return childWebpipe.getName();
     }
 
     @Override

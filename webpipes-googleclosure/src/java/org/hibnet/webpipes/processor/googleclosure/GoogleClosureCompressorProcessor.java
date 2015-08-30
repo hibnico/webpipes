@@ -45,7 +45,7 @@ public class GoogleClosureCompressorProcessor {
         private CompilationLevel compilationLevel;
 
         private GoogleClosureCompressorWebpipe(Webpipe webpipe, CompilationLevel compilationLevel) {
-            super(webpipe);
+            super("googleclosure", webpipe);
             this.compilationLevel = compilationLevel;
         }
 
@@ -75,7 +75,7 @@ public class GoogleClosureCompressorProcessor {
         String content = webpipe.getOutput().getContent();
         CompilerOptions compilerOptions = newCompilerOptions();
         Compiler compiler = newCompiler(compilerOptions, compilationLevel);
-        SourceFile[] input = new SourceFile[] { SourceFile.fromCode(webpipe.getName(), content) };
+        SourceFile[] input = new SourceFile[] { SourceFile.fromCode(webpipe.getPath(), content) };
         SourceFile[] externs = getExterns(webpipe);
         if (externs == null) {
             // fallback to empty array when null is provided.

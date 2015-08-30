@@ -25,6 +25,10 @@ import org.hibnet.webpipes.js.StatelessJsProcessor;
  */
 public class HoganJsProcessor extends StatelessJsProcessor {
 
+    public HoganJsProcessor() {
+        super("hogan");
+    }
+
     @Override
     protected void initEngine() throws Exception {
         evalFromClasspath("/org/hibnet/webpipes/processor/hoganjs/hogan-2.0.0.min.js");

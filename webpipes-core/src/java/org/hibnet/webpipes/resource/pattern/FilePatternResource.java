@@ -17,7 +17,6 @@ package org.hibnet.webpipes.resource.pattern;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,25 +30,13 @@ public class FilePatternResource extends Resource {
 
     private PathMatcher pathMatcher = new AntPathMatcher();
 
-    private URI uri;
-
     public FilePatternResource(String pattern) {
+        super("files/" + pattern);
         this.pattern = pattern;
-        this.uri = URI.create("files:" + pattern);
     }
 
     public void setPathMatcher(PathMatcher pathMatcher) {
         this.pathMatcher = pathMatcher;
-    }
-
-    @Override
-    public URI getURI() {
-        return uri;
-    }
-
-    @Override
-    public String getName() {
-        return null;
     }
 
     @Override

@@ -24,6 +24,10 @@ import org.hibnet.webpipes.js.StatelessJsProcessor;
  */
 public class LessCssProcessor extends StatelessJsProcessor {
 
+    public LessCssProcessor() {
+        super("lesscss");
+    }
+
     @Override
     protected void initEngine() throws Exception {
         addClientSideEnvironment();

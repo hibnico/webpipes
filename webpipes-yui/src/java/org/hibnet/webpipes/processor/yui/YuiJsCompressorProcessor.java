@@ -36,7 +36,7 @@ public class YuiJsCompressorProcessor {
 
         private YuiJsCompressorWebpipe(Webpipe webpipe, int linebreak, boolean munge, boolean verbose, boolean preserveAllSemiColons,
                 boolean disableOptimizations) {
-            super(webpipe);
+            super("yuijs", webpipe);
             this.linebreak = linebreak;
             this.munge = munge;
             this.verbose = verbose;

@@ -23,6 +23,10 @@ import org.hibnet.webpipes.js.StatelessJsProcessor;
 
 public class JSXReactProcessor extends StatelessJsProcessor {
 
+    public JSXReactProcessor() {
+        super("jsx");
+    }
+
     @Override
     protected void initEngine() throws Exception {
         addClientSideEnvironment();
@@ -31,9 +35,10 @@ public class JSXReactProcessor extends StatelessJsProcessor {
 
     @Override
     public WebpipeOutput process(Webpipe webpipe) throws Exception {
-        Map<String, Object> res = invokeMethod("JSXTransformer", "transform", webpipe.getOutput().getContent());
+        WebpipeOutput output = webpipe.getOutput();
+        Map<String, Object> res = invokeMethod("JSXTransformer", "transform", output.getContent());
         String content = (String) res.get("code");
-        return new WebpipeOutput(content);
+        return new WebpipeOutput(content, output.getSourceMap());
     }
 
 }

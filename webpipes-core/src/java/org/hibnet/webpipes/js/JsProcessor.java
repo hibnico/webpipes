@@ -112,10 +112,14 @@ public abstract class JsProcessor {
     }
 
     protected String getVarName(Webpipe webpipe) {
-        String name = webpipe.getName();
+        String name = webpipe.getPath();
         int i = name.lastIndexOf(".");
         if (i > 0) {
-            return name.substring(0, i);
+            name = name.substring(0, i);
+        }
+        i = name.lastIndexOf("/");
+        if (i > 0) {
+            name = name.substring(i + 1, name.length());
         }
         return name;
     }

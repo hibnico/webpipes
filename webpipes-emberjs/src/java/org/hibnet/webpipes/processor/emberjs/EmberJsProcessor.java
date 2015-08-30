@@ -24,6 +24,10 @@ import org.hibnet.webpipes.js.StatelessJsProcessor;
  */
 public class EmberJsProcessor extends StatelessJsProcessor {
 
+    public EmberJsProcessor() {
+        super("ember");
+    }
+
     @Override
     protected void initEngine() throws Exception {
         addClientSideEnvironment();

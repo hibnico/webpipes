@@ -22,7 +22,11 @@ import org.hibnet.webpipes.js.StatelessJsProcessor;
 /**
  * A processor using sass engine:
  */
-public class RhinoSassCssProcessor extends StatelessJsProcessor {
+public class SassCssJsProcessor extends StatelessJsProcessor {
+
+    public SassCssJsProcessor() {
+        super("sasscssjs");
+    }
 
     @Override
     protected void initEngine() throws Exception {

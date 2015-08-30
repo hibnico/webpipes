@@ -38,7 +38,7 @@ public class AbstractProcessorTest {
     }
 
     private String getExtensionLessName(Resource resource) {
-        String name = resource.getName();
+        String name = resource.getPath();
         int i = name.lastIndexOf(".");
         if (i > 0) {
             return name.substring(0, i);
@@ -68,7 +68,7 @@ public class AbstractProcessorTest {
             result = result.replaceAll("\\t", "  ").replaceAll("(\\r|\\n)+", " ").trim();
             expected = expected.replaceAll("\\t", "  ").replaceAll("(\\r|\\n)+", " ").trim();
 
-            Assert.assertEquals("Processing " + testFile.getId(), expected, result);
+            Assert.assertEquals("Processing " + testFile.getPath(), expected, result);
         }
     }
 
@@ -77,7 +77,7 @@ public class AbstractProcessorTest {
         for (Resource testFile : testFiles) {
             try {
                 processor.createProcessingWebpipe(testFile).getOutput();
-                Assert.fail("Expected error on " + testFile.getId());
+                Assert.fail("Expected error on " + testFile.getPath());
             } catch (Exception e) {
                 // OK!
             }

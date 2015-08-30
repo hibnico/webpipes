@@ -50,7 +50,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
         private Resource resource;
 
         public RelativeAwareLessSource(Resource resource, String content) {
-            super(content);
+            super(content, resource.getPath());
             this.resource = resource;
         }
 
@@ -68,7 +68,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
     }
 
     public Less4jWebpipe(Webpipe webpipe) {
-        super(webpipe);
+        super("less4j", webpipe);
     }
 
     @Override
@@ -82,11 +82,11 @@ public class Less4jWebpipe extends ProcessingWebpipe {
             if (webpipe instanceof Resource) {
                 lessSource = new RelativeAwareLessSource((Resource) webpipe, content);
             } else {
-                lessSource = new StringSource(content);
+                lessSource = new StringSource(content, webpipe.getPath());
             }
             CompilationResult result = compiler.compile(lessSource);
             logWarnings(result);
-            return new WebpipeOutput(result.getCss(), this.getName(), WebpipeUtils.parseSourceMap(result.getSourceMap()));
+            return new WebpipeOutput(result.getCss(), WebpipeUtils.parseSourceMap(result.getSourceMap()));
         }
     }
 

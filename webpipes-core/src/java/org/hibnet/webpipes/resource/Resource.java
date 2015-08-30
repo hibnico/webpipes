@@ -15,7 +15,6 @@
  */
 package org.hibnet.webpipes.resource;
 
-import java.net.URI;
 import java.security.MessageDigest;
 
 import org.hibnet.webpipes.Webpipe;
@@ -29,11 +28,8 @@ public abstract class Resource extends Webpipe {
 
     abstract public Resource resolve(String relativePath);
 
-    abstract public URI getURI();
-
-    @Override
-    public String getId() {
-        return getURI().toASCIIString();
+    public Resource(String path) {
+        super(path);
     }
 
     @Override

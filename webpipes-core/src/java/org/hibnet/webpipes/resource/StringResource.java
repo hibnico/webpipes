@@ -16,33 +16,16 @@
 package org.hibnet.webpipes.resource;
 
 import java.io.IOException;
-import java.net.URI;
 
 import org.hibnet.webpipes.WebpipeOutput;
-import org.hibnet.webpipes.WebpipeUtils;
 
 public class StringResource extends Resource {
 
     private WebpipeOutput output;
 
-    private String name;
-
-    private URI uri;
-
     public StringResource(String name, String content) {
-        this.name = name;
+        super("string/" + name);
         this.output = new WebpipeOutput(content);
-        this.uri = URI.create("string:" + WebpipeUtils.sha1HexEncoded(content));
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public URI getURI() {
-        return uri;
     }
 
     @Override

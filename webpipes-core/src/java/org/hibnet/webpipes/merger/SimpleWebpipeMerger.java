@@ -52,22 +52,25 @@ public class SimpleWebpipeMerger implements WebpipeMerger {
             } else {
                 int line = 1;
                 int lastPos = -1;
-                for (int i = 0; i < content.length(); i++) {
+                int i;
+                for (i = 0; i < content.length(); i++) {
                     char c = content.charAt(i);
                     if (c == '\n') {
-                        sourceNode.add(new SourceNode(line, 0, webpipe.getName(), content.substring(lastPos + 1, i + 1), null));
+                        sourceNode.add(new SourceNode(line, 0, webpipe.getPath(), content.substring(lastPos + 1, i + 1), null));
                         lastPos = i;
                         line++;
                     }
                 }
-
+                if (lastPos != i) {
+                    sourceNode.add(new SourceNode(line, 0, webpipe.getPath(), content.substring(lastPos + 1, i), null));
+                }
             }
 
             if (addNewLineOnMerge) {
-                sourceNode.add(new SourceNode(1, 0, webpipe.getName(), "\n", null));
+                sourceNode.add(new SourceNode(1, 0, webpipe.getPath(), "\n", null));
             }
 
-            sourceNode.setSourceContent(webpipe.getName(), content);
+            sourceNode.setSourceContent(webpipe.getPath(), content);
         }
 
         Code code = sourceNode.toStringWithSourceMap(null, null);

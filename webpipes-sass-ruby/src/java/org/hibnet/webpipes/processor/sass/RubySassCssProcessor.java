@@ -31,6 +31,11 @@ public class RubySassCssProcessor implements StatelessProcessingWebpipeFactory {
 
     private List<String> requires = new ArrayList<>(Arrays.asList("rubygems", "sass/plugin", "sass/engine"));
 
+    @Override
+    public String getName() {
+        return "rubysasscss";
+    }
+
     protected void addRequire(String... rs) {
         for (String r : rs) {
             requires.add(r);
@@ -74,7 +79,7 @@ public class RubySassCssProcessor implements StatelessProcessingWebpipeFactory {
         script.append("\", {:syntax => :scss}).render");
 
         Ruby runtime = Ruby.newInstance();
-        Node node = runtime.parse(ByteList.create(script), webpipe.getName(), runtime.getCurrentContext().getCurrentScope(), 0, false);
+        Node node = runtime.parse(ByteList.create(script), webpipe.getPath(), runtime.getCurrentContext().getCurrentScope(), 0, false);
         IRubyObject result = runtime.runNormally(node);
         return new WebpipeOutput(result.toString());
     }

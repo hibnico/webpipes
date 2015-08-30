@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 
 public class FileResource extends StreamResource {
 
@@ -32,17 +31,8 @@ public class FileResource extends StreamResource {
     }
 
     public FileResource(File file) {
+        super("file/" + file);
         this.file = file;
-    }
-
-    @Override
-    public URI getURI() {
-        return file.toURI();
-    }
-
-    @Override
-    public String getName() {
-        return file.getName();
     }
 
     @Override

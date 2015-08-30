@@ -24,6 +24,10 @@ import org.hibnet.webpipes.js.StatelessJsProcessor;
  */
 public class HandlebarsJsProcessor extends StatelessJsProcessor {
 
+    public HandlebarsJsProcessor() {
+        super("handlebars");
+    }
+
     @Override
     protected void initEngine() throws Exception {
         evalFromWebjar("handlebars.js");

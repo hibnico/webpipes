@@ -29,7 +29,7 @@ public class AbsoluteUrlCssWebpipe extends ProcessingWebpipe {
     private String absolutePath;
 
     public AbsoluteUrlCssWebpipe(Webpipe webpipe, String absolutePath) {
-        super(webpipe);
+        super("absoluteUrlCss", webpipe);
         this.absolutePath = absolutePath;
     }
 

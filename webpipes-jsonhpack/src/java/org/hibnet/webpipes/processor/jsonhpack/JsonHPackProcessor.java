@@ -58,7 +58,7 @@ public class JsonHPackProcessor extends JsProcessor {
         private boolean pack;
 
         private JsonHPackWebpipe(Webpipe webpipe, boolean pack) {
-            super(webpipe);
+            super("jsonhpack", webpipe);
             this.pack = pack;
         }
 

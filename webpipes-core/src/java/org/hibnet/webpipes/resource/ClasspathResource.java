@@ -35,14 +35,9 @@ public class ClasspathResource extends StreamResource {
 
     private long timestamp;
 
-    private String name;
-
-    private URI uri;
-
     public ClasspathResource(String location) {
+        super("cp/" + location);
         this.location = location.startsWith("/") ? location : ("/" + location);
-        this.name = location.substring(this.location.lastIndexOf('/'));
-        this.uri = URI.create("classpath:" + this.location);
     }
 
     public ClasspathResource(String location, Class<?> cls) {
@@ -56,18 +51,8 @@ public class ClasspathResource extends StreamResource {
     }
 
     @Override
-    public URI getURI() {
-        return uri;
-    }
-
-    @Override
     public Resource resolve(String relativePath) {
-        return new ClasspathResource(uri.resolve(relativePath).getSchemeSpecificPart());
-    }
-
-    @Override
-    public String getName() {
-        return name;
+        return new ClasspathResource(URI.create(this.location).resolve(relativePath).getSchemeSpecificPart());
     }
 
     @Override

@@ -59,7 +59,7 @@ public class UglifyJs2Processor extends JsProcessor {
     }
 
     private WebpipeOutput process(Webpipe webpipe, boolean uglify) throws Exception {
-        return callRunner(uglify, webpipe.getName(), webpipe.getOutput().getContent(), webpipe.getOutput().getSourceMap());
+        return callRunner(uglify, webpipe.getPath(), webpipe.getOutput().getContent(), webpipe.getOutput().getSourceMap());
     }
 
     private final class UglifyJs2Webpipe extends ProcessingWebpipe {
@@ -67,7 +67,7 @@ public class UglifyJs2Processor extends JsProcessor {
         private boolean uglify;
 
         private UglifyJs2Webpipe(Webpipe webpipe, boolean uglify) {
-            super(webpipe);
+            super("uglify2", webpipe);
             this.uglify = uglify;
         }
 

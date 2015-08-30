@@ -26,7 +26,7 @@ public class SourceMapStripperWebpipe extends ProcessingWebpipe {
     private static final Pattern TAG_PATTERN = Pattern.compile("#\\s*sourceMappingURL\\s*=\\s*[^ ]+");
 
     public SourceMapStripperWebpipe(Webpipe webpipe) {
-        super(webpipe);
+        super("sourcemapstripper", webpipe);
     }
 
     @Override

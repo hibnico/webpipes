@@ -19,8 +19,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -30,32 +28,13 @@ public class UrlResource extends StreamResource {
 
     private URL url;
 
-    private String name;
-
-    private URI uri;
-
     public UrlResource(URL url) {
+        super("url/" + url);
         this.url = url;
-        this.name = url.getPath().substring(url.getPath().lastIndexOf("/"));
-        try {
-            this.uri = url.toURI();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void setTimeout(int timeout) {
         this.timeout = timeout;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public URI getURI() {
-        return uri;
     }
 
     @Override
