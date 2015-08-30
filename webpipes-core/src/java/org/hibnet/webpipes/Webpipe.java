@@ -23,13 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.hibnet.jsourcemap.SourceMap;
-import org.hibnet.webpipes.merger.SimpleWebpipeMerger;
-import org.hibnet.webpipes.merger.WebpipeMerger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,19 +39,9 @@ public abstract class Webpipe {
 
     private static final WebpipeOutput INVALIDATED_OUTPUT = new WebpipeOutput("", null);
 
-    private static final List<Webpipe> NOT_INITIALIZED_CHILDREN = new ArrayList<>();
-
-    public static final List<Webpipe> NO_CHILDREN = new ArrayList<>();
-
-    private static final List<Webpipe> INVALIDATED_CHILDREN = new ArrayList<>();
-
     private File cacheDir;
 
     private volatile WebpipeOutput output = NOT_INITIALIZED_OUTPUT;
-
-    private List<Webpipe> children = NOT_INITIALIZED_CHILDREN;
-
-    private WebpipeMerger merger = new SimpleWebpipeMerger();
 
     private String path;
 
@@ -67,65 +53,12 @@ public abstract class Webpipe {
         return path;
     }
 
-    public void setMerger(WebpipeMerger merger) {
-        this.merger = merger;
-    }
-
     @Override
     public String toString() {
         return getPath();
     }
 
-    protected List<Webpipe> getChildren() throws IOException {
-        if (children == INVALIDATED_CHILDREN || children == NOT_INITIALIZED_CHILDREN) {
-            synchronized (children) {
-                if (children == INVALIDATED_CHILDREN || children == NOT_INITIALIZED_CHILDREN) {
-                    children = buildChildrenList();
-                }
-            }
-        }
-        return children;
-    }
-
-    /**
-     * @throws IOException
-     */
-    protected List<Webpipe> buildChildrenList() throws IOException {
-        return NO_CHILDREN;
-    }
-
     public abstract boolean refresh() throws IOException;
-
-    protected boolean refreshChildren() throws IOException {
-        boolean refresh = refreshChildrenList();
-        for (Webpipe webpipe : getChildren()) {
-            refresh = refresh || webpipe.refresh();
-        }
-        if (refresh) {
-            invalidateOutputCache();
-        }
-        return refresh;
-    }
-
-    protected boolean refreshChildrenList() throws IOException {
-        List<Webpipe> cachedChildren = getChildren();
-        List<Webpipe> newChildren = buildChildrenList();
-        boolean refresh = cachedChildren.size() != newChildren.size();
-        if (!refresh) {
-            for (int i = 0; i < cachedChildren.size(); i++) {
-                refresh = !newChildren.get(i).getPath().equals(cachedChildren.get(i).getPath());
-                if (refresh) {
-                    break;
-                }
-            }
-        }
-        if (refresh) {
-            synchronized (children) {
-                children = newChildren;
-            }
-        }
-        return refresh;
-    }
 
     public void setCacheDir(File cacheDir) {
         this.cacheDir = cacheDir;
@@ -134,12 +67,6 @@ public abstract class Webpipe {
     protected void invalidateOutputCache() {
         synchronized (output) {
             output = INVALIDATED_OUTPUT;
-        }
-    }
-
-    protected void invalidateChildrenListCache() {
-        synchronized (children) {
-            children = INVALIDATED_CHILDREN;
         }
     }
 
@@ -171,10 +98,6 @@ public abstract class Webpipe {
     }
 
     abstract protected WebpipeOutput fetchOutput() throws Exception;
-
-    protected WebpipeOutput fetchChildrenOutput() throws Exception {
-        return merger.merge(getChildren());
-    }
 
     private WebpipeOutput readOutput() throws Exception {
         if (cacheDir == null) {
@@ -257,12 +180,5 @@ public abstract class Webpipe {
     }
 
     public abstract void updateDigest(MessageDigest digest) throws Exception;
-
-    protected void updateChildrenDigest(MessageDigest digest) throws Exception {
-        for (Webpipe webpipe : getChildren()) {
-            webpipe.updateDigest(digest);
-            digest.update((byte) '\n');
-        }
-    }
 
 }

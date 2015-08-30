@@ -64,13 +64,13 @@ public class SimpleWebpipeMerger implements WebpipeMerger {
                 if (lastPos != i) {
                     sourceNode.add(new SourceNode(line, 0, webpipe.getPath(), content.substring(lastPos + 1, i), null));
                 }
+
+                sourceNode.setSourceContent(webpipe.getPath(), content);
             }
 
             if (addNewLineOnMerge) {
                 sourceNode.add(new SourceNode(1, 0, webpipe.getPath(), "\n", null));
             }
-
-            sourceNode.setSourceContent(webpipe.getPath(), content);
         }
 
         Code code = sourceNode.toStringWithSourceMap(null, null);

@@ -31,7 +31,7 @@ public class FileResource extends StreamResource {
     }
 
     public FileResource(File file) {
-        super("file/" + file);
+        super("/webpipes/file/" + file);
         this.file = file;
     }
 

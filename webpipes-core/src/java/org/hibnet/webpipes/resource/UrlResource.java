@@ -29,7 +29,7 @@ public class UrlResource extends StreamResource {
     private URL url;
 
     public UrlResource(URL url) {
-        super("url/" + url);
+        super("/webpipes/url/" + url);
         this.url = url;
     }
 

@@ -10,7 +10,7 @@ public abstract class ProcessingWebpipe extends Webpipe {
     private Webpipe childWebpipe;
 
     public ProcessingWebpipe(String name, Webpipe childWebpipe) {
-        super(name + "/" + childWebpipe.getPath());
+        super("/webpipes/" + name + "/" + childWebpipe.getPath());
         this.childWebpipe = childWebpipe;
     }
 

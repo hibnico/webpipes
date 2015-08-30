@@ -17,39 +17,93 @@ package org.hibnet.webpipes;
 
 import java.io.IOException;
 import java.security.MessageDigest;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MergingWebpipe extends Webpipe {
+import org.hibnet.webpipes.merger.SimpleWebpipeMerger;
+import org.hibnet.webpipes.merger.WebpipeMerger;
 
-    private List<Webpipe> webpipes;
+public abstract class MergingWebpipe extends Webpipe {
 
-    public MergingWebpipe(Webpipe... webpipes) {
-        this(Arrays.asList(webpipes));
+    private static final List<Webpipe> NOT_INITIALIZED_CHILDREN = new ArrayList<>();
+
+    public static final List<Webpipe> NO_CHILDREN = new ArrayList<>();
+
+    private static final List<Webpipe> INVALIDATED_CHILDREN = new ArrayList<>();
+
+    private List<Webpipe> children = NOT_INITIALIZED_CHILDREN;
+
+    private WebpipeMerger merger = new SimpleWebpipeMerger();
+
+    public MergingWebpipe(String path) {
+        super(path);
     }
 
-    public MergingWebpipe(List<Webpipe> webpipes) {
-        super("");
-        this.webpipes = webpipes;
+    public void setMerger(WebpipeMerger merger) {
+        this.merger = merger;
     }
+
+    protected List<Webpipe> getChildren() throws IOException {
+        if (children == INVALIDATED_CHILDREN || children == NOT_INITIALIZED_CHILDREN) {
+            synchronized (children) {
+                if (children == INVALIDATED_CHILDREN || children == NOT_INITIALIZED_CHILDREN) {
+                    children = buildChildrenList();
+                }
+            }
+        }
+        return children;
+    }
+
+    abstract protected List<Webpipe> buildChildrenList() throws IOException;
 
     @Override
-    protected List<Webpipe> buildChildrenList() throws IOException {
-        return webpipes;
+    public boolean refresh() throws IOException {
+        boolean refresh = refreshChildrenList();
+        for (Webpipe webpipe : getChildren()) {
+            refresh = refresh || webpipe.refresh();
+        }
+        if (refresh) {
+            invalidateOutputCache();
+        }
+        return refresh;
+    }
+
+    protected boolean refreshChildrenList() throws IOException {
+        List<Webpipe> cachedChildren = getChildren();
+        List<Webpipe> newChildren = buildChildrenList();
+        boolean refresh = cachedChildren.size() != newChildren.size();
+        if (!refresh) {
+            for (int i = 0; i < cachedChildren.size(); i++) {
+                refresh = !newChildren.get(i).getPath().equals(cachedChildren.get(i).getPath());
+                if (refresh) {
+                    break;
+                }
+            }
+        }
+        if (refresh) {
+            synchronized (children) {
+                children = newChildren;
+            }
+        }
+        return refresh;
+    }
+
+    protected void invalidateChildrenListCache() {
+        synchronized (children) {
+            children = INVALIDATED_CHILDREN;
+        }
     }
 
     @Override
     protected WebpipeOutput fetchOutput() throws Exception {
-        return fetchChildrenOutput();
-    }
-
-    @Override
-    public boolean refresh() throws IOException {
-        return refreshChildren();
+        return merger.merge(getChildren());
     }
 
     @Override
     public void updateDigest(MessageDigest digest) throws Exception {
-        updateChildrenDigest(digest);
+        for (Webpipe webpipe : getChildren()) {
+            webpipe.updateDigest(digest);
+            digest.update((byte) '\n');
+        }
     }
 }

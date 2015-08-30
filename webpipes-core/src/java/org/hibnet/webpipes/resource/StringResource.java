@@ -24,7 +24,7 @@ public class StringResource extends Resource {
     private WebpipeOutput output;
 
     public StringResource(String name, String content) {
-        super("string/" + name);
+        super("/webpipes/string/" + name);
         this.output = new WebpipeOutput(content);
     }
 

@@ -92,16 +92,17 @@ public class Less4jWebpipe extends ProcessingWebpipe {
 
     @Override
     public boolean refresh() throws IOException {
-        return refreshChildren();
-    }
-
-    @Override
-    protected List<Webpipe> buildChildrenList() throws IOException {
+        boolean refresh = false;
         synchronized (importedResources) {
-            List<Webpipe> children = new ArrayList<Webpipe>(importedResources);
-            children.add(getChildWebpipe());
-            return children;
+            for (Webpipe webpipe : importedResources) {
+                refresh = refresh || webpipe.refresh();
+            }
         }
+        refresh = refresh || getChildWebpipe().refresh();
+        if (refresh) {
+            invalidateOutputCache();
+        }
+        return refresh;
     }
 
     private void logWarnings(CompilationResult result) {

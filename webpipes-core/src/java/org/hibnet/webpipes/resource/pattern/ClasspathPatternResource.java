@@ -19,38 +19,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibnet.webpipes.MergingWebpipe;
 import org.hibnet.webpipes.Webpipe;
-import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.resource.Resource;
 
-public class ClasspathPatternResource extends Resource {
+public class ClasspathPatternResource extends MergingWebpipe {
 
     private PathMatcher pathMatcher = new AntPathMatcher();
 
     private String pattern;
 
     public ClasspathPatternResource(String pattern) {
-        super("cps/" + pattern);
+        super("/webpipes/cps/" + pattern);
         this.pattern = pattern;
     }
 
     public void setPathMatcher(PathMatcher pathMatcher) {
         this.pathMatcher = pathMatcher;
-    }
-
-    @Override
-    public Resource resolve(String relativePath) {
-        return null;
-    }
-
-    @Override
-    protected WebpipeOutput fetchOutput() throws Exception {
-        return fetchChildrenOutput();
-    }
-
-    @Override
-    public boolean refresh() throws IOException {
-        return refreshChildren();
     }
 
     @Override

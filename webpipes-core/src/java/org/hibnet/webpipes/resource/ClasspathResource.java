@@ -36,7 +36,7 @@ public class ClasspathResource extends StreamResource {
     private long timestamp;
 
     public ClasspathResource(String location) {
-        super("cp/" + location);
+        super("/webpipes/cp/" + location);
         this.location = location.startsWith("/") ? location : ("/" + location);
     }
 

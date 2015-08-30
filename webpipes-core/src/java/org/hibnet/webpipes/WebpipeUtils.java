@@ -67,15 +67,15 @@ public class WebpipeUtils {
         return hexEncode(sha1(content));
     }
 
-    private static final char[] ALPHABET = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+    private static final char[] HEX_ALPHABET = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
     public static String hexEncode(byte[] data) {
         StringBuilder buffer = new StringBuilder(16);
         for (int i = 0; i < data.length; i++) {
             int highBits = (data[i] & 0xF0) >> 4;
             int lowBits = data[i] & 0x0F;
-            buffer.append(ALPHABET[highBits]);
-            buffer.append(ALPHABET[lowBits]);
+            buffer.append(HEX_ALPHABET[highBits]);
+            buffer.append(HEX_ALPHABET[lowBits]);
         }
         return buffer.toString();
     }
