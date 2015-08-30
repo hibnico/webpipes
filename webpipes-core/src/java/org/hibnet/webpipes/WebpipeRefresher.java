@@ -20,7 +20,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class WebpipeRefresher {
+
+    private static final Logger logger = LoggerFactory.getLogger(WebpipeRefresher.class);
 
     private volatile long sleepTime = 1000;
 
@@ -139,7 +144,11 @@ public class WebpipeRefresher {
             }
         }
         for (Webpipe webpipe : webpipesRefreshed) {
-            webpipe.getOutput();
+            try {
+                webpipe.getOutput();
+            } catch (Exception e) {
+                logger.error("Unable to get the content of the webpipe '" + webpipe.getName() + "'", e);
+            }
         }
     }
 
