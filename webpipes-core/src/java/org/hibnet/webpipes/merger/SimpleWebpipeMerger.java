@@ -15,15 +15,14 @@
  */
 package org.hibnet.webpipes.merger;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.hibnet.jsourcemap.Position;
-import org.hibnet.jsourcemap.Section;
+import org.hibnet.jsourcemap.Code;
 import org.hibnet.jsourcemap.SourceMap;
+import org.hibnet.jsourcemap.SourceMapConsumer;
+import org.hibnet.jsourcemap.SourceNode;
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
-import org.hibnet.webpipes.WebpipeUtils;
 
 public class SimpleWebpipeMerger implements WebpipeMerger {
 
@@ -39,49 +38,39 @@ public class SimpleWebpipeMerger implements WebpipeMerger {
 
     @Override
     public WebpipeOutput merge(List<Webpipe> webpipes) throws Exception {
-        StringBuilder buffer = new StringBuilder();
-        SourceMap sourceMap = new SourceMap();
-        sourceMap.version = 3;
-        sourceMap.sections = new ArrayList<>();
-        Position pos = new Position(0, 0);
+        SourceNode sourceNode = new SourceNode();
+
         for (Webpipe webpipe : webpipes) {
             WebpipeOutput output = webpipe.getOutput();
 
             String content = output.getContent();
-            buffer.append(content);
 
             SourceMap subSourceMap = output.getSourceMap();
             if (subSourceMap != null) {
-                Section section = new Section();
-                section.map = output.getSourceMap();
-                section.offset = new Position(pos.line, pos.column);
-                sourceMap.sections.add(section);
-            }
-
-            for (int i = 0; i < content.length(); i++) {
-                char c = content.charAt(i);
-                if (c == '\n') {
-                    pos.line++;
-                    pos.column = 0;
-                } else {
-                    pos.column++;
+                SourceMapConsumer sourceMapConsumer = SourceMapConsumer.create(subSourceMap);
+                sourceNode.add(SourceNode.fromStringWithSourceMap(content, sourceMapConsumer, null));
+            } else {
+                int line = 1;
+                int lastPos = -1;
+                for (int i = 0; i < content.length(); i++) {
+                    char c = content.charAt(i);
+                    if (c == '\n') {
+                        sourceNode.add(new SourceNode(line, 0, webpipe.getName(), content.substring(lastPos + 1, i + 1), null));
+                        lastPos = i;
+                        line++;
+                    }
                 }
+
             }
 
             if (addNewLineOnMerge) {
-                buffer.append("\n");
-                pos.line++;
-                pos.column = 0;
+                sourceNode.add(new SourceNode(1, 0, webpipe.getName(), "\n", null));
             }
+
+            sourceNode.setSourceContent(webpipe.getName(), content);
         }
 
-        String name = null;
-        if (sourceMap.sections.isEmpty()) {
-            sourceMap = null;
-        } else {
-            name = "merged" + WebpipeUtils.getDotExtension(webpipes.get(0).getName());
-        }
-
-        return new WebpipeOutput(buffer.toString(), name, sourceMap);
+        Code code = sourceNode.toStringWithSourceMap(null, null);
+        return new WebpipeOutput(code.getSource(), code.getMap().toJSON());
     }
 }

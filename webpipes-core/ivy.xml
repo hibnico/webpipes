@@ -20,7 +20,7 @@
     </info>
     <dependencies defaultconf="default->default">
         <dependency org="org.webjars" name="webjars-locator" rev="0.17" transitive="false" />
-        <dependency org="org.hibnet" name="jsourcemap" rev="0.0.1" transitive="false" />
+        <dependency org="org.hibnet" name="jsourcemap" rev="0.0.3" transitive="false" />
         <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.6.1" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.10" />
     </dependencies>
