@@ -64,7 +64,7 @@ public class JsonHPackProcessor extends JsProcessor {
 
         @Override
         protected WebpipeOutput fetchOutput() throws Exception {
-            return process(webpipe, pack);
+            return process(getChildWebpipe(), pack);
         }
     }
 

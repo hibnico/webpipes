@@ -48,7 +48,7 @@ public class CJsonProcessor extends JsProcessor {
 
         @Override
         protected WebpipeOutput fetchOutput() throws Exception {
-            return process(webpipe, pack);
+            return process(getChildWebpipe(), pack);
         }
     }
 

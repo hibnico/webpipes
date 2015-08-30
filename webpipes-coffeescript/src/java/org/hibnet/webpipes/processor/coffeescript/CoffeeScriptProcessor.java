@@ -57,7 +57,7 @@ public class CoffeeScriptProcessor extends JsProcessor {
 
         @Override
         protected WebpipeOutput fetchOutput() throws Exception {
-            return process(webpipe, options);
+            return process(getChildWebpipe(), options);
         }
     }
 

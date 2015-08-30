@@ -37,7 +37,7 @@ public class YuiCssCompressorProcessor {
 
         @Override
         protected WebpipeOutput fetchOutput() throws Exception {
-            String content = webpipe.getOutput().getContent();
+            String content = getChildWebpipe().getOutput().getContent();
             Writer writer = new StringWriter();
             try {
                 YuiProxy.Instance.compressCSS(new StringReader(content), writer, linebreak);

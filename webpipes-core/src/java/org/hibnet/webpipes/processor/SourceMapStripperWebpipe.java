@@ -31,7 +31,7 @@ public class SourceMapStripperWebpipe extends ProcessingWebpipe {
 
     @Override
     protected WebpipeOutput fetchOutput() throws Exception {
-        WebpipeOutput out = webpipe.getOutput();
+        WebpipeOutput out = getChildWebpipe().getOutput();
         String main = out.getContent();
         StringBuilder buffer = new StringBuilder();
         Matcher matcher = TAG_PATTERN.matcher(main);

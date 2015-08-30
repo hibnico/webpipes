@@ -7,13 +7,13 @@ import org.hibnet.webpipes.Webpipe;
 
 public abstract class ProcessingWebpipe extends Webpipe {
 
-    protected Webpipe webpipe;
+    private Webpipe childWebpipe;
 
     private String id;
 
-    public ProcessingWebpipe(Webpipe webpipe) {
-        this.webpipe = webpipe;
-        this.id = this.getClass().getSimpleName() + "-" + webpipe.getId();
+    public ProcessingWebpipe(Webpipe childWebpipe) {
+        this.childWebpipe = childWebpipe;
+        this.id = this.getClass().getSimpleName() + "-" + childWebpipe.getId();
     }
 
     @Override
@@ -21,19 +21,23 @@ public abstract class ProcessingWebpipe extends Webpipe {
         return id;
     }
 
+    protected Webpipe getChildWebpipe() {
+        return childWebpipe;
+    }
+
     @Override
     public String getName() {
-        return webpipe.getName();
+        return childWebpipe.getName();
     }
 
     @Override
     public void updateDigest(MessageDigest digest) throws Exception {
-        webpipe.updateDigest(digest);
+        childWebpipe.updateDigest(digest);
     }
 
     @Override
     public boolean refresh() throws IOException {
-        boolean needUpdate = webpipe.refresh();
+        boolean needUpdate = childWebpipe.refresh();
         if (needUpdate) {
             invalidateOutputCache();
         }

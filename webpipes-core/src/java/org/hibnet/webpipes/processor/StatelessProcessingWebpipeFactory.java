@@ -28,7 +28,7 @@ public interface StatelessProcessingWebpipeFactory extends ProcessingWebpipeFact
         return new ProcessingWebpipe(source) {
             @Override
             protected WebpipeOutput fetchOutput() throws Exception {
-                return process(webpipe);
+                return process(getChildWebpipe());
             }
         };
     }

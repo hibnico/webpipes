@@ -76,6 +76,7 @@ public class Less4jWebpipe extends ProcessingWebpipe {
         synchronized (importedResources) {
             importedResources.clear();
 
+            Webpipe webpipe = getChildWebpipe();
             String content = webpipe.getOutput().getContent();
             StringSource lessSource;
             if (webpipe instanceof Resource) {
@@ -91,18 +92,15 @@ public class Less4jWebpipe extends ProcessingWebpipe {
 
     @Override
     public boolean refresh() throws IOException {
-        boolean needUpdate = refreshChildren();
-        needUpdate = needUpdate || webpipe.refresh();
-        if (needUpdate) {
-            invalidateOutputCache();
-        }
-        return needUpdate;
+        return refreshChildren();
     }
 
     @Override
     protected List<Webpipe> buildChildrenList() throws IOException {
         synchronized (importedResources) {
-            return new ArrayList<Webpipe>(importedResources);
+            List<Webpipe> children = new ArrayList<Webpipe>(importedResources);
+            children.add(getChildWebpipe());
+            return children;
         }
     }
 

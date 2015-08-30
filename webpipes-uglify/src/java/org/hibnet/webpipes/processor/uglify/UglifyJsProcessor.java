@@ -53,7 +53,7 @@ public class UglifyJsProcessor extends JsProcessor {
 
         @Override
         protected WebpipeOutput fetchOutput() throws Exception {
-            return process(webpipe, uglify, revervedNames);
+            return process(getChildWebpipe(), uglify, revervedNames);
         }
     }
 
