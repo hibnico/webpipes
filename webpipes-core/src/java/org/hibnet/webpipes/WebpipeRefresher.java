@@ -16,9 +16,7 @@
 package org.hibnet.webpipes;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +27,7 @@ public class WebpipeRefresher {
 
     private volatile long sleepTime = 1000;
 
-    private List<Webpipe> webpipes = new CopyOnWriteArrayList<>();
+    private WebpipesBuilder webpipesBuilder;
 
     private volatile boolean sleepTimeChanged = false;
 
@@ -38,6 +36,8 @@ public class WebpipeRefresher {
     private Thread thread;
 
     private volatile boolean stop = false;
+
+    private boolean refreshDefinitions = true;
 
     public void setSleepTime(long sleepTime) {
         synchronized (this) {
@@ -49,16 +49,12 @@ public class WebpipeRefresher {
         }
     }
 
-    public void setWebpipes(Collection< ? extends Webpipe> webpipes) {
-        this.webpipes = new CopyOnWriteArrayList<>(webpipes);
+    public WebpipeRefresher(WebpipesBuilder webpipesBuilder) {
+        this.webpipesBuilder = webpipesBuilder;
     }
 
-    public void addWebpipe(Webpipe webpipe) {
-        webpipes.add(webpipe);
-    }
-
-    public void removeWebpipe(Webpipe webpipe) {
-        webpipes.remove(webpipe);
+    public void setRefreshDefinitions(boolean refreshDefinitions) {
+        this.refreshDefinitions = refreshDefinitions;
     }
 
     public synchronized void startWatcher() {
@@ -137,8 +133,11 @@ public class WebpipeRefresher {
     }
 
     public void refreshAll() throws Exception {
+        if (refreshDefinitions) {
+            webpipesBuilder.refreshedWebpipes();
+        }
         List<Webpipe> webpipesRefreshed = new ArrayList<>();
-        for (Webpipe webpipe : webpipes) {
+        for (Webpipe webpipe : webpipesBuilder.getWebpipes().values()) {
             if (webpipe.refresh()) {
                 webpipesRefreshed.add(webpipe);
             }

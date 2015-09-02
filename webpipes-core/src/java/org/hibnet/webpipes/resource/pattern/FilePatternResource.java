@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.hibnet.webpipes.MergingWebpipe;
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeUtils;
 
 public class FilePatternResource extends MergingWebpipe {
 
@@ -29,8 +30,8 @@ public class FilePatternResource extends MergingWebpipe {
 
     private PathMatcher pathMatcher = new AntPathMatcher();
 
-    public FilePatternResource(String pattern) {
-        super("/webpipes/files/" + pattern);
+    public FilePatternResource(String path, String pattern) {
+        super(WebpipeUtils.idOf(FilePatternResource.class, pattern), WebpipeUtils.pathOf(path, "/webpipes/files", pattern));
         this.pattern = pattern;
     }
 

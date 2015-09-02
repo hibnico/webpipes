@@ -45,12 +45,19 @@ public abstract class Webpipe {
 
     private String path;
 
-    public Webpipe(String path) {
+    private String id;
+
+    public Webpipe(String id, String path) {
+        this.id = id;
         this.path = path;
     }
 
     public String getPath() {
         return path;
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override
@@ -77,12 +84,12 @@ public abstract class Webpipe {
                     output = readOutput();
                     if (output == NOT_INITIALIZED_OUTPUT) {
                         output = fetchOutput();
-                        setPath(output);
+                        setOutputPath(output);
                         storeOutput(output);
                     }
                 } else if (output == INVALIDATED_OUTPUT) {
                     output = fetchOutput();
-                    setPath(output);
+                    setOutputPath(output);
                     storeOutput(output);
                 }
             }
@@ -90,7 +97,7 @@ public abstract class Webpipe {
         return output;
     }
 
-    private void setPath(WebpipeOutput output) {
+    private void setOutputPath(WebpipeOutput output) {
         SourceMap sourceMap = output.getSourceMap();
         if (sourceMap != null) {
             sourceMap.file = path;
@@ -105,7 +112,7 @@ public abstract class Webpipe {
             return NOT_INITIALIZED_OUTPUT;
         }
 
-        File sha1File = new File(cacheDir, getPath() + ".sha1");
+        File sha1File = new File(cacheDir, getId() + ".sha1");
         if (!sha1File.exists()) {
             return NOT_INITIALIZED_OUTPUT;
         }
@@ -123,11 +130,11 @@ public abstract class Webpipe {
         }
 
         // same sha1, get the content out
-        byte[] data = readFile(new File(cacheDir, getPath() + ".txt"));
+        byte[] data = readFile(new File(cacheDir, getId() + ".txt"));
         String content = new String(data, WebpipeUtils.UTF8);
 
         SourceMap sourceMap = null;
-        File sourceMapFile = new File(cacheDir, getPath() + ".map");
+        File sourceMapFile = new File(cacheDir, getId() + ".map");
         if (sourceMapFile.exists()) {
             sourceMap = WebpipeUtils.parseSourceMap(readFile(sourceMapFile));
         }
@@ -156,11 +163,11 @@ public abstract class Webpipe {
 
         byte[] sha1 = computeSHA1();
 
-        try (OutputStream out = new FileOutputStream(new File(cacheDir, getPath() + ".sha1"))) {
+        try (OutputStream out = new FileOutputStream(new File(cacheDir, getId() + ".sha1"))) {
             out.write(sha1);
         }
 
-        try (OutputStream out = new FileOutputStream(new File(cacheDir, getPath() + ".txt"))) {
+        try (OutputStream out = new FileOutputStream(new File(cacheDir, getId() + ".txt"))) {
             out.write(output.getContent().getBytes(WebpipeUtils.UTF8));
         }
 

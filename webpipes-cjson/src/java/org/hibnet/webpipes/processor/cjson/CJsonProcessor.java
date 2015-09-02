@@ -17,6 +17,7 @@ package org.hibnet.webpipes.processor.cjson;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.js.JsProcessor;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
@@ -41,8 +42,8 @@ public class CJsonProcessor extends JsProcessor {
 
         private boolean pack;
 
-        private CJsonWebpipe(Webpipe webpipe, boolean pack) {
-            super("cjson", webpipe);
+        private CJsonWebpipe(String path, Webpipe webpipe, boolean pack) {
+            super(WebpipeUtils.idOf(CJsonProcessor.class, webpipe, pack), path, "cjson", webpipe);
             this.pack = pack;
         }
 
@@ -52,15 +53,15 @@ public class CJsonProcessor extends JsProcessor {
         }
     }
 
-    public Webpipe createProcessingWebpipe(Webpipe source, boolean pack) {
-        return new CJsonWebpipe(source, pack);
+    public Webpipe createProcessingWebpipe(String path, Webpipe source, boolean pack) {
+        return new CJsonWebpipe(path, source, pack);
     }
 
     public ProcessingWebpipeFactory createFactory(final boolean pack) {
         return new ProcessingWebpipeFactory() {
             @Override
-            public Webpipe createProcessingWebpipe(Webpipe source) {
-                return new CJsonWebpipe(source, pack);
+            public Webpipe createProcessingWebpipe(String path, Webpipe source) {
+                return new CJsonWebpipe(path, source, pack);
             }
         };
     }

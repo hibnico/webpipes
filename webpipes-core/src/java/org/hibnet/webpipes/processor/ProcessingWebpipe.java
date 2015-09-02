@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.security.MessageDigest;
 
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeUtils;
 
 public abstract class ProcessingWebpipe extends Webpipe {
 
     private Webpipe childWebpipe;
 
-    public ProcessingWebpipe(String name, Webpipe childWebpipe) {
-        super("/webpipes/" + name + "/" + childWebpipe.getPath());
+    public ProcessingWebpipe(String id, String path, String name, Webpipe childWebpipe) {
+        super(id, WebpipeUtils.pathOf(path, "/webpipes", name, childWebpipe.getPath()));
         this.childWebpipe = childWebpipe;
     }
 

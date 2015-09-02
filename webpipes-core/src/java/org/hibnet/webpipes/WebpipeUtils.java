@@ -25,7 +25,9 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -63,21 +65,8 @@ public class WebpipeUtils {
         return buildSHA1Digest().digest(content.getBytes(UTF8));
     }
 
-    public static String sha1HexEncoded(String content) {
-        return hexEncode(sha1(content));
-    }
-
-    private static final char[] HEX_ALPHABET = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-
-    public static String hexEncode(byte[] data) {
-        StringBuilder buffer = new StringBuilder(16);
-        for (int i = 0; i < data.length; i++) {
-            int highBits = (data[i] & 0xF0) >> 4;
-            int lowBits = data[i] & 0x0F;
-            buffer.append(HEX_ALPHABET[highBits]);
-            buffer.append(HEX_ALPHABET[lowBits]);
-        }
-        return buffer.toString();
+    public static String sha1Base64Encoded(String content) {
+        return Base64.getEncoder().encodeToString(sha1(content));
     }
 
     /**
@@ -332,6 +321,59 @@ public class WebpipeUtils {
             return "";
         } else {
             return name.substring(i);
+        }
+    }
+
+    public static String pathOf(String pathInput, String... defaultPaths) {
+        if (pathInput != null) {
+            return pathInput;
+        }
+        StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < defaultPaths.length; i++) {
+            String path = defaultPaths[i];
+            if (i > 0) {
+                buffer.append("/");
+                if (path.startsWith("/")) {
+                    path = defaultPaths[i].substring(1);
+                }
+            }
+            if (path.endsWith("/")) {
+                path = path.substring(0, path.length() - 1);
+            }
+            buffer.append(path);
+        }
+        return buffer.toString();
+    }
+
+    public static String idOf(Class<?> c, Object... args) {
+        MessageDigest digest = buildSHA1Digest();
+        digest(digest, c);
+        for (Object arg : args) {
+            digest(digest, arg);
+        }
+        return Base64.getEncoder().encodeToString(digest.digest());
+    }
+
+    private static void digest(MessageDigest digest, Object arg) {
+        if (arg instanceof String) {
+            digest.update(((String) arg).getBytes(UTF8));
+        } else if (arg instanceof Boolean) {
+            digest.update((byte) (((Boolean) arg) ? 1 : 0));
+        } else if (arg instanceof Number) {
+            digest.update(((Number) arg).toString().getBytes(UTF8));
+        } else if (arg instanceof Enum<?>) {
+            digest.update(((Enum<?>) arg).name().getBytes(UTF8));
+        } else if (arg instanceof Class<?>) {
+            digest.update(((Class<?>) arg).getCanonicalName().getBytes(UTF8));
+        } else if (arg instanceof Webpipe) {
+            digest.update(((Webpipe) arg).getId().getBytes(UTF8));
+        } else if (arg instanceof Collection<?>) {
+            Iterator<?> it = ((Collection<?>) arg).iterator();
+            while (it.hasNext()) {
+                digest(digest, it.next());
+            }
+        } else {
+            throw new IllegalArgumentException("Unsupported type: " + arg.getClass().getName());
         }
     }
 }

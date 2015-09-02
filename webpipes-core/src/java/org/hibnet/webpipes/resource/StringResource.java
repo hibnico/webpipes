@@ -18,13 +18,15 @@ package org.hibnet.webpipes.resource;
 import java.io.IOException;
 
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 
 public class StringResource extends Resource {
 
     private WebpipeOutput output;
 
-    public StringResource(String name, String content) {
-        super("/webpipes/string/" + name);
+    public StringResource(String path, String content) {
+        super(WebpipeUtils.idOf(StringResource.class, content),
+                WebpipeUtils.pathOf(path, "/webpipes/string", WebpipeUtils.sha1Base64Encoded(content)));
         this.output = new WebpipeOutput(content);
     }
 

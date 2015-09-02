@@ -35,8 +35,8 @@ public abstract class MergingWebpipe extends Webpipe {
 
     private WebpipeMerger merger = new SimpleWebpipeMerger();
 
-    public MergingWebpipe(String path) {
-        super(path);
+    public MergingWebpipe(String id, String path) {
+        super(id, path);
     }
 
     public void setMerger(WebpipeMerger merger) {

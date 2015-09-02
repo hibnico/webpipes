@@ -21,6 +21,7 @@ import java.io.Writer;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
@@ -34,9 +35,10 @@ public class YuiJsCompressorProcessor {
         private boolean preserveAllSemiColons;
         private boolean disableOptimizations;
 
-        private YuiJsCompressorWebpipe(Webpipe webpipe, int linebreak, boolean munge, boolean verbose, boolean preserveAllSemiColons,
+        private YuiJsCompressorWebpipe(String path, Webpipe webpipe, int linebreak, boolean munge, boolean verbose, boolean preserveAllSemiColons,
                 boolean disableOptimizations) {
-            super("yuijs", webpipe);
+            super(WebpipeUtils.idOf(YuiJsCompressorProcessor.class, webpipe, linebreak, munge, verbose, preserveAllSemiColons, disableOptimizations),
+                    path, "yuijs", webpipe);
             this.linebreak = linebreak;
             this.munge = munge;
             this.verbose = verbose;
@@ -59,17 +61,17 @@ public class YuiJsCompressorProcessor {
         }
     }
 
-    public Webpipe createProcessingWebpipe(Webpipe source, int linebreak, boolean munge, boolean verbose, boolean preserveAllSemiColons,
+    public Webpipe createProcessingWebpipe(String path, Webpipe source, int linebreak, boolean munge, boolean verbose, boolean preserveAllSemiColons,
             boolean disableOptimizations) {
-        return new YuiJsCompressorWebpipe(source, linebreak, munge, verbose, preserveAllSemiColons, disableOptimizations);
+        return new YuiJsCompressorWebpipe(path, source, linebreak, munge, verbose, preserveAllSemiColons, disableOptimizations);
     }
 
     public ProcessingWebpipeFactory createFactory(final int linebreak, final boolean munge, final boolean verbose,
             final boolean preserveAllSemiColons, final boolean disableOptimizations) {
         return new ProcessingWebpipeFactory() {
             @Override
-            public Webpipe createProcessingWebpipe(Webpipe source) {
-                return new YuiJsCompressorWebpipe(source, linebreak, munge, verbose, preserveAllSemiColons, disableOptimizations);
+            public Webpipe createProcessingWebpipe(String path, Webpipe source) {
+                return new YuiJsCompressorWebpipe(path, source, linebreak, munge, verbose, preserveAllSemiColons, disableOptimizations);
             }
         };
     }

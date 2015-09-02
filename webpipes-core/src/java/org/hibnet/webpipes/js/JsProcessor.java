@@ -22,9 +22,9 @@ import org.hibnet.webpipes.resource.WebJarHelper;
 
 public abstract class JsProcessor {
 
-    protected static Resource envScript = new ClasspathResource("env.nashorn.1.2.js", JsProcessor.class);
+    protected static Resource envScript = new ClasspathResource(null, "env.nashorn.1.2.js", JsProcessor.class);
 
-    protected static Resource sourceMapScript = new ClasspathResource("source-map.min.js", JsProcessor.class);
+    protected static Resource sourceMapScript = new ClasspathResource(null, "source-map.min.js", JsProcessor.class);
 
     public ScriptEngine jsEngine = new ScriptEngineManager().getEngineByName("nashorn");
 
@@ -60,11 +60,11 @@ public abstract class JsProcessor {
     }
 
     protected <T> T evalFromClasspath(String path) throws Exception {
-        return eval(new ClasspathResource(path));
+        return eval(new ClasspathResource(null, path));
     }
 
     protected <T> T evalFromWebjar(String path) throws Exception {
-        return eval(WebJarHelper.getResource(path));
+        return eval(WebJarHelper.getResource(null, path));
     }
 
     protected <T> T eval(Resource script) throws Exception {
@@ -93,7 +93,11 @@ public abstract class JsProcessor {
     @SuppressWarnings("unchecked")
     protected <T> T invokeFunction(String function, Object... args) throws Exception {
         Invocable invocable = (Invocable) jsEngine;
-        return (T) invocable.invokeFunction(function, args);
+        try {
+            return (T) invocable.invokeFunction(function, args);
+        } catch (ScriptException e) {
+            throw e;
+        }
     }
 
     @SuppressWarnings("unchecked")

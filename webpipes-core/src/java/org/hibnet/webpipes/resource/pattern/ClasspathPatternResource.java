@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.hibnet.webpipes.MergingWebpipe;
 import org.hibnet.webpipes.Webpipe;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.resource.Resource;
 
 public class ClasspathPatternResource extends MergingWebpipe {
@@ -29,8 +30,8 @@ public class ClasspathPatternResource extends MergingWebpipe {
 
     private String pattern;
 
-    public ClasspathPatternResource(String pattern) {
-        super("/webpipes/cps/" + pattern);
+    public ClasspathPatternResource(String path, String pattern) {
+        super(WebpipeUtils.idOf(ClasspathPatternResource.class, pattern), WebpipeUtils.pathOf(path, "/webpipes/cps", pattern));
         this.pattern = pattern;
     }
 

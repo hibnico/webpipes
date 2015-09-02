@@ -21,6 +21,7 @@ import java.io.Writer;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
@@ -30,8 +31,8 @@ public class YuiCssCompressorProcessor {
 
         private int linebreak;
 
-        private YuiCssCompressorWebpipe(Webpipe webpipe, int linebreak) {
-            super("yuicss", webpipe);
+        private YuiCssCompressorWebpipe(String path, Webpipe webpipe, int linebreak) {
+            super(WebpipeUtils.idOf(YuiCssCompressorProcessor.class, webpipe, linebreak), path, "yuicss", webpipe);
             this.linebreak = linebreak;
         }
 
@@ -49,15 +50,15 @@ public class YuiCssCompressorProcessor {
         }
     }
 
-    public Webpipe createProcessingWebpipe(Webpipe source, int linebreak) {
-        return new YuiCssCompressorWebpipe(source, linebreak);
+    public Webpipe createProcessingWebpipe(String path, Webpipe source, int linebreak) {
+        return new YuiCssCompressorWebpipe(path, source, linebreak);
     }
 
     public ProcessingWebpipeFactory createFactory(final int linebreak) {
         return new ProcessingWebpipeFactory() {
             @Override
-            public Webpipe createProcessingWebpipe(Webpipe source) {
-                return new YuiCssCompressorWebpipe(source, linebreak);
+            public Webpipe createProcessingWebpipe(String path, Webpipe source) {
+                return new YuiCssCompressorWebpipe(path, source, linebreak);
             }
         };
     }

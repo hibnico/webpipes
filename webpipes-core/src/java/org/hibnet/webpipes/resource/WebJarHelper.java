@@ -28,8 +28,8 @@ public class WebJarHelper {
         return webJarAssetLocator;
     }
 
-    public static Resource getResource(String path) {
-        return new ClasspathResource(webJarAssetLocator.getFullPath(path));
+    public static Resource getResource(String path, String webjarPath) {
+        return new ClasspathResource(path != null ? path : "/webpipes/webjar/" + webjarPath, webJarAssetLocator.getFullPath(webjarPath));
     }
 
 }

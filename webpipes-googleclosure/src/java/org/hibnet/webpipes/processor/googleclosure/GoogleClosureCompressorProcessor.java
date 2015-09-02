@@ -20,6 +20,7 @@ import java.util.logging.Level;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
 
@@ -44,8 +45,8 @@ public class GoogleClosureCompressorProcessor {
 
         private CompilationLevel compilationLevel;
 
-        private GoogleClosureCompressorWebpipe(Webpipe webpipe, CompilationLevel compilationLevel) {
-            super("googleclosure", webpipe);
+        private GoogleClosureCompressorWebpipe(String path, Webpipe webpipe, CompilationLevel compilationLevel) {
+            super(WebpipeUtils.idOf(GoogleClosureCompressorProcessor.class, webpipe, compilationLevel), path, "googleclosure", webpipe);
             this.compilationLevel = compilationLevel;
         }
 
@@ -55,15 +56,15 @@ public class GoogleClosureCompressorProcessor {
         }
     }
 
-    public Webpipe createProcessingWebpipe(Webpipe source, CompilationLevel compilationLevel) {
-        return new GoogleClosureCompressorWebpipe(source, compilationLevel);
+    public Webpipe createProcessingWebpipe(String path, Webpipe source, CompilationLevel compilationLevel) {
+        return new GoogleClosureCompressorWebpipe(path, source, compilationLevel);
     }
 
     public ProcessingWebpipeFactory createFactory(final CompilationLevel compilationLevel) {
         return new ProcessingWebpipeFactory() {
             @Override
-            public Webpipe createProcessingWebpipe(Webpipe source) {
-                return new GoogleClosureCompressorWebpipe(source, compilationLevel);
+            public Webpipe createProcessingWebpipe(String path, Webpipe source) {
+                return new GoogleClosureCompressorWebpipe(path, source, compilationLevel);
             }
         };
     }

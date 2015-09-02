@@ -35,24 +35,24 @@ public class ClasspathResource extends StreamResource {
 
     private long timestamp;
 
-    public ClasspathResource(String location) {
-        super("/webpipes/cp/" + location);
+    public ClasspathResource(String path, String location) {
+        super(WebpipeUtils.idOf(ClasspathResource.class, location), WebpipeUtils.pathOf(path, "/webpipes/cp", location));
         this.location = location.startsWith("/") ? location : ("/" + location);
     }
 
-    public ClasspathResource(String location, Class<?> cls) {
-        this(location.startsWith("/") ? location : (WebpipeUtils.getPackageDir(cls) + "/" + location));
+    public ClasspathResource(String path, String location, Class<?> cls) {
+        this(path, location.startsWith("/") ? location : (WebpipeUtils.getPackageDir(cls) + "/" + location));
         this.cls = cls;
     }
 
-    public ClasspathResource(String location, ClassLoader classLoader) {
-        this(location);
+    public ClasspathResource(String path, String location, ClassLoader classLoader) {
+        this(path, location);
         this.classLoader = classLoader;
     }
 
     @Override
     public Resource resolve(String relativePath) {
-        return new ClasspathResource(URI.create(this.location).resolve(relativePath).getSchemeSpecificPart());
+        return new ClasspathResource(null, URI.create(this.location).resolve(relativePath).getSchemeSpecificPart());
     }
 
     @Override

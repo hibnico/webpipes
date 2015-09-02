@@ -20,24 +20,26 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.hibnet.webpipes.WebpipeUtils;
+
 public class FileResource extends StreamResource {
 
     private File file;
 
     private long timestamp;
 
-    public FileResource(String path) {
-        this(new File(path));
+    public FileResource(String path, String filePath) {
+        this(path, new File(filePath));
     }
 
-    public FileResource(File file) {
-        super("/webpipes/file/" + file);
+    public FileResource(String path, File file) {
+        super(WebpipeUtils.idOf(FileResource.class, file), WebpipeUtils.pathOf(path, "/webpipes/file", file.getAbsolutePath()));
         this.file = file;
     }
 
     @Override
     public Resource resolve(String relativePath) {
-        return new FileResource(new File(file.getAbsoluteFile().toURI().resolve(relativePath)));
+        return new FileResource(null, new File(file.getAbsoluteFile().toURI().resolve(relativePath)));
     }
 
     @Override

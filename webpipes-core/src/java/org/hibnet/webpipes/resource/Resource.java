@@ -28,8 +28,8 @@ public abstract class Resource extends Webpipe {
 
     abstract public Resource resolve(String relativePath);
 
-    public Resource(String path) {
-        super(path);
+    public Resource(String id, String path) {
+        super(id, path);
     }
 
     @Override

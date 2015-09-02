@@ -17,6 +17,7 @@ package org.hibnet.webpipes.processor.uglify2;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.js.JsProcessor;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
@@ -66,8 +67,8 @@ public class UglifyJs2Processor extends JsProcessor {
 
         private boolean uglify;
 
-        private UglifyJs2Webpipe(Webpipe webpipe, boolean uglify) {
-            super("uglify2", webpipe);
+        private UglifyJs2Webpipe(String path, Webpipe webpipe, boolean uglify) {
+            super(WebpipeUtils.idOf(UglifyJs2Processor.class, webpipe, uglify), path, "uglify2", webpipe);
             this.uglify = uglify;
         }
 
@@ -77,15 +78,15 @@ public class UglifyJs2Processor extends JsProcessor {
         }
     }
 
-    public Webpipe createProcessingWebpipe(Webpipe source, boolean uglify) {
-        return new UglifyJs2Webpipe(source, uglify);
+    public Webpipe createProcessingWebpipe(String path, Webpipe source, boolean uglify) {
+        return new UglifyJs2Webpipe(path, source, uglify);
     }
 
     public ProcessingWebpipeFactory createFactory(final boolean uglify) {
         return new ProcessingWebpipeFactory() {
             @Override
-            public Webpipe createProcessingWebpipe(Webpipe source) {
-                return new UglifyJs2Webpipe(source, uglify);
+            public Webpipe createProcessingWebpipe(String path, Webpipe source) {
+                return new UglifyJs2Webpipe(path, source, uglify);
             }
         };
     }

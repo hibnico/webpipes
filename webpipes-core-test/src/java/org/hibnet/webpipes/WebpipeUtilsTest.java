@@ -15,7 +15,14 @@
  */
 package org.hibnet.webpipes;
 
+import static org.hibnet.webpipes.WebpipeUtils.addSuffix;
+import static org.hibnet.webpipes.WebpipeUtils.getDotExtension;
+import static org.hibnet.webpipes.WebpipeUtils.idOf;
+import static org.hibnet.webpipes.WebpipeUtils.pathOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -23,20 +30,44 @@ public class WebpipeUtilsTest {
 
     @Test
     public void testAddSuffix() throws Exception {
-        assertEquals("", WebpipeUtils.addSuffix("", ""));
-        assertEquals("file", WebpipeUtils.addSuffix("file", ""));
-        assertEquals("file.js", WebpipeUtils.addSuffix("file.js", ""));
-        assertEquals("-test", WebpipeUtils.addSuffix("", "-test"));
-        assertEquals("file-test", WebpipeUtils.addSuffix("file", "-test"));
-        assertEquals("file-test.js", WebpipeUtils.addSuffix("file.js", "-test"));
+        assertEquals("", addSuffix("", ""));
+        assertEquals("file", addSuffix("file", ""));
+        assertEquals("file.js", addSuffix("file.js", ""));
+        assertEquals("-test", addSuffix("", "-test"));
+        assertEquals("file-test", addSuffix("file", "-test"));
+        assertEquals("file-test.js", addSuffix("file.js", "-test"));
     }
 
     @Test
     public void testGetDotExtension() throws Exception {
-        assertEquals("", WebpipeUtils.getDotExtension(""));
-        assertEquals("", WebpipeUtils.getDotExtension("file"));
-        assertEquals(".", WebpipeUtils.getDotExtension("file."));
-        assertEquals(".extension", WebpipeUtils.getDotExtension("file.extension"));
-        assertEquals(".js", WebpipeUtils.getDotExtension("file.min.js"));
+        assertEquals("", getDotExtension(""));
+        assertEquals("", getDotExtension("file"));
+        assertEquals(".", getDotExtension("file."));
+        assertEquals(".extension", getDotExtension("file.extension"));
+        assertEquals(".js", getDotExtension("file.min.js"));
+    }
+
+    @Test
+    public void testPathOf() throws Exception {
+        assertEquals("", pathOf(""));
+        assertEquals("iu/\\!UI8$^`ç§'§", pathOf("iu/\\!UI8$^`ç§'§", "/some", "/path"));
+        assertEquals("/some/path", pathOf(null, "/some", "path"));
+        assertEquals("/some/path", pathOf(null, "/some", "/path"));
+        assertEquals("/some/path", pathOf(null, "/some", "/path/"));
+        assertEquals("/some/path", pathOf(null, "/some/", "/path/"));
+        assertEquals("/some/path", pathOf(null, "/some/", "path/"));
+        assertEquals("some/path", pathOf(null, "some/", "path/"));
+    }
+
+    @Test
+    public void testIdOf() throws Exception {
+        assertEquals(idOf(WebpipeUtilsTest.class), idOf(WebpipeUtilsTest.class));
+        assertEquals(idOf(WebpipeUtilsTest.class, "test"), idOf(WebpipeUtilsTest.class, "test"));
+        assertNotSame(idOf(WebpipeUtilsTest.class, "diff"), idOf(WebpipeUtilsTest.class, "test"));
+        assertNotSame(idOf(WebpipeUtilsTest.class, "test", "diff"), idOf(WebpipeUtilsTest.class, "test"));
+        assertEquals(idOf(WebpipeUtilsTest.class, "test", "diff"), idOf(WebpipeUtilsTest.class, "test", "diff"));
+        assertNotSame(idOf(WebpipeUtilsTest.class, "test", "diff"), idOf(WebpipeUtilsTest.class, "diff", "test"));
+        assertEquals(idOf(WebpipeUtilsTest.class, Arrays.asList("test", "diff")), idOf(WebpipeUtilsTest.class, Arrays.asList("test", "diff")));
+        assertNotSame(idOf(WebpipeUtilsTest.class, Arrays.asList("test", "diff")), idOf(WebpipeUtilsTest.class, Arrays.asList("diff", "test")));
     }
 }

@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.js.JsProcessor;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
@@ -50,8 +51,8 @@ public class CoffeeScriptProcessor extends JsProcessor {
 
         private String[] options;
 
-        private CoffeeScriptWebpipe(Webpipe webpipe, String[] options) {
-            super("coffeescript", webpipe);
+        private CoffeeScriptWebpipe(String path, Webpipe webpipe, String[] options) {
+            super(WebpipeUtils.idOf(CoffeeScriptProcessor.class, webpipe, options), path, "coffeescript", webpipe);
             this.options = options;
         }
 
@@ -61,15 +62,15 @@ public class CoffeeScriptProcessor extends JsProcessor {
         }
     }
 
-    public Webpipe createProcessingWebpipe(Webpipe source, String[] options) {
-        return new CoffeeScriptWebpipe(source, options);
+    public Webpipe createProcessingWebpipe(String path, Webpipe source, String[] options) {
+        return new CoffeeScriptWebpipe(path, source, options);
     }
 
     public ProcessingWebpipeFactory createFactory(final String[] options) {
         return new ProcessingWebpipeFactory() {
             @Override
-            public Webpipe createProcessingWebpipe(Webpipe source) {
-                return new CoffeeScriptWebpipe(source, options);
+            public Webpipe createProcessingWebpipe(String path, Webpipe source) {
+                return new CoffeeScriptWebpipe(path, source, options);
             }
         };
     }

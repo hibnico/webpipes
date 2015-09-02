@@ -62,7 +62,7 @@ public class AbstractProcessorTest {
             }
             iExpectedFile++;
             System.out.println("Testing " + testFile);
-            String result = processor.createProcessingWebpipe(testFile).getOutput().getContent();
+            String result = processor.createProcessingWebpipe(null, testFile).getOutput().getContent();
             String expected = expectedFile.getOutput().getContent();
 
             result = result.replaceAll("\\t", "  ").replaceAll("(\\r|\\n)+", " ").trim();
@@ -76,7 +76,7 @@ public class AbstractProcessorTest {
         List<Resource> testFiles = PatternHelper.getClasspathResources(new AntPathMatcher(), null, testFilesPattern);
         for (Resource testFile : testFiles) {
             try {
-                processor.createProcessingWebpipe(testFile).getOutput();
+                processor.createProcessingWebpipe(null, testFile).getOutput();
                 Assert.fail("Expected error on " + testFile.getPath());
             } catch (Exception e) {
                 // OK!

@@ -25,12 +25,12 @@ public class SimpleMergingWebpipe extends MergingWebpipe {
 
     private List<Webpipe> webpipes;
 
-    public SimpleMergingWebpipe(Webpipe... webpipes) {
-        this(Arrays.asList(webpipes));
+    public SimpleMergingWebpipe(String path, Webpipe... webpipes) {
+        this(path, Arrays.asList(webpipes));
     }
 
-    public SimpleMergingWebpipe(List<Webpipe> webpipes) {
-        super("/webpipes/" + buildId(webpipes));
+    public SimpleMergingWebpipe(String path, List<Webpipe> webpipes) {
+        super(WebpipeUtils.idOf(SimpleMergingWebpipe.class, webpipes), WebpipeUtils.pathOf(path, "/webpipes", buildId(webpipes)));
         this.webpipes = webpipes;
     }
 

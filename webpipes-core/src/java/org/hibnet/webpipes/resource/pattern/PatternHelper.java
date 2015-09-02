@@ -49,14 +49,15 @@ public class PatternHelper {
         return pattern.substring(0, rootDirEnd);
     }
 
-    public static Set<Resource> getFilesystemResources(PathMatcher pathMatcher, File rootDir, String subPattern) throws IOException {
+    public static Set<Resource> getFilesystemResources(PathMatcher pathMatcher, File rootDir, String subPattern)
+            throws IOException {
         if (logger.isDebugEnabled()) {
             logger.debug("Looking for matching resources in directory tree [" + rootDir.getPath() + "]");
         }
         Set<File> matchingFiles = retrieveMatchingFiles(pathMatcher, rootDir, subPattern);
         Set<Resource> result = new LinkedHashSet<Resource>(matchingFiles.size());
         for (File file : matchingFiles) {
-            result.add(new FileResource(file));
+            result.add(new FileResource(null, file));
         }
         return result;
     }
@@ -216,7 +217,7 @@ public class PatternHelper {
                 if (entryPath.startsWith(rootEntryPath)) {
                     String relativePath = entryPath.substring(rootEntryPath.length());
                     if (pathMatcher.match(subPattern, relativePath)) {
-                        result.add(new UrlResource(new URL(rootUrl, relativePath)));
+                        result.add(new UrlResource(null, new URL(rootUrl, relativePath)));
                     }
                 }
             }

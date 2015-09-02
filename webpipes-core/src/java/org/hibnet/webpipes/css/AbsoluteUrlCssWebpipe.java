@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 
 public class AbsoluteUrlCssWebpipe extends ProcessingWebpipe {
@@ -28,8 +29,8 @@ public class AbsoluteUrlCssWebpipe extends ProcessingWebpipe {
 
     private String absolutePath;
 
-    public AbsoluteUrlCssWebpipe(Webpipe webpipe, String absolutePath) {
-        super("absoluteUrlCss", webpipe);
+    public AbsoluteUrlCssWebpipe(String path, Webpipe webpipe, String absolutePath) {
+        super(WebpipeUtils.idOf(AbsoluteUrlCssWebpipe.class, webpipe, absolutePath), path, "absoluteUrlCss", webpipe);
         this.absolutePath = absolutePath;
     }
 

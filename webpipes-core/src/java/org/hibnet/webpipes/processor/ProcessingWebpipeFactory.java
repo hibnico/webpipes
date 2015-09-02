@@ -19,6 +19,6 @@ import org.hibnet.webpipes.Webpipe;
 
 public interface ProcessingWebpipeFactory {
 
-    public Webpipe createProcessingWebpipe(Webpipe source);
+    public Webpipe createProcessingWebpipe(String path, Webpipe source);
 
 }

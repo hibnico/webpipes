@@ -17,6 +17,7 @@ package org.hibnet.webpipes.processor;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 
 /**
  * If stateless, the factory is also the webpipe itself
@@ -24,8 +25,8 @@ import org.hibnet.webpipes.WebpipeOutput;
 public interface StatelessProcessingWebpipeFactory extends ProcessingWebpipeFactory {
 
     @Override
-    default public Webpipe createProcessingWebpipe(Webpipe source) {
-        return new ProcessingWebpipe(getName(), source) {
+    default public Webpipe createProcessingWebpipe(String path, Webpipe source) {
+        return new ProcessingWebpipe(WebpipeUtils.idOf(this.getClass(), source), path, getName(), source) {
             @Override
             protected WebpipeOutput fetchOutput() throws Exception {
                 return process(getChildWebpipe());

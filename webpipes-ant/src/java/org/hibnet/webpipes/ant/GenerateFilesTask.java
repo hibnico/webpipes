@@ -22,8 +22,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -93,22 +92,22 @@ public class GenerateFilesTask extends Task {
                 throw new BuildException("Error calling 'getWebpipes' on " + webpipesBuilder
                         + " (switch to verbose to see a full stack trace with -v)", e);
             }
-            Map<String, Webpipe> webpipes;
+            List<Webpipe> webpipes;
             try {
                 @SuppressWarnings("unchecked")
-                Map<String, Webpipe> casted = (Map<String, Webpipe>) res;
+                List<Webpipe> casted = (List<Webpipe>) res;
                 webpipes = casted;
             } catch (ClassCastException e) {
                 throw new BuildException("The method 'buildWebpipes' on " + webpipesBuilder + " is not returning a List<Webpipe>", e);
             }
-            for (Entry<String, Webpipe> webpipe : webpipes.entrySet()) {
+            for (Webpipe webpipe : webpipes) {
                 WebpipeOutput content;
                 try {
-                    content = webpipe.getValue().getOutput();
+                    content = webpipe.getOutput();
                 } catch (Exception e) {
-                    throw new BuildException("IO error while getting contents from webpipe " + webpipe.getKey() + ": " + e.getMessage(), e);
+                    throw new BuildException("IO error while getting contents from webpipe " + webpipe.getPath() + ": " + e.getMessage(), e);
                 }
-                String path = webpipe.getKey();
+                String path = webpipe.getPath();
                 path = path.replaceAll("/", File.separator).replaceAll("\\\\", File.separator);
                 File dest = new File(dir, path);
                 if (!dest.getParentFile().exists()) {

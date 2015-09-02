@@ -17,6 +17,7 @@ package org.hibnet.webpipes.processor.jsonhpack;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.js.JsProcessor;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
@@ -57,8 +58,8 @@ public class JsonHPackProcessor extends JsProcessor {
 
         private boolean pack;
 
-        private JsonHPackWebpipe(Webpipe webpipe, boolean pack) {
-            super("jsonhpack", webpipe);
+        private JsonHPackWebpipe(String path, Webpipe webpipe, boolean pack) {
+            super(WebpipeUtils.idOf(JsonHPackProcessor.class, webpipe, pack), path, "jsonhpack", webpipe);
             this.pack = pack;
         }
 
@@ -68,15 +69,15 @@ public class JsonHPackProcessor extends JsProcessor {
         }
     }
 
-    public Webpipe createProcessingWebpipe(Webpipe source, boolean pack) {
-        return new JsonHPackWebpipe(source, pack);
+    public Webpipe createProcessingWebpipe(String path, Webpipe source, boolean pack) {
+        return new JsonHPackWebpipe(path, source, pack);
     }
 
     public ProcessingWebpipeFactory createFactory(final boolean pack) {
         return new ProcessingWebpipeFactory() {
             @Override
-            public Webpipe createProcessingWebpipe(Webpipe source) {
-                return new JsonHPackWebpipe(source, pack);
+            public Webpipe createProcessingWebpipe(String path, Webpipe source) {
+                return new JsonHPackWebpipe(path, source, pack);
             }
         };
     }
@@ -101,7 +102,8 @@ public class JsonHPackProcessor extends JsProcessor {
     /**
      * Check if the string is enclosed with [[]] (double array).
      * 
-     * @param rawData string to test.
+     * @param rawData
+     *            string to test.
      */
     private boolean isEnclosedInDoubleArray(final String rawData) {
         return rawData.matches("(?ims)^\\s*\\[\\[.*\\]\\]");

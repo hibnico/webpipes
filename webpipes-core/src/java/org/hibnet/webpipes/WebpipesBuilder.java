@@ -16,25 +16,144 @@
 package org.hibnet.webpipes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import org.hibnet.webpipes.processor.SourceMapStripperWebpipe;
+import org.hibnet.webpipes.resource.ClasspathResource;
+import org.hibnet.webpipes.resource.FileResource;
+import org.hibnet.webpipes.resource.StringResource;
+import org.hibnet.webpipes.resource.WebJarHelper;
+import org.hibnet.webpipes.resource.pattern.ClasspathPatternResource;
+import org.hibnet.webpipes.resource.pattern.FilePatternResource;
 
 public abstract class WebpipesBuilder {
 
-    private static final Map<String, Webpipe> UNINITIALIZED_WEBPIPES = new HashMap<>();
+    private static final Map<String, Webpipe> NO_WEBPIPES = new HashMap<>();
 
-    private volatile Map<String, Webpipe> webpipes = UNINITIALIZED_WEBPIPES;
+    private volatile Map<String, Webpipe> webpipesMap = NO_WEBPIPES;
 
     public Map<String, Webpipe> getWebpipes() {
-        if (webpipes == UNINITIALIZED_WEBPIPES) {
-            synchronized (webpipes) {
-                if (webpipes == UNINITIALIZED_WEBPIPES) {
-                    webpipes = buildWebpipes();
+        if (webpipesMap == NO_WEBPIPES) {
+            synchronized (webpipesMap) {
+                if (webpipesMap == NO_WEBPIPES) {
+                    webpipesMap = buildMap(buildWebpipes());
                 }
             }
         }
-        return webpipes;
+        return webpipesMap;
     }
 
-    abstract protected Map<String, Webpipe> buildWebpipes();
+    private Map<String, Webpipe> buildMap(List<Webpipe> webpipes) {
+        Map<String, Webpipe> map = new HashMap<>();
+        for (Webpipe webpipe : webpipes) {
+            map.put(webpipe.getPath(), webpipe);
+        }
+        return map;
+    }
+
+    public boolean refreshedWebpipes() {
+        Map<String, Webpipe> freshes = diffWebpipes();
+        if (freshes != null) {
+            synchronized (webpipesMap) {
+                webpipesMap = freshes;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Map<String, Webpipe> diffWebpipes() {
+        Map<String, Webpipe> existings = getWebpipes();
+        Map<String, Webpipe> freshes = buildMap(buildWebpipes());
+        if (existings.size() != freshes.size()) {
+            return freshes;
+        }
+        for (Entry<String, Webpipe> existing : existings.entrySet()) {
+            Webpipe fresh = freshes.get(existing.getKey());
+            if (fresh == null) {
+                return freshes;
+            }
+            if (!existing.getValue().getId().equals(fresh.getId())) {
+                return freshes;
+            }
+        }
+        return null;
+    }
+
+    abstract protected List<Webpipe> buildWebpipes();
+
+    protected Webpipe string(String content) {
+        return string(null, content);
+    }
+
+    protected Webpipe string(String path, String content) {
+        return new StringResource(path, content);
+    }
+
+    protected Webpipe file(String filePath) {
+        return classpath(null, filePath);
+    }
+
+    protected Webpipe file(String path, String filePath) {
+        return new FileResource(path, filePath);
+    }
+
+    protected Webpipe files(String filePaths) {
+        return classpaths(null, filePaths);
+    }
+
+    protected Webpipe files(String path, String pattern) {
+        return new FilePatternResource(path, pattern);
+    }
+
+    protected Webpipe classpath(String classpath) {
+        return classpath(null, classpath);
+    }
+
+    protected Webpipe classpath(String path, String classpath) {
+        return new ClasspathResource(path, classpath);
+    }
+
+    protected Webpipe classpaths(String pattern) {
+        return classpaths(null, pattern);
+    }
+
+    protected Webpipe classpaths(String path, String pattern) {
+        return new ClasspathPatternResource(path, pattern);
+    }
+
+    protected Webpipe webjar(String name, String version, String webjarpath) {
+        return webjar(null, name, version, webjarpath);
+    }
+
+    protected Webpipe webjar(String path, String name, String version, String webjarpath) {
+        return new ClasspathResource(path, "/META-INF/resources/webjars/" + name + "/" + version + "/" + webjarpath);
+    }
+
+    protected Webpipe webjar(String webjarpath) {
+        return webjar(null, webjarpath);
+    }
+
+    protected Webpipe webjar(String path, String webjarpath) {
+        return WebJarHelper.getResource(path, webjarpath);
+    }
+
+    protected Webpipe sourceMapStripped(Webpipe webpipe) {
+        return sourceMapStripped(null, webpipe);
+    }
+
+    protected Webpipe sourceMapStripped(String path, Webpipe webpipe) {
+        return new SourceMapStripperWebpipe(path, webpipe);
+    }
+
+    protected Webpipe merge(Webpipe... webpipes) {
+        return merge(null, webpipes);
+    }
+
+    protected Webpipe merge(String path, Webpipe... webpipes) {
+        return new SimpleMergingWebpipe(path, webpipes);
+    }
 
 }

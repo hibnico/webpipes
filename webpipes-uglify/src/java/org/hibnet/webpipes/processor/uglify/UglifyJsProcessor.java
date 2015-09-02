@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
+import org.hibnet.webpipes.WebpipeUtils;
 import org.hibnet.webpipes.js.JsProcessor;
 import org.hibnet.webpipes.processor.ProcessingWebpipe;
 import org.hibnet.webpipes.processor.ProcessingWebpipeFactory;
@@ -45,8 +46,8 @@ public class UglifyJsProcessor extends JsProcessor {
 
         private List<String> revervedNames;
 
-        private UglifyJsWebpipe(Webpipe webpipe, boolean uglify, List<String> revervedNames) {
-            super("uglify", webpipe);
+        private UglifyJsWebpipe(String path, Webpipe webpipe, boolean uglify, List<String> revervedNames) {
+            super(WebpipeUtils.idOf(UglifyJsProcessor.class, webpipe, uglify, revervedNames), path, "uglify", webpipe);
             this.uglify = uglify;
             this.revervedNames = revervedNames;
         }
@@ -57,15 +58,15 @@ public class UglifyJsProcessor extends JsProcessor {
         }
     }
 
-    public Webpipe createProcessingWebpipe(Webpipe source, boolean uglify, List<String> revervedNames) {
-        return new UglifyJsWebpipe(source, uglify, revervedNames);
+    public Webpipe createProcessingWebpipe(String path, Webpipe source, boolean uglify, List<String> revervedNames) {
+        return new UglifyJsWebpipe(path, source, uglify, revervedNames);
     }
 
     public ProcessingWebpipeFactory createFactory(final boolean uglify, final List<String> revervedNames) {
         return new ProcessingWebpipeFactory() {
             @Override
-            public Webpipe createProcessingWebpipe(Webpipe source) {
-                return new UglifyJsWebpipe(source, uglify, revervedNames);
+            public Webpipe createProcessingWebpipe(String path, Webpipe source) {
+                return new UglifyJsWebpipe(path, source, uglify, revervedNames);
             }
         };
     }

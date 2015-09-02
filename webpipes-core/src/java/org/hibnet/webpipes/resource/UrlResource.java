@@ -22,14 +22,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.hibnet.webpipes.WebpipeUtils;
+
 public class UrlResource extends StreamResource {
 
     private int timeout;
 
     private URL url;
 
-    public UrlResource(URL url) {
-        super("/webpipes/url/" + url);
+    public UrlResource(String path, URL url) {
+        super(WebpipeUtils.idOf(UrlResource.class, url), WebpipeUtils.pathOf(path, "/webpipes/url", url.toExternalForm()));
         this.url = url;
     }
 
@@ -40,7 +42,7 @@ public class UrlResource extends StreamResource {
     @Override
     public Resource resolve(String relativePath) {
         try {
-            return new UrlResource(new URL(this.url, relativePath));
+            return new UrlResource(null, new URL(this.url, relativePath));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
