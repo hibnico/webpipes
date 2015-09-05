@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-bourbon" revision="0.0.4">
+    <info organisation="org.hibnet" module="webpipes-bourbon" revision="0.0.5">
         <description>This module adds support for the Bourbon mixin library for SASS.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-sass-ruby" rev="[0.0.4,0.0.5)" />
+        <dependency org="org.hibnet" name="webpipes-sass-ruby" rev="[0.0.5,0.0.6)" />
 
 	    <dependency org="nz.co.edmi" name="bourbon-gem-jar" rev="2.1.0" />
     </dependencies>

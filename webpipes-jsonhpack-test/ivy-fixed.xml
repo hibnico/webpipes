@@ -2,7 +2,7 @@
 <ivy-module version="2.0">
 	<info organisation="org.hibnet"
 		module="webpipes-jsonhpack-test"
-		revision="0.0.4"
+		revision="0.0.5"
 		status="integration"
 		publication="20150905195247"
 	>
@@ -17,9 +17,9 @@
 		<artifact name="webpipes-jsonhpack-test" type="jar" ext="jar" conf="default"/>
 	</publications>
 	<dependencies>
-		<dependency org="org.hibnet" name="webpipes-core-test" rev="[0.0.4,0.0.5)" transitive="false" conf="default->default"/>
-		<dependency org="org.hibnet" name="webpipes-jsonhpack" rev="[0.0.4,0.0.5)" transitive="false" conf="default->default"/>
-		<dependency org="org.hibnet" name="webpipes-core" rev="[0.0.4,0.0.5)" transitive="false" conf="default->default"/>
+		<dependency org="org.hibnet" name="webpipes-core-test" rev="[0.0.5,0.0.6)" transitive="false" conf="default->default"/>
+		<dependency org="org.hibnet" name="webpipes-jsonhpack" rev="[0.0.5,0.0.6)" transitive="false" conf="default->default"/>
+		<dependency org="org.hibnet" name="webpipes-core" rev="[0.0.5,0.0.6)" transitive="false" conf="default->default"/>
 		<dependency org="junit" name="junit" rev="4.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>

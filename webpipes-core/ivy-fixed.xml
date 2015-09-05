@@ -2,7 +2,7 @@
 <ivy-module version="2.0">
 	<info organisation="org.hibnet"
 		module="webpipes-core"
-		revision="0.0.4"
+		revision="0.0.5"
 		status="integration"
 		publication="20150905195244"
 	>

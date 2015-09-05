@@ -15,11 +15,11 @@
     limitations under the License.
 -->
 <ivy-module version="2.0">
-    <info organisation="org.hibnet" module="webpipes-cjson-test" revision="0.0.4">
+    <info organisation="org.hibnet" module="webpipes-cjson-test" revision="0.0.5">
         <description>This module contains the test for the CJSon compression algorithm.</description>
     </info>
     <dependencies defaultconf="default->default">
-        <dependency org="org.hibnet" name="webpipes-core-test" rev="[0.0.4,0.0.5)" />
-        <dependency org="org.hibnet" name="webpipes-cjson" rev="[0.0.4,0.0.5)" />
+        <dependency org="org.hibnet" name="webpipes-core-test" rev="[0.0.5,0.0.6)" />
+        <dependency org="org.hibnet" name="webpipes-cjson" rev="[0.0.5,0.0.6)" />
     </dependencies>
 </ivy-module>
