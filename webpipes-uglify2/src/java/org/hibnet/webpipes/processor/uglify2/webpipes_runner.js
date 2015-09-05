@@ -14,7 +14,12 @@
  *  limitations under the License.
  */
 function webpipes_runner(uglify, name, content, inputSourceMap) {
-    var a = parse(content, { filename : name});
+    var a;
+    try {
+        a = parse(content, { filename : name});
+    } catch (err) {
+        throw "Error parsing " + name + ": " + err.toString();
+    }
     a.figure_out_scope();
     var c = Compressor();
     a = a.transform(c);

@@ -15,6 +15,9 @@
  */
 package org.hibnet.webpipes.processor.uglify2;
 
+import java.util.Arrays;
+
+import org.hibnet.jsourcemap.SourceMap;
 import org.hibnet.webpipes.Webpipe;
 import org.hibnet.webpipes.WebpipeOutput;
 import org.hibnet.webpipes.WebpipeUtils;
@@ -60,7 +63,13 @@ public class UglifyJs2Processor extends JsProcessor {
     }
 
     private WebpipeOutput process(Webpipe webpipe, boolean uglify) throws Exception {
-        return callRunner(uglify, webpipe.getPath(), webpipe.getOutput().getContent(), webpipe.getOutput().getSourceMap());
+        SourceMap inSourceMap = webpipe.getOutput().getSourceMap();
+        String content = webpipe.getOutput().getContent();
+        WebpipeOutput output = callRunner(uglify, webpipe.getPath(), content, WebpipeUtils.toJsonString(inSourceMap));
+        if (inSourceMap == null) {
+            output.getSourceMap().sourcesContent = Arrays.asList(content);
+        }
+        return output;
     }
 
     private final class UglifyJs2Webpipe extends ProcessingWebpipe {

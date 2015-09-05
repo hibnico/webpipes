@@ -29,6 +29,7 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.hibnet.jsourcemap.SourceMap;
@@ -36,6 +37,7 @@ import org.hibnet.jsourcemap.SourceMap;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -306,6 +308,18 @@ public class WebpipeUtils {
         }, sourceMap);
     }
 
+    public static String toJsonString(SourceMap sourceMap) throws JsonProcessingException {
+        if (sourceMap == null) {
+            return null;
+        }
+        return SOURCEMAP_JSON_MAPPER.writeValueAsString(sourceMap);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> asMap(SourceMap sourceMap) {
+        return SOURCEMAP_JSON_MAPPER.convertValue(sourceMap, Map.class);
+    }
+
     public static String addSuffix(String name, String suffix) {
         int i = name.lastIndexOf(".");
         if (i == -1) {
@@ -367,6 +381,8 @@ public class WebpipeUtils {
             digest.update(((Class<?>) arg).getCanonicalName().getBytes(UTF8));
         } else if (arg instanceof Webpipe) {
             digest.update(((Webpipe) arg).getId().getBytes(UTF8));
+        } else if (arg instanceof File) {
+            digest.update(((File) arg).getAbsolutePath().getBytes(UTF8));
         } else if (arg instanceof Collection<?>) {
             Iterator<?> it = ((Collection<?>) arg).iterator();
             while (it.hasNext()) {
