@@ -67,18 +67,26 @@ public abstract class WebpipesBuilder {
     private Map<String, Webpipe> diffWebpipes() {
         Map<String, Webpipe> existings = getWebpipes();
         Map<String, Webpipe> freshes = buildMap(buildWebpipes());
-        if (existings.size() != freshes.size()) {
-            return freshes;
-        }
-        for (Entry<String, Webpipe> existing : existings.entrySet()) {
-            Webpipe fresh = freshes.get(existing.getKey());
-            if (fresh == null) {
-                return freshes;
+
+        // will contains the new webpipes from 'freshes' and the unchanged ones from 'existings'
+        Map<String, Webpipe> diff = new HashMap<>();
+
+        boolean hasDiff = existings.size() != freshes.size();
+
+        for (Entry<String, Webpipe> fresh : freshes.entrySet()) {
+            Webpipe existing = existings.get(fresh.getKey());
+            if (existing == null || !fresh.getValue().getId().equals(existing.getId())) {
+                hasDiff = true;
+                diff.put(fresh.getKey(), fresh.getValue());
+            } else {
+                diff.put(fresh.getKey(), existing);
             }
-            if (!existing.getValue().getId().equals(fresh.getId())) {
-                return freshes;
-            }
         }
+
+        if (hasDiff) {
+            return diff;
+        }
+
         return null;
     }
 
