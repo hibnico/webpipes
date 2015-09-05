@@ -4,7 +4,7 @@
 		module="webpipes-jsonhpack"
 		revision="0.0.4"
 		status="integration"
-		publication="20150830144229"
+		publication="20150905195247"
 	>
 		<description>
 		This module adds support for json.hpack.
@@ -19,7 +19,7 @@
 	<dependencies>
 		<dependency org="org.hibnet" name="webpipes-core" rev="[0.0.4,0.0.5)" transitive="false" conf="default->default"/>
 		<dependency org="org.webjars" name="webjars-locator" rev="0.17" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
-		<dependency org="org.hibnet" name="jsourcemap" rev="0.0.3" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
+		<dependency org="org.hibnet" name="jsourcemap" rev="0.0.4" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.6.1" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.10" force="true" transitive="false" conf="default->default,compile,runtime,master"/>
 		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.6.0" force="true" transitive="false" conf="default->master(*),compile,runtime(*),runtime,compile(*),master"/>
